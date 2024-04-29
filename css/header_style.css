@@ -1,0 +1,85 @@
+body
+{
+    margin: 0;
+    font-family: "Gentium Book Plus", serif;
+    font-weight: 400;
+    font-style: normal;
+    overflow: hidden;
+}
+
+body *{
+    box-sizing: border-box;
+    background-color: #b69a79;
+    border-end-end-radius: 18px;
+    border-end-start-radius: 18px;
+}
+
+#parte_sinistra_header
+{
+    display: flex;
+    align-items: center;
+    column-gap:3vw;
+}
+
+#parte_destra_header
+{
+    position: absolute;
+    top: 4vw;
+    right: 2vw;
+    display: flex;
+    align-items: center;
+    column-gap: 20vw;
+}
+
+#logo
+{
+    width: 8vw;
+    margin: 2vw;
+}
+
+.link
+{
+    color: white;
+    text-decoration: none;
+    font-size: 1.5vw;
+    transition: transform 0.2s;
+}
+
+.link:hover
+{
+    transform: scale(0.9);
+}
+
+#img_login
+{
+    width: 130%;
+    transition: transform 0.2s;
+}
+
+#img_login:hover
+{
+    transform: scale(0.9);
+}
+
+#benvenuto_utente
+{
+    font-size: 120%;
+}
+
+#nome_software
+{
+    color: #454444;
+}
+
+.selectedLink
+{
+    color: #ffffff8c;
+    text-decoration: none;
+    font-size: 1.5vw;
+    transition: transform 0.2s;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
