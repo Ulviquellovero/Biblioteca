@@ -7,22 +7,24 @@
     </head>
 
     <body>
-        <div id="parte_sinistra_header">
-            <a href="index.php"><img id="logo" src="img/sapienza.png" alt="Logo Sapienza"></a>
-            <a href="index.php"><h1 id="nome_software">Biblioteca Sapienza</h1></a>
-            <?php require_once("decidi_link.php"); ?>
-        </div>
-        <div id="parte_destra_header">
-            <?php
-                if(!isset($_SESSION['idUtente']))
-                {
-                    echo "<a id='link_login' href='login.php'>";
-                    echo "<img id='img_login' src='img/login_icon.png' alt='Login'>";
-                    echo "</a>";
-                }
-                else
-                    echo "<span id='benvenuto_utente'>Benvenuto ".$_SESSION['username']."</span>";
-            ?>
+        <div id="body_header">
+            <div id="parte_sinistra_header">
+                <a href="index.php"><img id="logo" src="img/sapienza.png" alt="Logo Sapienza"></a>
+                <a href="index.php"><h1 id="nome_software">Biblioteca Sapienza</h1></a>
+                <?php require_once("decidi_link.php"); ?>
+            </div>
+            <div id="parte_destra_header">
+                <?php
+                    if(!isset($_SESSION['idUtente']))
+                    {
+                        echo "<a id='link_login' href='login.php'>";
+                        echo "<img id='img_login' src='img/login_icon.png' alt='Login'>";
+                        echo "</a>";
+                    }
+                    else
+                        echo "<span id='benvenuto_utente'>Benvenuto ".$_SESSION['username']."</span>";
+                ?>
+            </div>
         </div>
     </body>
 </html>
