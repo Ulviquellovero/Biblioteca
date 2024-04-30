@@ -1,0 +1,62 @@
+body {
+    font-family: "Gentium Book Plus", serif;
+    font-weight: 400;
+    font-style: normal;
+    margin: 0;
+    padding: 0;
+}
+
+#container {
+    margin-inline: 40%;
+    position: relative;
+    top: 50;
+    text-align: center;
+    border-radius: 10px;
+    margin-top: 6vw;
+}
+
+#testoGuida {
+    display: block;
+    font-size: 150%;
+    margin-bottom: 5%;
+    color: #000;
+}
+
+#username,
+#password {
+    width: 100%;
+    padding: 6%;
+    margin-bottom: 10%;
+    border: 1px solid #000;
+    border-radius: 5px;
+}
+
+#submit {
+    padding: 5% 10%;
+    background-color: #b69a79;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 50%;
+    font-size: 110%;
+    font-family: "Gentium Book Plus", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+#submit:hover {
+    background-color: #998165;
+}
+
+#testo {
+    position: fixed;
+    bottom: 0;
+    margin-left: 2%;
+}
+
+#erroreCredenziali
+{
+    color: red;
+}

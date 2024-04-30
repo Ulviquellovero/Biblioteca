@@ -82,3 +82,10 @@ a {
     color: inherit;
     text-decoration: none;
 }
+
+#benvenuto_utente
+{
+    margin-top: 1vw;
+    font-size: 1.5vw;
+    color: #454444;
+}

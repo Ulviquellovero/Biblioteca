@@ -11,4 +11,9 @@
         echo '<a class="link" href="index.php">Home</a>';
         echo '<span class="selectedLink">Catalogo</span>';
     }
+    if($currentPage == "/login.php")
+    {
+        echo '<a class="link" href="index.php">Home</a>';
+        echo '<a class="link" href="catalogo.php">Catalogo</a>';
+    }
 ?>
