@@ -11,20 +11,111 @@
             <div id="parte_sinistra_header">
                 <a href="index.php"><img id="logo" src="img/sapienza.png" alt="Logo Sapienza"></a>
                 <a href="index.php"><h1 id="nome_software">Biblioteca Sapienza</h1></a>
-                <?php require_once("decidi_link.php"); ?>
+                
             </div>
             <div id="parte_destra_header">
-                <?php
-                    if(!isset($_SESSION['idUtente']))
-                    {
-                        echo "<a id='link_login' href='login.php'>";
-                        echo "<img id='img_login' src='img/login_icon.png' alt='Login'>";
-                        echo "</a>";
-                    }
-                    else
-                        echo "<span id='benvenuto_utente'>Benvenuto ".$_SESSION['username']."</span>";
-                ?>
+                
             </div>
         </div>
     </body>
+    
+    <script>
+            verificaLogin();
+            
+            function verificaLogin()
+            {
+                const xhttp = new XMLHttpRequest();
+                xhttp.onload = function() {
+                    var res = xhttp.responseText;
+                    var j = JSON.parse(res);
+                    creaHtmlLogin(j);
+                }
+                xhttp.open("POST", "verifica_login_header.php", true);
+                xhttp.send();
+            }
+
+            function creaHtmlLogin(j)
+            {
+                var htmlElement;
+                    if(!j.autenticato)
+                    {
+                        htmlElement = document.createElement("a");
+                        htmlElement.id = "link_login";
+                        htmlElement.href = "login.php";
+                        
+                        var imgElement = document.createElement("img");
+                        imgElement.id = "img_login";
+                        imgElement.src = "img/login_icon.png";
+                        imgElement.alt = "Login";
+                        
+                        htmlElement.appendChild(imgElement);
+                    }
+                    else
+                    {
+                        htmlElement = document.createElement("span");
+                        htmlElement.id = "benvenuto_utente";
+                        htmlElement.textContent = "Benvenuto " + j.userName;
+                    }
+                    var parteDestraPagina = document.getElementById("parte_destra_header");
+                    parteDestraPagina.innerHTML = "";
+                    parteDestraPagina.appendChild(htmlElement);
+            }
+
+            scegliPagineLink();
+            
+            function scegliPagineLink()
+            {
+                var currentPage = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
+                if(currentPage == "index.php" || currentPage == "")
+                    costruisciLinkIndex(); 
+                if(currentPage == "catalogo.php")
+                    costruisciLinkCatalogo();
+                if(currentPage == "login.php")
+                    costruisciLinkLogin();
+            }
+
+            function costruisciLinkIndex()
+            {
+                var selectedLink = document.createElement("span");
+                selectedLink.className = "selectedLink";
+                selectedLink.textContent = "Home";
+                var catalogLink = document.createElement("a");
+                catalogLink.className = "link";
+                catalogLink.href = "catalogo.php";
+                catalogLink.textContent = "Catalogo";
+                var parteSinistraPagina = document.getElementById("parte_sinistra_header");
+                parteSinistraPagina.appendChild(selectedLink);
+                parteSinistraPagina.appendChild(catalogLink);
+            }
+
+            function costruisciLinkCatalogo()
+            {
+                var selectedLink = document.createElement("a");
+                selectedLink.href = "index.php";
+                selectedLink.className = "link";
+                selectedLink.textContent = "Home";
+                var catalogLink = document.createElement("span");
+                catalogLink.className = "selectedLink";
+                catalogLink.textContent = "Catalogo";
+                var parteSinistraPagina = document.getElementById("parte_sinistra_header");
+                parteSinistraPagina.appendChild(selectedLink);
+                parteSinistraPagina.appendChild(catalogLink);
+            }
+
+            function costruisciLinkLogin()
+            {
+                var selectedLink = document.createElement("a");
+                selectedLink.href = "index.php";
+                selectedLink.className = "link";
+                selectedLink.textContent = "Home";
+                var catalogLink = document.createElement("a");
+                catalogLink.className = "link";
+                catalogLink.href = "catalogo.php";
+                catalogLink.textContent = "Catalogo";
+                var parteSinistraPagina = document.getElementById("parte_sinistra_header");
+                parteSinistraPagina.appendChild(selectedLink);
+                parteSinistraPagina.appendChild(catalogLink);
+            }
+
+        </script>
 </html>

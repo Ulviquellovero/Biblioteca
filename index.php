@@ -1,6 +1,3 @@
-<?php
-    require_once("var_conn.php");
-?>
 <html>
     <head>
         <link rel="stylesheet" href="css/index_style.css">
