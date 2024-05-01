@@ -10,9 +10,9 @@
         <div id="container">
             <span id='testoGuida'>Inserisci username/email e password per accedere</span>
             <form id='loginForm' method="POST">
-                <input id="username" type="text" name="username">
-                <input id="password" type="password" name="password">
-                <input id="submit" type="submit">
+                <input id="username" type="text" name="username" required>
+                <input id="password" type="password" name="password" required>
+                <input id="submit" type="submit" value="Login">
             </form>
             <span id='erroreCredenziali'></span>
         </div>

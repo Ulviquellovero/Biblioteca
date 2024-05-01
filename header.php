@@ -70,7 +70,7 @@
                     costruisciLinkIndex(); 
                 if(currentPage == "catalogo.php")
                     costruisciLinkCatalogo();
-                if(currentPage == "login.php")
+                if(currentPage == "login.php" || currentPage == "registrati.php")
                     costruisciLinkLogin();
             }
 
