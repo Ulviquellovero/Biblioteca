@@ -32,7 +32,7 @@
 
         <div id = "input">
 
-            <form onsubmit="return validateForm()" action="InserimentoDati.php" method="POST" class = "loginForm">
+            <form onsubmit="return validateForm()" action="inserimentoDati.php" method="POST" class = "loginForm">
             <div class="riga">
                 <label class="elemento" for="nomePersona">Inserisci il tuo nome:</label>
                 <label class="elemento" for="cognomePersona">Inserisci il tuo cognome:</label>
@@ -72,7 +72,7 @@
                 <input class="elemento" maxlength="30" type="password" id="confermaPassword" placeholder="Es. Jx#9pYq2" name="confermaPassword" minlength="8" required>
             </div>
 
-            <input id="submit" type="submit" value="Registrati">
+            <input id="submit" type="submit" name="submit" value="Registrati">
             </form>
 
         </div>
