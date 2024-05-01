@@ -54,7 +54,7 @@
                     {
                         htmlElement = document.createElement("span");
                         htmlElement.id = "benvenuto_utente";
-                        htmlElement.textContent = "Benvenuto " + j.userName;
+                        htmlElement.textContent = "Benvenuto/a " + j.userName;
                     }
                     var parteDestraPagina = document.getElementById("parte_destra_header");
                     parteDestraPagina.innerHTML = "";

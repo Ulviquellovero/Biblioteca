@@ -6,7 +6,7 @@
     <body>
         <?php require_once("header.php"); ?>
         <div id="container">
-            <span id='testoGuida'>Inserisci username e password per accedere</span>
+            <span id='testoGuida'>Inserisci username/email e password per accedere</span>
             <form id='loginForm' method="POST">
                 <input id="username" type="text" name="username">
                 <input id="password" type="password" name="password">
@@ -14,7 +14,9 @@
             </form>
             <span id='erroreCredenziali'></span>
         </div>
-        <?php require_once("footer.html"); ?>
+        <div id='footerLogin'>
+            <?php require_once("footer.html"); ?>
+        </div>
 
         <script>
             document.getElementById("loginForm").addEventListener("submit", function(event)
@@ -26,12 +28,13 @@
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4 && xhr.status === 200) {
-                        var response = JSON.parse(xhr.responseText);
-                        if (response.err) {
+                        var res = xhr.responseText;
+                        var j = JSON.parse(res);
+                        if (!j.autenticato) {
                             var errText = document.getElementById("erroreCredenziali");
                             errText.innerHTML= "Credenziali errate";
                         } else {
-                            window.location = "index.html";
+                            window.location = "index.php";
                         }
                     }
             };
