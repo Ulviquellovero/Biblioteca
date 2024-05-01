@@ -1,6 +1,8 @@
 <html>
     <head>
         <link rel="stylesheet" href="css/login_style.css">
+        <title>Login</title>
+        <link rel="icon" type="image/png" href="img/Sapienza.png">
     </head>
 
     <body>
@@ -14,6 +16,13 @@
             </form>
             <span id='erroreCredenziali'></span>
         </div>
+
+        <div class = "nuovoAccountDiv">
+            <p id = "registrati">  Non hai un account? 
+            <a id='linkRegistrati' href="registrati.php"> Registrati </a>
+            </p>
+        </div>
+
         <div id='footerLogin'>
             <?php require_once("footer.html"); ?>
         </div>

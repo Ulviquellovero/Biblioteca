@@ -1,6 +1,7 @@
 <html>
     <head>
-        
+        <title>Catalogo</title>
+        <link rel="icon" type="image/png" href="img/Sapienza.png">
     </head>
 
     <body>

@@ -62,5 +62,24 @@ body {
 
 #footerLogin
 {
-    margin-top: 7vw;
+    margin-top: 3vw;
+}
+
+#registrati{
+
+    font-size: 1.3vw;
+    margin-top: 4%;
+}
+
+.nuovoAccountDiv{
+
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#linkRegistrati
+{
+    text-decoration: underline;
+    color: #795548;
 }

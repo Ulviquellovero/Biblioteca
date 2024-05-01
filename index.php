@@ -1,6 +1,8 @@
 <html>
     <head>
         <link rel="stylesheet" href="css/index_style.css">
+        <title>Home</title>
+        <link rel="icon" type="image/png" href="img/Sapienza.png">
     </head>
 
     <body>

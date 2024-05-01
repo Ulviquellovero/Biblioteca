@@ -41,4 +41,5 @@
         "autenticato" => $autenticato,
     );
     echo json_encode($rowJSON);
+    require_once("var_connclose.php");
 ?>
