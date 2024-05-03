@@ -9,7 +9,7 @@
     <body>
         <div id="body_header">
             <div id="parte_sinistra_header">
-                <a href="index.php"><img id="logo" src="img/sapienza.png" alt="Logo Sapienza"></a>
+                <a href="index.php"><img id="logo" src="img/Sapienza.png" alt="Logo Sapienza"></a>
                 <a href="index.php"><h1 id="nome_software">Biblioteca Sapienza</h1></a>
                 
             </div>
