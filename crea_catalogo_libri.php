@@ -1,7 +1,7 @@
 <?php
     require_once("var_conn.php");
     $sql = "SELECT idLibro, titolo, annoPubblicazione, nomeAutore, cognomeAutore, nomeCasaEditrice, disponibile
-            FROM tlibro";
+			FROM tlibro ORDER BY nomeAutore ASC";
     $res = mysqli_query($con, $sql);
     $numRigheReali = mysqli_num_rows($res);
     $i = 0;

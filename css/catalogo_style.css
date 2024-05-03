@@ -1,9 +1,57 @@
 body
 {
     margin: 0;
+    font-family: "Gentium Book Plus", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .titoloLibro
 {
     
+}
+
+.containerElemento
+{
+    margin: 2vw;
+    background-color: #b69a7942;
+    border-radius: 1vw;
+    padding: 0.5vw;
+    padding-bottom: 2vw;
+    padding-left: 2vw;
+    transition: transform 0.3s ease;
+}
+
+.containerElemento:hover {
+  transform: scale(0.98);
+}
+
+.containerDati
+{
+    display: flex;
+}
+
+.containerDataCasa
+{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vw;
+}
+
+.containerAutoreDisponibile
+{
+    margin-left: 2vw;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vw;
+}
+
+.disponibile
+{
+  color: #01b101;
+}
+
+.nonDisponibile
+{
+    color: red;
 }
