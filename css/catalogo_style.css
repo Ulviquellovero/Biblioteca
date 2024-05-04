@@ -102,3 +102,24 @@ body
 {
     transform: scale(0.9);
 }
+
+#lineaFiltri
+{
+   width: 90%;
+   margin-left: 4.5vw;
+    margin-top: 2vw;
+}
+
+#rigaTestiGuida
+{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+#contBoxFiltri
+{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}

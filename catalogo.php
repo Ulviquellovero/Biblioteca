@@ -17,6 +17,23 @@
             <button id='btnLib' onclick="creaTabellaLibri()">Libri</button>
             <button id='btnCart' onclick="creaTabellaCarte()">Carte Geo-Politiche</button>
         </div>
+        <div id="lineaFiltri">
+            <div id='rigaTestiGuida'>
+                <label for="filtroAnno">Cerca per anno: </label>
+                <label for="filtroTitolo">Cerca per titolo: </label>
+                <label for="filtroCasaEditrice">Cerca per casa editrice: </label>
+            </div>
+            <div id='contBoxFiltri'>
+                <select id='filtroAnno'>
+                </select>
+                <div id="divFiltroTitolo">
+                    <input id='filtroTitolo' type="text">
+                    <button>Cerca</button>
+                </div>
+                <select id='filtroCasaEditrice'>
+                </select>
+            </div>
+        </div>
         <div id='visualizzazione'>
             
         </div>
@@ -27,10 +44,121 @@
     </body>
 
     <script>
+        function creaFiltroAnnoLibri()
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                creaHtmlFiltroAnnoLibri(j);
+            }
+            xhttp.open("POST", "crea_filtro_anno_libri.php?tipo=libro", true);
+            xhttp.send();
+        }
+
+        function creaFiltroAnnoEnciclopedie()
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                creaHtmlFiltroAnnoLibri(j);
+            }
+            xhttp.open("POST", "crea_filtro_anno_libri.php?tipo=enciclopedia", true);
+            xhttp.send();
+        }
+
+        function creaFiltroAnnoCarte()
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                creaHtmlFiltroAnnoLibri(j);
+            }
+            xhttp.open("POST", "crea_filtro_anno_libri.php?tipo=carta", true);
+            xhttp.send();
+        }
+
+        function creaHtmlFiltroAnnoLibri(j)
+        {
+            var filtroAnno = document.getElementById("filtroAnno");
+            filtroAnno.innerHTML = "";
+            var opzioneDef = document.createElement("option");
+            opzioneDef.value = "";
+            opzioneDef.textContent = "Seleziona un anno";
+            opzioneDef.selected = true;
+            filtroAnno.appendChild(opzioneDef);
+            for(var i=0; i < j.Result.length; i++)
+            {
+                var anno = j.Result[i].annoPub;
+                var opzione = document.createElement("option");
+                opzione.value = anno;
+                opzione.textContent = anno;
+                filtroAnno.appendChild(opzione);
+            }
+        }
+
+        function creaFiltroCaseLibri()
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                creaHtmlFiltroCaseLibri(j);
+            }
+            xhttp.open("POST", "crea_filtro_case_libri.php?tipo=libro", true);
+            xhttp.send();
+        }
+
+        function creaFiltroCaseEnciclopedie()
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                creaHtmlFiltroCaseLibri(j);
+            }
+            xhttp.open("POST", "crea_filtro_case_libri.php?tipo=enciclopedia", true);
+            xhttp.send();
+        }
+
+        function creaFiltroCaseCarte()
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                creaHtmlFiltroCaseLibri(j);
+            }
+            xhttp.open("POST", "crea_filtro_case_libri.php?tipo=carta", true);
+            xhttp.send();
+        }
+
+        function creaHtmlFiltroCaseLibri(j)
+        {
+            var filtroCasaEditrice = document.getElementById("filtroCasaEditrice");
+            filtroCasaEditrice.innerHTML = "";
+            var opzioneDef = document.createElement("option");
+            opzioneDef.value = "";
+            opzioneDef.textContent = "Seleziona una casa editrice";
+            opzioneDef.selected = true;
+            filtroCasaEditrice.appendChild(opzioneDef);
+            for(var i=0; i < j.Result.length; i++)
+            {
+                var casa = j.Result[i].nomeCasaEditrice;
+                var opzione = document.createElement("option");
+                opzione.value = casa;
+                opzione.textContent = casa;
+                filtroCasaEditrice.appendChild(opzione);
+            }
+        }
 
         creaTabellaLibri();
         function creaTabellaLibri()
         {
+            creaFiltroAnnoLibri();
+            creaFiltroCaseLibri();
             var enc = document.getElementById("btnEnc");
             var lib = document.getElementById("btnLib");
             var car = document.getElementById("btnCart");
@@ -51,6 +179,8 @@
 
         function creaTabellaCarte()
         {
+            creaFiltroAnnoCarte();
+            creaFiltroCaseCarte();
             var enc = document.getElementById("btnEnc");
             var lib = document.getElementById("btnLib");
             var car = document.getElementById("btnCart");
@@ -72,6 +202,8 @@
 
         function creaTabellaEnciclopedie()
         {
+            creaFiltroAnnoEnciclopedie();
+            creaFiltroCaseEnciclopedie()
             var enc = document.getElementById("btnEnc");
             var lib = document.getElementById("btnLib");
             var car = document.getElementById("btnCart");
