@@ -8,7 +8,7 @@ body
 
 .titoloLibro
 {
-    
+    font-size: 2vw;
 }
 
 .containerElemento
@@ -54,4 +54,13 @@ body
 .nonDisponibile
 {
     color: red;
+}
+
+#titoloPagina
+{
+    width: 100%;
+    text-align: center;
+    margin-top: 3vw;
+    margin-bottom: 3vw;
+    font-size: 2.3vw;
 }

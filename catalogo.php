@@ -11,12 +11,21 @@
                 require_once("header.php");
             ?>
         </div>
+        <h1 id='titoloPagina'>Catalogo</h1>
+        <button onclick="creaTabellaEnciclopedie()">Enciclopedie</button>
+        <button onclick="creaTabellaLibri()">Libri</button>
+        <button onclick="creaTabellaCarte()">Carte Geo-Politiche</button>
         <div id='visualizzazione'>
             
+        </div>
+
+        <div id='footerLogin'>
+            <?php require_once("footer.html"); ?>
         </div>
     </body>
 
     <script>
+
         creaTabellaLibri();
         function creaTabellaLibri()
         {
@@ -29,6 +38,20 @@
                 creaHtmlLibri(j, visualizzazione, "libro");
             }
             xhttp.open("POST", "crea_catalogo_libri.php", true);
+            xhttp.send();
+        }
+
+        function creaTabellaCarte()
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                var visualizzazione = document.getElementById("visualizzazione");
+                visualizzazione.innerHTML = "";
+                creaHtmlLibri(j, visualizzazione, "carte");
+            }
+            xhttp.open("POST", "crea_catalogo_carte.php", true);
             xhttp.send();
         }
 
@@ -59,7 +82,7 @@
 
                             var nomeAutore = document.createElement("span");
                             nomeAutore.className = "datoLibro";
-                            nomeAutore.textContent = "Autore: " + j.Result[i].nomeAutore + " " + j.Result[i].cognomeAutore;
+                            nomeAutore.textContent = "Autori: " + j.Result[i].autore;
                             containerDataCasa.appendChild(nomeAutore);
 
                             var nomeCasaEditrice = document.createElement("span");
@@ -73,7 +96,7 @@
 
                             var annoPub = document.createElement("span");
                             annoPub.className = "datoLibro";
-                            annoPub.textContent = "Anno: " + j.Result[i].annoPub;
+                            annoPub.textContent = "Anno di pubblicazione: " + j.Result[i].annoPub;
                             containerAutoreDisponibile.appendChild(annoPub);
                             
                             var disponibile = document.createElement("span");
