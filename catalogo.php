@@ -12,9 +12,11 @@
             ?>
         </div>
         <h1 id='titoloPagina'>Catalogo</h1>
-        <button onclick="creaTabellaEnciclopedie()">Enciclopedie</button>
-        <button onclick="creaTabellaLibri()">Libri</button>
-        <button onclick="creaTabellaCarte()">Carte Geo-Politiche</button>
+        <div id="sceltaCategoria">
+            <button id='btnEnc'onclick="creaTabellaEnciclopedie()">Enciclopedie</button>
+            <button id='btnLib' onclick="creaTabellaLibri()">Libri</button>
+            <button id='btnCart' onclick="creaTabellaCarte()">Carte Geo-Politiche</button>
+        </div>
         <div id='visualizzazione'>
             
         </div>
@@ -29,6 +31,12 @@
         creaTabellaLibri();
         function creaTabellaLibri()
         {
+            var enc = document.getElementById("btnEnc");
+            var lib = document.getElementById("btnLib");
+            var car = document.getElementById("btnCart");
+            enc.className = "catNonSelezionata";
+            lib.className = "catSelezionata";
+            car.className = "catNonSelezionata";
             const xhttp = new XMLHttpRequest();
             xhttp.onload = function() {
                 var res = xhttp.responseText;
@@ -43,6 +51,12 @@
 
         function creaTabellaCarte()
         {
+            var enc = document.getElementById("btnEnc");
+            var lib = document.getElementById("btnLib");
+            var car = document.getElementById("btnCart");
+            enc.className = "catNonSelezionata";
+            lib.className = "catNonSelezionata";
+            car.className = "catSelezionata";
             const xhttp = new XMLHttpRequest();
             xhttp.onload = function() {
                 var res = xhttp.responseText;
@@ -52,6 +66,27 @@
                 creaHtmlLibri(j, visualizzazione, "carte");
             }
             xhttp.open("POST", "crea_catalogo_carte.php", true);
+            xhttp.send();
+        
+        }
+
+        function creaTabellaEnciclopedie()
+        {
+            var enc = document.getElementById("btnEnc");
+            var lib = document.getElementById("btnLib");
+            var car = document.getElementById("btnCart");
+            enc.className = "catSelezionata";
+            lib.className = "catNonSelezionata";
+            car.className = "catNonSelezionata";
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                var visualizzazione = document.getElementById("visualizzazione");
+                visualizzazione.innerHTML = "";
+                creaHtmlLibri(j, visualizzazione, "enciclopedie");
+            }
+            xhttp.open("POST", "crea_catalogo_enciclopedie.php", true);
             xhttp.send();
         }
 
@@ -98,19 +133,28 @@
                             annoPub.className = "datoLibro";
                             annoPub.textContent = "Anno di pubblicazione: " + j.Result[i].annoPub;
                             containerAutoreDisponibile.appendChild(annoPub);
-                            
-                            var disponibile = document.createElement("span");
-                            if(j.Result[i].disponibile == 1)
+                            if (j.Result[i].volumi !== undefined)
                             {
-                                disponibile.className = "datoLibro disponibile";
-                                disponibile.textContent = "Disponibile";
+                                var nVolumi = document.createElement("span");
+                                nVolumi.className = "datoLibro";
+                                nVolumi.textContent = "Numero di volumi: " + j.Result[i].volumi;
+                                containerAutoreDisponibile.appendChild(nVolumi);
                             }
                             else
                             {
-                                disponibile.className = "datoLibro nonDisponibile";
-                                disponibile.textContent = "Non disponibile";
+                                var disponibile = document.createElement("span");
+                                if(j.Result[i].disponibile == 1)
+                                {
+                                    disponibile.className = "datoLibro disponibile";
+                                    disponibile.textContent = "Disponibile";
+                                }
+                                else
+                                {
+                                    disponibile.className = "datoLibro nonDisponibile";
+                                    disponibile.textContent = "Non disponibile";
+                                }
+                                containerAutoreDisponibile.appendChild(disponibile);
                             }
-                            containerAutoreDisponibile.appendChild(disponibile);
 
                 visualizzazione.appendChild(containerLibro);
             }
