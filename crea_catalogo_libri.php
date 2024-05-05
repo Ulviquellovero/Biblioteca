@@ -2,25 +2,33 @@
     require_once("var_conn.php");
 	$anno = null;
 	$casa = null;
+	$testoInserito = null;
 	if(isset($_GET['annoSelez']) && $_GET['annoSelez'] != "null")
 		$anno = $_GET['annoSelez'];
 	if(isset($_GET['casaSelez']) && $_GET['casaSelez'] != "null")
 		$casa = $_GET['casaSelez'];
+	if(isset($_GET['testoInserito']) && $_GET['testoInserito'] != "null")
+		$testoInserito = $_GET['testoInserito'];
 	$sql = "SELECT idLibro, titolo, annoPubblicazione, nomeAutore, cognomeAutore, nomeCasaEditrice, disponibile
 		FROM tlibro ";
-	if($anno != null && $casa != null)
-		$sql = $sql . "WHERE annoPubblicazione = $anno AND nomeCasaEditrice = '$casa' ";
-	else
+	$sqlWhere = "";
+	if($anno != null)
+		$sqlWhere = $sqlWhere . "WHERE annoPubblicazione = $anno ";
+	if($casa != null)
 	{
-		if($anno != null && $casa == null)
-			$sql = $sql . "WHERE annoPubblicazione = $anno ";
+		if($sqlWhere != "")
+			$sqlWhere = $sqlWhere . "AND nomeCasaEditrice = '$casa' ";
 		else
-		{
-			if($anno == null && $casa != null)
-			$sql = $sql . "WHERE nomeCasaEditrice = '$casa' ";
-		}
+			$sqlWhere = $sqlWhere . "WHERE nomeCasaEditrice = '$casa' ";
 	}
-	$sql = $sql . "ORDER BY titolo ASC";
+	if($testoInserito != null)
+	{
+		if($sqlWhere != "")
+			$sqlWhere = $sqlWhere . "AND titolo LIKE '%$testoInserito%' ";
+		else
+			$sqlWhere = $sqlWhere . "WHERE titolo LIKE '%$testoInserito%' ";
+	}
+	$sql = $sql . $sqlWhere . "ORDER BY titolo ASC";
 
     $res = mysqli_query($con, $sql);
     $numRigheReali = mysqli_num_rows($res);

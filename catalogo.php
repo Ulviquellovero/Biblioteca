@@ -28,7 +28,7 @@
                 </select>
                 <div id="divFiltroTitolo">
                     <input id='filtroTitolo' type="text">
-                    <button>Cerca</button>
+                    <button onclick="btnCercaCliccato()">Cerca</button>
                 </div>
                 <select id='filtroCasaEditrice' onchange="filtroCasaSelezionato()">
                 </select>
@@ -48,11 +48,21 @@
         var tipoSelezionato = "Libri";
         var annoSelez = null;
         var casaSelez = null;
+        var testoInserito = null;
+
+        function btnCercaCliccato()
+        {
+            var filtroTitolo = document.getElementById("filtroTitolo");
+            testoInserito = filtroTitolo.value;
+            if(tipoSelezionato == "Libri")
+                creaTabellaLibri();
+        }
 
         function azzeraFiltri()
         {
             annoSelez = null;
             casaSelez = null;
+            testoInserito = null;
         }
 
         function filtroAnnoSelezionato()
@@ -201,7 +211,7 @@
                 visualizzazione.innerHTML = "";
                 creaHtmlLibri(j, visualizzazione, "libro");
             }
-            xhttp.open("POST", "crea_catalogo_libri.php?annoSelez="+annoSelez+"&casaSelez="+casaSelez, true);
+            xhttp.open("POST", "crea_catalogo_libri.php?annoSelez="+annoSelez+"&casaSelez="+casaSelez+"&testoInserito="+testoInserito, true);
             xhttp.send();
         }
 
