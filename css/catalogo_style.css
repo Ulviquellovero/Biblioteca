@@ -69,8 +69,15 @@ body
 {
     display: flex;
     width: 100%;
-    justify-content: center;
+    justify-content: space-between;
     gap: 1vw;
+    width: 60%;
+    margin-left: 21vw;
+}
+
+#btnEnc
+{
+    margin-left: 5vw;
 }
 
 #sceltaCategoria button
@@ -115,6 +122,7 @@ body
     display: flex;
     width: 100%;
     justify-content: space-between;
+    font-weight: bold;
 }
 
 #contBoxFiltri
@@ -122,6 +130,7 @@ body
     display: flex;
     width: 100%;
     justify-content: space-between;
+    margin-bottom: 5vw;
 }
 
 #noResult
@@ -134,4 +143,54 @@ body
 #footerLogin
 {
     margin-top: 8vw;
+}
+
+#filtroTitolo
+{
+    padding: 0.7vw 0.7vw;
+    width: 20vw;
+    border: 1px solid #000;
+    border-radius: 5px;
+    font-size: 110%;
+    margin-left: 4.5vw;
+}
+
+#divFiltroTitolo button
+{
+    font-size: 110%;
+    padding: 0.7vw 1vw;
+    background-color: #b69a79;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: inherit;
+}
+
+#divFiltroTitolo button:hover
+{
+    background-color: #998165;
+}
+
+#filtroAnno
+{
+    border-radius: 5px;
+    padding: 0.7vw;
+}
+
+#filtroCasaEditrice
+{
+    border-radius: 5px;
+    padding: 0.7vw;
+}
+
+#labelForTitolo
+{
+    margin-left: -7vw;
+}
+
+#labelForCasa
+{
+    margin-right: 5vw;
 }
