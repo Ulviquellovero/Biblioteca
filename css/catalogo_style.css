@@ -123,3 +123,15 @@ body
     width: 100%;
     justify-content: space-between;
 }
+
+#noResult
+{
+    width: 100%;
+    text-align: center;
+    margin-top: 10vw;
+}
+
+#footerLogin
+{
+    margin-top: 8vw;
+}

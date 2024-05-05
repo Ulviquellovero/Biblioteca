@@ -13,9 +13,9 @@
         </div>
         <h1 id='titoloPagina'>Catalogo</h1>
         <div id="sceltaCategoria">
-            <button id='btnEnc'onclick="creaTabellaEnciclopedie()">Enciclopedie</button>
-            <button id='btnLib' onclick="creaTabellaLibri()">Libri</button>
-            <button id='btnCart' onclick="creaTabellaCarte()">Carte Geo-Politiche</button>
+            <button id='btnEnc'onclick="azzeraFiltri(); creaTabellaEnciclopedie();">Enciclopedie</button>
+            <button id='btnLib' onclick="azzeraFiltri(); creaFiltroAnnoLibri(); creaFiltroCaseLibri(); creaTabellaLibri();">Libri</button>
+            <button id='btnCart' onclick="azzeraFiltri(); creaTabellaCarte();">Carte Geo-Politiche</button>
         </div>
         <div id="lineaFiltri">
             <div id='rigaTestiGuida'>
@@ -24,13 +24,13 @@
                 <label for="filtroCasaEditrice">Cerca per casa editrice: </label>
             </div>
             <div id='contBoxFiltri'>
-                <select id='filtroAnno'>
+                <select id='filtroAnno' onchange="filtroAnnoSelezionato()">
                 </select>
                 <div id="divFiltroTitolo">
                     <input id='filtroTitolo' type="text">
                     <button>Cerca</button>
                 </div>
-                <select id='filtroCasaEditrice'>
+                <select id='filtroCasaEditrice' onchange="filtroCasaSelezionato()">
                 </select>
             </div>
         </div>
@@ -44,6 +44,35 @@
     </body>
 
     <script>
+
+        var tipoSelezionato = "Libri";
+        var annoSelez = null;
+        var casaSelez = null;
+
+        function azzeraFiltri()
+        {
+            annoSelez = null;
+            casaSelez = null;
+        }
+
+        function filtroAnnoSelezionato()
+        {
+            var select = document.getElementById("filtroAnno");
+            var selezionato = select.options[select.selectedIndex].value;
+            annoSelez = selezionato;
+            if(tipoSelezionato == "Libri")
+                creaTabellaLibri();
+        }
+
+        function filtroCasaSelezionato()
+        {
+            var select = document.getElementById("filtroCasaEditrice");
+            var selezionato = select.options[select.selectedIndex].value;
+            casaSelez = selezionato;
+            if(tipoSelezionato == "Libri")
+                creaTabellaLibri();
+        }
+
         function creaFiltroAnnoLibri()
         {
             const xhttp = new XMLHttpRequest();
@@ -85,9 +114,8 @@
             var filtroAnno = document.getElementById("filtroAnno");
             filtroAnno.innerHTML = "";
             var opzioneDef = document.createElement("option");
-            opzioneDef.value = "";
-            opzioneDef.textContent = "Seleziona un anno";
-            opzioneDef.selected = true;
+            opzioneDef.value = "null";
+            opzioneDef.textContent = "Nessun anno selezionato";
             filtroAnno.appendChild(opzioneDef);
             for(var i=0; i < j.Result.length; i++)
             {
@@ -140,9 +168,8 @@
             var filtroCasaEditrice = document.getElementById("filtroCasaEditrice");
             filtroCasaEditrice.innerHTML = "";
             var opzioneDef = document.createElement("option");
-            opzioneDef.value = "";
-            opzioneDef.textContent = "Seleziona una casa editrice";
-            opzioneDef.selected = true;
+            opzioneDef.value = "null";
+            opzioneDef.textContent = "Nessuna casa editrice selezionata";
             filtroCasaEditrice.appendChild(opzioneDef);
             for(var i=0; i < j.Result.length; i++)
             {
@@ -154,11 +181,12 @@
             }
         }
 
+        creaFiltroAnnoLibri();
+        creaFiltroCaseLibri();
         creaTabellaLibri();
         function creaTabellaLibri()
         {
-            creaFiltroAnnoLibri();
-            creaFiltroCaseLibri();
+            tipoSelezionato = "Libri";
             var enc = document.getElementById("btnEnc");
             var lib = document.getElementById("btnLib");
             var car = document.getElementById("btnCart");
@@ -173,12 +201,13 @@
                 visualizzazione.innerHTML = "";
                 creaHtmlLibri(j, visualizzazione, "libro");
             }
-            xhttp.open("POST", "crea_catalogo_libri.php", true);
+            xhttp.open("POST", "crea_catalogo_libri.php?annoSelez="+annoSelez+"&casaSelez="+casaSelez, true);
             xhttp.send();
         }
 
         function creaTabellaCarte()
         {
+            tipoSelezionato = "Carte";
             creaFiltroAnnoCarte();
             creaFiltroCaseCarte();
             var enc = document.getElementById("btnEnc");
@@ -202,8 +231,9 @@
 
         function creaTabellaEnciclopedie()
         {
+            tipoSelezionato = "Enciclopedie";
             creaFiltroAnnoEnciclopedie();
-            creaFiltroCaseEnciclopedie()
+            creaFiltroCaseEnciclopedie();
             var enc = document.getElementById("btnEnc");
             var lib = document.getElementById("btnLib");
             var car = document.getElementById("btnCart");
@@ -224,71 +254,81 @@
 
         function creaHtmlLibri(j, visualizzazione, tipo)
         {
-            for(var i=0; i < j.Result.length; i++)
+            if(j.Result != null)
             {
-                var containerLibro = document.createElement("div");
-                containerLibro.className = "containerElemento";
-                containerLibro.setAttribute("data-id", j.Result[i].id);
-                containerLibro.onclick = function() {
-                    var id = this.getAttribute("data-id");
-                    mostraLibro(tipo, id);
-                };
+                for(var i=0; i < j.Result.length; i++)
+                {
+                    var containerLibro = document.createElement("div");
+                    containerLibro.className = "containerElemento";
+                    containerLibro.setAttribute("data-id", j.Result[i].id);
+                    containerLibro.onclick = function() {
+                        var id = this.getAttribute("data-id");
+                        mostraLibro(tipo, id);
+                    };
 
-                    var titolo = document.createElement("h1");
-                    titolo.className = "titoloLibro";
-                    titolo.textContent = j.Result[i].titolo;
-                    containerLibro.appendChild(titolo);
+                        var titolo = document.createElement("h1");
+                        titolo.className = "titoloLibro";
+                        titolo.textContent = j.Result[i].titolo;
+                        containerLibro.appendChild(titolo);
 
-                    var containerDati = document.createElement("div");
-                    containerDati.className = "containerDati";
-                    containerLibro.appendChild(containerDati);
-                    
-                        var containerDataCasa = document.createElement("div");
-                        containerDataCasa.className = "containerDataCasa";
-                        containerDati.appendChild(containerDataCasa);
+                        var containerDati = document.createElement("div");
+                        containerDati.className = "containerDati";
+                        containerLibro.appendChild(containerDati);
+                        
+                            var containerDataCasa = document.createElement("div");
+                            containerDataCasa.className = "containerDataCasa";
+                            containerDati.appendChild(containerDataCasa);
 
-                            var nomeAutore = document.createElement("span");
-                            nomeAutore.className = "datoLibro";
-                            nomeAutore.textContent = "Autori: " + j.Result[i].autore;
-                            containerDataCasa.appendChild(nomeAutore);
+                                var nomeAutore = document.createElement("span");
+                                nomeAutore.className = "datoLibro";
+                                nomeAutore.textContent = "Autori: " + j.Result[i].autore;
+                                containerDataCasa.appendChild(nomeAutore);
 
-                            var nomeCasaEditrice = document.createElement("span");
-                            nomeCasaEditrice.className = "datoLibro";
-                            nomeCasaEditrice.textContent = "Casa editrice: " + j.Result[i].nomeCasaEditrice;
-                            containerDataCasa.appendChild(nomeCasaEditrice);
+                                var nomeCasaEditrice = document.createElement("span");
+                                nomeCasaEditrice.className = "datoLibro";
+                                nomeCasaEditrice.textContent = "Casa editrice: " + j.Result[i].nomeCasaEditrice;
+                                containerDataCasa.appendChild(nomeCasaEditrice);
 
-                        var containerAutoreDisponibile = document.createElement("div");
-                        containerAutoreDisponibile.className = "containerAutoreDisponibile";
-                        containerDati.appendChild(containerAutoreDisponibile);
+                            var containerAutoreDisponibile = document.createElement("div");
+                            containerAutoreDisponibile.className = "containerAutoreDisponibile";
+                            containerDati.appendChild(containerAutoreDisponibile);
 
-                            var annoPub = document.createElement("span");
-                            annoPub.className = "datoLibro";
-                            annoPub.textContent = "Anno di pubblicazione: " + j.Result[i].annoPub;
-                            containerAutoreDisponibile.appendChild(annoPub);
-                            if (j.Result[i].volumi !== undefined)
-                            {
-                                var nVolumi = document.createElement("span");
-                                nVolumi.className = "datoLibro";
-                                nVolumi.textContent = "Numero di volumi: " + j.Result[i].volumi;
-                                containerAutoreDisponibile.appendChild(nVolumi);
-                            }
-                            else
-                            {
-                                var disponibile = document.createElement("span");
-                                if(j.Result[i].disponibile == 1)
+                                var annoPub = document.createElement("span");
+                                annoPub.className = "datoLibro";
+                                annoPub.textContent = "Anno di pubblicazione: " + j.Result[i].annoPub;
+                                containerAutoreDisponibile.appendChild(annoPub);
+                                if (j.Result[i].volumi !== undefined)
                                 {
-                                    disponibile.className = "datoLibro disponibile";
-                                    disponibile.textContent = "Disponibile";
+                                    var nVolumi = document.createElement("span");
+                                    nVolumi.className = "datoLibro";
+                                    nVolumi.textContent = "Numero di volumi: " + j.Result[i].volumi;
+                                    containerAutoreDisponibile.appendChild(nVolumi);
                                 }
                                 else
                                 {
-                                    disponibile.className = "datoLibro nonDisponibile";
-                                    disponibile.textContent = "Non disponibile";
+                                    var disponibile = document.createElement("span");
+                                    if(j.Result[i].disponibile == 1)
+                                    {
+                                        disponibile.className = "datoLibro disponibile";
+                                        disponibile.textContent = "Disponibile";
+                                    }
+                                    else
+                                    {
+                                        disponibile.className = "datoLibro nonDisponibile";
+                                        disponibile.textContent = "Non disponibile";
+                                    }
+                                    containerAutoreDisponibile.appendChild(disponibile);
                                 }
-                                containerAutoreDisponibile.appendChild(disponibile);
-                            }
 
-                visualizzazione.appendChild(containerLibro);
+                    visualizzazione.appendChild(containerLibro);
+                }
+            }
+            else
+            {
+                var nessunRisultato = document.createElement("h1");
+                nessunRisultato.id = "noResult";
+                nessunRisultato.textContent = "Nessun risultato trovato corrispondente alla ricerca";
+                visualizzazione.appendChild(nessunRisultato);
             }
         }
 
