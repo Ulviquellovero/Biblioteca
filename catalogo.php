@@ -15,7 +15,7 @@
         <div id="sceltaCategoria">
             <button id='btnEnc'onclick="azzeraFiltri(); creaFiltroAnnoEnciclopedie(); creaFiltroCaseEnciclopedie(); creaTabellaEnciclopedie();">Enciclopedie</button>
             <button id='btnLib' onclick="azzeraFiltri(); creaFiltroAnnoLibri(); creaFiltroCaseLibri(); creaTabellaLibri();">Libri</button>
-            <button id='btnCart' onclick="azzeraFiltri(); creaTabellaCarte();">Carte Geo-Politiche</button>
+            <button id='btnCart' onclick="azzeraFiltri(); creaFiltroAnnoCarte(); creaFiltroCaseCarte(); creaTabellaCarte();">Carte Geo-Politiche</button>
         </div>
         <div id="lineaFiltri">
             <div id='rigaTestiGuida'>
@@ -58,6 +58,8 @@
                 creaTabellaLibri();
             if(tipoSelezionato == "Enciclopedie")
                 creaTabellaEnciclopedie();
+            if(tipoSelezionato == "Carte")
+                creaTabellaCarte();
         }
 
         function azzeraFiltri()
@@ -65,6 +67,8 @@
             annoSelez = null;
             casaSelez = null;
             testoInserito = null;
+            var filtroTitolo = document.getElementById("filtroTitolo");
+            filtroTitolo.value = "";
         }
 
         function filtroAnnoSelezionato()
@@ -76,6 +80,8 @@
                 creaTabellaLibri();
             if(tipoSelezionato == "Enciclopedie")
                 creaTabellaEnciclopedie();
+            if(tipoSelezionato == "Carte")
+                creaTabellaCarte();
         }
 
         function filtroCasaSelezionato()
@@ -87,6 +93,8 @@
                 creaTabellaLibri();
             if(tipoSelezionato == "Enciclopedie")
                 creaTabellaEnciclopedie();
+            if(tipoSelezionato == "Carte")
+                creaTabellaCarte();
         }
 
         function creaFiltroAnnoLibri()
@@ -224,8 +232,6 @@
         function creaTabellaCarte()
         {
             tipoSelezionato = "Carte";
-            creaFiltroAnnoCarte();
-            creaFiltroCaseCarte();
             var enc = document.getElementById("btnEnc");
             var lib = document.getElementById("btnLib");
             var car = document.getElementById("btnCart");
@@ -240,7 +246,7 @@
                 visualizzazione.innerHTML = "";
                 creaHtmlLibri(j, visualizzazione, "carte");
             }
-            xhttp.open("POST", "crea_catalogo_carte.php", true);
+            xhttp.open("POST", "crea_catalogo_carte.php?annoSelez="+annoSelez+"&casaSelez="+casaSelez+"&testoInserito="+testoInserito, true);
             xhttp.send();
         
         }
