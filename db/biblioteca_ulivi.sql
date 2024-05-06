@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Creato il: Mag 05, 2024 alle 15:55
--- Versione del server: 10.4.32-MariaDB
--- Versione PHP: 8.2.12
+-- Host: localhost
+-- Creato il: Mag 06, 2024 alle 13:50
+-- Versione del server: 10.11.4-MariaDB-1~deb12u1
+-- Versione PHP: 8.2.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -452,6 +452,26 @@ CREATE TABLE `tvolume` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dump dei dati per la tabella `tvolume`
+--
+
+INSERT INTO `tvolume` (`idVolume`, `numero`, `ISBN`, `disponibile`, `idEnciclopedia`) VALUES
+(1, 1, '978-1-23-456789-7', 1, 1),
+(2, 2, '978-2-23-456789-7', 1, 1),
+(3, 3, '978-3-23-456789-7', 1, 1),
+(7, 1, '343-1-54-47653-9', 1, 2),
+(8, 2, '343-2-54-47653-9', 0, 2),
+(9, 3, '343-3-54-47653-9', 1, 2),
+(10, 1, '432-1-43-34563-2', 0, 3),
+(11, 2, '432-2-43-34563-2', 0, 3),
+(13, 1, '265-1-54-64363-0', 1, 4),
+(14, 2, '265-2-54-64363-0', 0, 4),
+(15, 3, '265-3-54-64363-0', 1, 4),
+(16, 1, '324-1-34-42353-4', 1, 5),
+(17, 2, '324-2-34-42353-4', 1, 5),
+(18, 3, '324-3-34-42353-4', 0, 5);
+
+--
 -- Indici per le tabelle scaricate
 --
 
@@ -757,7 +777,7 @@ ALTER TABLE `tutente`
 -- AUTO_INCREMENT per la tabella `tvolume`
 --
 ALTER TABLE `tvolume`
-  MODIFY `idVolume` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Limiti per le tabelle scaricate

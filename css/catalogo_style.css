@@ -194,3 +194,23 @@ body
 {
     margin-right: 5vw;
 }
+
+#btnIndietro
+{
+    display: none;
+    font-size: 110%;
+    padding: 0.7vw 1vw;
+    background-color: #b69a79;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: inherit;
+    margin: 2vw;
+}
+
+#btnIndietro:hover
+{
+    background-color: #998165;
+}

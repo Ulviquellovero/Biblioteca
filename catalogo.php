@@ -12,10 +12,11 @@
             ?>
         </div>
         <h1 id='titoloPagina'>Catalogo</h1>
+        <button id='btnIndietro' onclick="btnIndietroCliccato()">Indietro</button>
         <div id="sceltaCategoria">
-            <button id='btnEnc'onclick="azzeraFiltri(); creaFiltroAnnoEnciclopedie(); creaFiltroCaseEnciclopedie(); creaTabellaEnciclopedie();">Enciclopedie</button>
-            <button id='btnLib' onclick="azzeraFiltri(); creaFiltroAnnoLibri(); creaFiltroCaseLibri(); creaTabellaLibri();">Libri</button>
-            <button id='btnCart' onclick="azzeraFiltri(); creaFiltroAnnoCarte(); creaFiltroCaseCarte(); creaTabellaCarte();">Carte Geo-Politiche</button>
+            <button id='btnEnc'onclick="resettaCambiamentiVolumi(); azzeraFiltri(); creaFiltroAnnoEnciclopedie(); creaFiltroCaseEnciclopedie(); creaTabellaEnciclopedie();">Enciclopedie</button>
+            <button id='btnLib' onclick="resettaCambiamentiVolumi(); azzeraFiltri(); creaFiltroAnnoLibri(); creaFiltroCaseLibri(); creaTabellaLibri();">Libri</button>
+            <button id='btnCart' onclick="resettaCambiamentiVolumi(); azzeraFiltri(); creaFiltroAnnoCarte(); creaFiltroCaseCarte(); creaTabellaCarte();">Carte Geo-Politiche</button>
         </div>
         <div id="lineaFiltri">
             <div id='rigaTestiGuida'>
@@ -49,6 +50,15 @@
         var annoSelez = null;
         var casaSelez = null;
         var testoInserito = null;
+
+        function btnIndietroCliccato()
+        {
+            resettaCambiamentiVolumi();
+            azzeraFiltri();
+            creaFiltroAnnoEnciclopedie();
+            creaFiltroCaseEnciclopedie();
+            creaTabellaEnciclopedie();
+        }
 
         function btnCercaCliccato()
         {
@@ -285,7 +295,10 @@
                         containerLibro.setAttribute("data-id", j.Result[i].id);
                         containerLibro.onclick = function() {
                             var id = this.getAttribute("data-id");
-                            mostraLibro(tipo, id);
+                            if(tipoSelezionato != "Enciclopedie")
+                                mostraLibro(tipo, id);
+                            else
+                                creaCatalogoVolumi(id);
                         };
 
                             var titolo = document.createElement("h1");
@@ -365,6 +378,102 @@
         function mostraLibro(tipo, id)
         {
             window.location.href = "dettaglio_elemento.php?tipo="+ tipo +"&id=" + id;
+        }
+
+        function mostraVolumi(id)
+        {
+            window.location.href = "dettaglio_elemento.php?id=" + id;
+        }
+        
+        function creaCatalogoVolumi(id)
+        {
+            tipoSelezionato = "Volumi";
+            var enc = document.getElementById("btnEnc");
+            var lib = document.getElementById("btnLib");
+            var car = document.getElementById("btnCart");
+            enc.className = "catNonSelezionata";
+            lib.className = "catNonSelezionata";
+            car.className = "catNonSelezionata";
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                var visualizzazione = document.getElementById("visualizzazione");
+                visualizzazione.innerHTML = "";
+                creaHtmlVolumi(j, visualizzazione);
+            }
+            xhttp.open("POST", "crea_catalogo_volumi.php?id="+id, true);
+            xhttp.send();
+        }
+
+        function creaHtmlVolumi(j, visualizzazione)
+        {
+            if(j.Result != null)
+            {
+                if(j.Result.length != 0)
+                {
+                    var titoloPagina = document.getElementById("titoloPagina");
+                    titoloPagina.textContent = "Volumi per '"+j.Result[0].titolo+"'";
+                    var lineaFiltri = document.getElementById("lineaFiltri");
+                    lineaFiltri.style.display = "none";
+                    var btnIndietro = document.getElementById("btnIndietro");
+                    btnIndietro.style.display = "block";
+                    for(var i=0; i < j.Result.length; i++)
+                    {
+                        var containerLibro = document.createElement("div");
+                        containerLibro.className = "containerElemento";
+                        containerLibro.setAttribute("data-id", j.Result[i].id);
+                        containerLibro.onclick = function() {
+                            var id = this.getAttribute("data-id");
+                            mostraVolumi(id);
+                        };
+
+                        var titolo = document.createElement("h1");
+                        titolo.className = "titoloLibro";
+                        titolo.textContent = "Volume numero "+j.Result[i].numero;
+                        containerLibro.appendChild(titolo);
+
+                        var disponibile = document.createElement("span");
+                        if(j.Result[i].disponibile == 1)
+                        {
+                            disponibile.className = "datoLibro disponibile";
+                            disponibile.textContent = "Disponibile";
+                        }
+                        else
+                        {
+                            disponibile.className = "datoLibro nonDisponibile";
+                            disponibile.textContent = "Non disponibile";
+                        }
+                        containerLibro.appendChild(disponibile);
+
+                        visualizzazione.appendChild(containerLibro);
+                    }
+                }
+                else
+                {
+                    var nessunRisultato = document.createElement("h1");
+                    nessunRisultato.id = "noResult";
+                    nessunRisultato.textContent = "Nessun risultato trovato corrispondente alla ricerca";
+                    visualizzazione.appendChild(nessunRisultato);
+                }
+            }
+            else
+            {
+                var nessunRisultato = document.createElement("h1");
+                nessunRisultato.id = "noResult";
+                nessunRisultato.textContent = "Nessun risultato trovato corrispondente alla ricerca";
+                visualizzazione.appendChild(nessunRisultato);
+            }
+        }
+
+        function resettaCambiamentiVolumi()
+        {
+            var lineaFiltri = document.getElementById("lineaFiltri");
+            lineaFiltri.style.display = "block";
+            var btnIndietro = document.getElementById("btnIndietro");
+            btnIndietro.style.display = "none";
+            var titoloPagina = document.getElementById("titoloPagina");
+            titoloPagina.textContent = "Catalogo";
         }
     </script>
 </html>
