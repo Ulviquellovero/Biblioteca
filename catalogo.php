@@ -67,6 +67,12 @@
                 creaFiltroCaseEnciclopedie();
                 creaTabellaEnciclopedie();
             }
+            if(tipoSelezionato == "Carte")
+            {
+                creaFiltroAnnoCarte();
+                creaFiltroCaseCarte();
+                creaTabellaCarte();
+            }
         }
 
         function btnCercaCliccato()
@@ -306,6 +312,8 @@
                             var id = this.getAttribute("data-id");
                             if(tipoSelezionato == "Libri")
                                 mostraLibro(id);
+                            if(tipoSelezionato == "Carte")
+                                mostraCarta(id);
                             if(tipoSelezionato == "Enciclopedie")
                                 creaCatalogoVolumi(id);
                         };
@@ -401,10 +409,36 @@
                 visualizzazione.innerHTML = "";
                 creaHtmlDettagli(j, visualizzazione);
             }
-            xhttp.open("POST", "dettaglio_elemento.php?id=" + id, true);
+            xhttp.open("POST", "dettaglio_libro.php?id=" + id, true);
             xhttp.send();
         }
 
+        function mostraCarta(id)
+        {
+            tipoSelezionato = "Carte";
+            var enc = document.getElementById("btnEnc");
+            var lib = document.getElementById("btnLib");
+            var car = document.getElementById("btnCart");
+            enc.className = "catNonSelezionata";
+            lib.className = "catNonSelezionata";
+            car.className = "catSelezionata";
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                var visualizzazione = document.getElementById("visualizzazione");
+                visualizzazione.innerHTML = "";
+                creaHtmlDettagli(j, visualizzazione);
+            }
+            xhttp.open("POST", "dettaglio_carta.php?id=" + id, true);
+            xhttp.send();
+        }
+
+        function mostraVolumi(id)
+        {
+            window.location.href = "dettaglio_elemento.php?tipo=volume&id=" + id;
+        }
+        
         function creaHtmlDettagli(j, visualizzazione)
         {
             if(j.Result != null)
@@ -449,6 +483,14 @@
                         annoPub.textContent = "Anno di pubblicazione: "+j.Result[i].annoPub;
                         divDettagli.appendChild(annoPub);
 
+                        if(j.Result[i].annoRif != undefined)
+                        {
+                            var annoRif = document.createElement("h2");
+                            annoRif.className = "elementoDettagli";
+                            annoRif.textContent = "Anno di riferimento: "+j.Result[i].annoRif;
+                            divDettagli.appendChild(annoRif);
+                        }
+
                         var autore = document.createElement("h2");
                         autore.className = "elementoDettagli";
                         autore.textContent = "Autori: "+j.Result[i].autore;
@@ -482,11 +524,6 @@
                 nessunRisultato.textContent = "Nessun risultato trovato corrispondente alla ricerca";
                 visualizzazione.appendChild(nessunRisultato);
             }
-        }
-
-        function mostraVolumi(id)
-        {
-            window.location.href = "dettaglio_elemento.php?tipo=volume&id=" + id;
         }
         
         function creaCatalogoVolumi(id)

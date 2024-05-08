@@ -3,12 +3,13 @@
     if(isset($_GET['id']))
     {
         $id = $_GET['id'];
-        $sql = "SELECT titolo, annoPubblicazione, ISBN, nomeAutore, cognomeAutore, nomeCasaEditrice, disponibile 
+        $sql = "SELECT idLibro, titolo, annoPubblicazione, ISBN, nomeAutore, cognomeAutore, nomeCasaEditrice, disponibile 
                 FROM tlibro WHERE idLibro = $id";
         $res = mysqli_query($con, $sql);
         $array = mysqli_fetch_array($res);
         $autore = $array['nomeAutore'] . " " . $array['cognomeAutore'];
         $row = array(
+                    "id" => $array['idLibro'],
                     "titolo" => $array['titolo'],
                     "annoPub" => $array['annoPubblicazione'],
                     "autore" => $autore,
