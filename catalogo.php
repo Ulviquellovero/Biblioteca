@@ -55,9 +55,18 @@
         {
             resettaCambiamentiVolumi();
             azzeraFiltri();
-            creaFiltroAnnoEnciclopedie();
-            creaFiltroCaseEnciclopedie();
-            creaTabellaEnciclopedie();
+            if(tipoSelezionato == "Libri")
+            {
+                creaFiltroAnnoLibri();
+                creaFiltroCaseLibri();
+                creaTabellaLibri();
+            }
+            if(tipoSelezionato == "Volumi")
+            {
+                creaFiltroAnnoEnciclopedie();
+                creaFiltroCaseEnciclopedie();
+                creaTabellaEnciclopedie();
+            }
         }
 
         function btnCercaCliccato()
@@ -295,9 +304,9 @@
                         containerLibro.setAttribute("data-id", j.Result[i].id);
                         containerLibro.onclick = function() {
                             var id = this.getAttribute("data-id");
-                            if(tipoSelezionato != "Enciclopedie")
-                                mostraLibro(tipo, id);
-                            else
+                            if(tipoSelezionato == "Libri")
+                                mostraLibro(id);
+                            if(tipoSelezionato == "Enciclopedie")
                                 creaCatalogoVolumi(id);
                         };
 
@@ -375,14 +384,109 @@
             }
         }
 
-        function mostraLibro(tipo, id)
+        function mostraLibro(id)
         {
-            window.location.href = "dettaglio_elemento.php?tipo="+ tipo +"&id=" + id;
+            tipoSelezionato = "Libri";
+            var enc = document.getElementById("btnEnc");
+            var lib = document.getElementById("btnLib");
+            var car = document.getElementById("btnCart");
+            enc.className = "catNonSelezionata";
+            lib.className = "catSelezionata";
+            car.className = "catNonSelezionata";
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                var visualizzazione = document.getElementById("visualizzazione");
+                visualizzazione.innerHTML = "";
+                creaHtmlDettagli(j, visualizzazione);
+            }
+            xhttp.open("POST", "dettaglio_elemento.php?id=" + id, true);
+            xhttp.send();
+        }
+
+        function creaHtmlDettagli(j, visualizzazione)
+        {
+            if(j.Result != null)
+            {
+                if(j.Result.length != 0)
+                {
+                    var titoloPagina = document.getElementById("titoloPagina");
+                    titoloPagina.textContent = " ";
+                    var lineaFiltri = document.getElementById("lineaFiltri");
+                    lineaFiltri.style.display = "none";
+                    var btnIndietro = document.getElementById("btnIndietro");
+                    btnIndietro.style.display = "block";
+                    /*var lineaFiltri = document.getElementById("sceltaCategoria");
+                    lineaFiltri.style.display = "none";*/
+                    /*var btnIndietro = document.getElementById("btnIndietro");
+                    btnIndietro.style.display = "block";*/
+                    for(var i=0; i < j.Result.length; i++)
+                    {
+                        /*var disponibile = document.createElement("span");
+                        if(j.Result[i].disponibile == 1)
+                        {
+                            disponibile.className = "datoLibro disponibile";
+                            disponibile.textContent = "Disponibile";
+                        }
+                        else
+                        {
+                            disponibile.className = "datoLibro nonDisponibile";
+                            disponibile.textContent = "Non disponibile";
+                        }
+                        containerLibro.appendChild(disponibile);*/
+
+                        var divDettagli = document.createElement("div");
+                        divDettagli.id = "divDettagli";
+
+                        var titoloPagina = document.createElement("h1");
+                        titoloPagina.id = "titoloLibro";
+                        titoloPagina.textContent = j.Result[i].titolo;
+                        divDettagli.appendChild(titoloPagina);
+                        
+                        var annoPub = document.createElement("h2");
+                        annoPub.className = "elementoDettagli";
+                        annoPub.textContent = "Anno di pubblicazione: "+j.Result[i].annoPub;
+                        divDettagli.appendChild(annoPub);
+
+                        var autore = document.createElement("h2");
+                        autore.className = "elementoDettagli";
+                        autore.textContent = "Autori: "+j.Result[i].autore;
+                        divDettagli.appendChild(autore);
+
+                        var nomeCasaEditrice = document.createElement("h2");
+                        nomeCasaEditrice.className = "elementoDettagli";
+                        nomeCasaEditrice.textContent = "Casa editrice: "+j.Result[i].nomeCasaEditrice;
+                        divDettagli.appendChild(nomeCasaEditrice);
+
+                        var isbn = document.createElement("h2");
+                        isbn.className = "elementoDettagli";
+                        isbn.textContent = "ISBN: "+j.Result[i].ISBN;
+                        divDettagli.appendChild(isbn);
+
+                        visualizzazione.appendChild(divDettagli);
+                    }
+                }
+                else
+                {
+                    var nessunRisultato = document.createElement("h1");
+                    nessunRisultato.id = "noResult";
+                    nessunRisultato.textContent = "Nessun risultato trovato corrispondente alla ricerca";
+                    visualizzazione.appendChild(nessunRisultato);
+                }
+            }
+            else
+            {
+                var nessunRisultato = document.createElement("h1");
+                nessunRisultato.id = "noResult";
+                nessunRisultato.textContent = "Nessun risultato trovato corrispondente alla ricerca";
+                visualizzazione.appendChild(nessunRisultato);
+            }
         }
 
         function mostraVolumi(id)
         {
-            window.location.href = "dettaglio_elemento.php?id=" + id;
+            window.location.href = "dettaglio_elemento.php?tipo=volume&id=" + id;
         }
         
         function creaCatalogoVolumi(id)
@@ -391,7 +495,7 @@
             var enc = document.getElementById("btnEnc");
             var lib = document.getElementById("btnLib");
             var car = document.getElementById("btnCart");
-            enc.className = "catNonSelezionata";
+            enc.className = "catSelezionata";
             lib.className = "catNonSelezionata";
             car.className = "catNonSelezionata";
             const xhttp = new XMLHttpRequest();
@@ -470,6 +574,8 @@
         {
             var lineaFiltri = document.getElementById("lineaFiltri");
             lineaFiltri.style.display = "block";
+            /*var sceltaCategoria = document.getElementById("sceltaCategoria");
+            sceltaCategoria.style.display = "block";*/
             var btnIndietro = document.getElementById("btnIndietro");
             btnIndietro.style.display = "none";
             var titoloPagina = document.getElementById("titoloPagina");

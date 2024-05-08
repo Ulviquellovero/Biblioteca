@@ -214,3 +214,14 @@ body
 {
     background-color: #998165;
 }
+
+#divDettagli
+{
+    width: 100%;
+    text-align: center;
+}
+
+#titoloLibro
+{
+    font-size: 3vw;
+}
