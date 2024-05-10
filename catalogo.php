@@ -50,25 +50,35 @@
         var annoSelez = null;
         var casaSelez = null;
         var testoInserito = null;
+        var idVolumeIndietro = null;
 
         function btnIndietroCliccato()
         {
-            resettaCambiamentiVolumi();
-            azzeraFiltri();
             if(tipoSelezionato == "Libri")
             {
+                resettaCambiamentiVolumi();
+                azzeraFiltri();
                 creaFiltroAnnoLibri();
                 creaFiltroCaseLibri();
                 creaTabellaLibri();
             }
             if(tipoSelezionato == "Volumi")
             {
+                resettaCambiamentiVolumi();
+                azzeraFiltri();
                 creaFiltroAnnoEnciclopedie();
                 creaFiltroCaseEnciclopedie();
                 creaTabellaEnciclopedie();
             }
+            if(tipoSelezionato == "mostraVolumi")
+            {
+                creaCatalogoVolumi(idVolumeIndietro);
+                console.log("Passato");
+            }
             if(tipoSelezionato == "Carte")
             {
+                resettaCambiamentiVolumi();
+                azzeraFiltri();
                 creaFiltroAnnoCarte();
                 creaFiltroCaseCarte();
                 creaTabellaCarte();
@@ -436,7 +446,23 @@
 
         function mostraVolumi(id)
         {
-            window.location.href = "dettaglio_elemento.php?tipo=volume&id=" + id;
+            tipoSelezionato = "mostraVolumi";
+            var enc = document.getElementById("btnEnc");
+            var lib = document.getElementById("btnLib");
+            var car = document.getElementById("btnCart");
+            enc.className = "catSelezionata";
+            lib.className = "catNonSelezionata";
+            car.className = "catNonSelezionata";
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                var visualizzazione = document.getElementById("visualizzazione");
+                visualizzazione.innerHTML = "";
+                creaHtmlDettagli(j, visualizzazione);
+            }
+            xhttp.open("POST", "dettaglio_volume.php?id=" + id, true);
+            xhttp.send();
         }
         
         function creaHtmlDettagli(j, visualizzazione)
@@ -475,7 +501,10 @@
 
                         var titoloPagina = document.createElement("h1");
                         titoloPagina.id = "titoloLibro";
-                        titoloPagina.textContent = j.Result[i].titolo;
+                        if(j.Result[i].numero != undefined)
+                            titoloPagina.textContent = j.Result[i].titolo + " Volume " + j.Result[i].numero;
+                        else
+                            titoloPagina.textContent = j.Result[i].titolo;
                         divDettagli.appendChild(titoloPagina);
                         
                         var annoPub = document.createElement("h2");
@@ -500,6 +529,14 @@
                         nomeCasaEditrice.className = "elementoDettagli";
                         nomeCasaEditrice.textContent = "Casa editrice: "+j.Result[i].nomeCasaEditrice;
                         divDettagli.appendChild(nomeCasaEditrice);
+
+                        if(j.Result[i].nVolumi != undefined)
+                        {
+                            var nVolumi = document.createElement("h2");
+                            nVolumi.className = "elementoDettagli";
+                            nVolumi.textContent = "Numero di volumi dell'enciclopedia: "+j.Result[i].nVolumi;
+                            divDettagli.appendChild(nVolumi);
+                        }
 
                         var isbn = document.createElement("h2");
                         isbn.className = "elementoDettagli";
@@ -528,6 +565,7 @@
         
         function creaCatalogoVolumi(id)
         {
+            idVolumeIndietro = id;
             tipoSelezionato = "Volumi";
             var enc = document.getElementById("btnEnc");
             var lib = document.getElementById("btnLib");
