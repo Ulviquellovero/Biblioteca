@@ -52,6 +52,8 @@
                     }
                     else
                     {
+                        if(j.permessi == "false")
+                            costruisciLinkLeMiePrenotazioni();
                         htmlElement = document.createElement("span");
                         htmlElement.id = "benvenuto_utente";
                         htmlElement.textContent = "Benvenuto/a " + j.userName;
@@ -72,6 +74,8 @@
                     costruisciLinkCatalogo();
                 if(currentPage == "login.php" || currentPage == "registrati.php")
                     costruisciLinkLogin();
+                if(currentPage == "le_mie_prenotazioni.php")
+                    costruisciAltriLinkLeMiePrenotazioni();
             }
 
             function costruisciLinkIndex()
@@ -85,6 +89,22 @@
                 catalogLink.textContent = "Catalogo";
                 var parteSinistraPagina = document.getElementById("parte_sinistra_header");
                 parteSinistraPagina.appendChild(selectedLink);
+                parteSinistraPagina.appendChild(catalogLink);
+            }
+
+            function costruisciAltriLinkLeMiePrenotazioni()
+            {
+                console.log("passato");
+                var homeLink = document.createElement("a");
+                homeLink.className = "link";
+                homeLink.href = "index.php";
+                homeLink.textContent = "Home";
+                var catalogLink = document.createElement("a");
+                catalogLink.className = "link";
+                catalogLink.href = "catalogo.php";
+                catalogLink.textContent = "Catalogo";
+                var parteSinistraPagina = document.getElementById("parte_sinistra_header");
+                parteSinistraPagina.appendChild(homeLink);
                 parteSinistraPagina.appendChild(catalogLink);
             }
 
@@ -117,5 +137,18 @@
                 parteSinistraPagina.appendChild(catalogLink);
             }
 
+            function costruisciLinkLeMiePrenotazioni()
+            {
+                var selectedLink = document.createElement("a");
+                selectedLink.href = "le_mie_prenotazioni.php";
+                var currentPage = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
+                if(currentPage == "le_mie_prenotazioni.php")
+                    selectedLink.className = "selectedLink";
+                else
+                    selectedLink.className = "link";
+                selectedLink.textContent = "Le mie prenotazioni";
+                var parteSinistraPagina = document.getElementById("parte_sinistra_header");
+                parteSinistraPagina.appendChild(selectedLink);
+            }
         </script>
 </html>
