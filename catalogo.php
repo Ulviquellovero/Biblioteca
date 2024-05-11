@@ -382,7 +382,7 @@
                                         containerAutoreDisponibile.appendChild(disponibile);
                                     }
 
-                        visualizzazione.appendChild(containerLibro);
+                        visualizzazione.appendChild(containerLibro)
                     }
                 }
                 else
@@ -399,6 +399,16 @@
                 nessunRisultato.id = "noResult";
                 nessunRisultato.textContent = "Nessun risultato trovato corrispondente alla ricerca";
                 visualizzazione.appendChild(nessunRisultato);
+            }
+            if(j.Result[0].permessi != undefined)
+            {
+                if(j.Result[0].permessi == "true")
+                {
+                    var btnAggiungiLibro = document.createElement("button");
+                    btnAggiungiLibro.id = "btnAggiungiLibro";
+                    btnAggiungiLibro.textContent = "+";
+                    visualizzazione.appendChild(btnAggiungiLibro);
+                }
             }
         }
 

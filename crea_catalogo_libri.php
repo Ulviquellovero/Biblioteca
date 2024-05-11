@@ -30,6 +30,9 @@
 	}
 	$sql = $sql . $sqlWhere . "ORDER BY titolo ASC";
 
+	$permessi = null;
+	if(isset($_SESSION['permessi']))
+        $permessi = $_SESSION['permessi'];
     $res = mysqli_query($con, $sql);
     $numRigheReali = mysqli_num_rows($res);
     $i = 0;
@@ -37,14 +40,29 @@
     while($array = mysqli_fetch_array($res)) 
     {
 		$autore = $array['nomeAutore'] . " " . $array['cognomeAutore'];
-		$row = array(
-					"id" => $array['idLibro'],
-					"titolo" => $array['titolo'],
-					"annoPub" => $array['annoPubblicazione'],
-					"autore" => $autore,
-					"nomeCasaEditrice" => $array['nomeCasaEditrice'],
-					"disponibile" => $array['disponibile']
-					);
+		if($permessi != null)
+		{
+			$row = array(
+				"id" => $array['idLibro'],
+				"titolo" => $array['titolo'],
+				"annoPub" => $array['annoPubblicazione'],
+				"autore" => $autore,
+				"nomeCasaEditrice" => $array['nomeCasaEditrice'],
+				"disponibile" => $array['disponibile'],
+				"permessi" => $permessi
+				);
+		}
+		else
+		{
+			$row = array(
+				"id" => $array['idLibro'],
+				"titolo" => $array['titolo'],
+				"annoPub" => $array['annoPubblicazione'],
+				"autore" => $autore,
+				"nomeCasaEditrice" => $array['nomeCasaEditrice'],
+				"disponibile" => $array['disponibile']
+				);
+		}
 		$resArr[$i] = $row;
 		$i++;
 	}
