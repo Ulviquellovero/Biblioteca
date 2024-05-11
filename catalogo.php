@@ -554,6 +554,24 @@
                                     }
                                     prenotaBtn.addEventListener("click", prenotaVolumeClick(idVolume));
                                 }
+                                if (j.Result[i].tipo == "libri") {
+                                    var idLibro = j.Result[i].id;
+                                    function prenotaLibroClick(id) {
+                                        return function() {
+                                            prenotaLibro(id);
+                                        };
+                                    }
+                                    prenotaBtn.addEventListener("click", prenotaLibroClick(idLibro));
+                                }
+                                if (j.Result[i].tipo == "carte") {
+                                    var idCarta = j.Result[i].id;
+                                    function prenotaCartaClick(id) {
+                                        return function() {
+                                            prenotaCarta(id);
+                                        };
+                                    }
+                                    prenotaBtn.addEventListener("click", prenotaCartaClick(idCarta));
+                                }
                             }
                             else
                             {
@@ -688,6 +706,36 @@
                     alert("Hai già prenotato questo volume!");
             }
             xhttp.open("POST", "prenota_volume.php?idVolume=" + idVolume, true);
+            xhttp.send();
+        }
+
+        function prenotaLibro(idLibro)
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                if(j.prenotato == "true")
+                    alert("Libro prenotato! Per maggiori informazioni consulta la sezione 'Le mie prenotazioni'");
+                else
+                    alert("Hai già prenotato questo libro!");
+            }
+            xhttp.open("POST", "prenota_libro.php?idLibro=" + idLibro, true);
+            xhttp.send();
+        }
+
+        function prenotaCarta(idCarta)
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                if(j.prenotato == "true")
+                    alert("Carta prenotata! Per maggiori informazioni consulta la sezione 'Le mie prenotazioni'");
+                else
+                    alert("Hai già prenotato questa carta!");
+            }
+            xhttp.open("POST", "prenota_carta.php?idCarta=" + idCarta, true);
             xhttp.send();
         }
     </script>
