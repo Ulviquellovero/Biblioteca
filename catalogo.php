@@ -372,7 +372,7 @@
                                         if(j.Result[i].disponibile == 1)
                                         {
                                             disponibile.className = "datoLibro disponibile";
-                                            disponibile.textContent = "Disponibile";
+                                            disponibile.textContent = "Disponibile in biblioteca";
                                         }
                                         else
                                         {
@@ -619,7 +619,7 @@
                         if(j.Result[i].disponibile == 1)
                         {
                             disponibile.className = "datoLibro disponibile";
-                            disponibile.textContent = "Disponibile";
+                            disponibile.textContent = "Disponibile in biblioteca";
                         }
                         else
                         {
