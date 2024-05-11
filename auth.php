@@ -1,11 +1,11 @@
 <?php
     require_once("var_conn.php");
-    if(isset($_POST['username']))
+    if(isset($_REQUEST['username']))
     {
-        $username = $_POST['username'];
-        if(isset($_POST['password']))
+        $username = $_REQUEST['username'];
+        if(isset($_REQUEST['password']))
         {
-            $password = $_POST['password'];
+            $password = $_REQUEST['password'];
             $sql = "SELECT idUtente, nome FROM tutente WHERE email = '$username' AND passWord = '$password'";
             $res = mysqli_query($con, $sql);
             if(mysqli_num_rows($res) == 1)
@@ -13,7 +13,7 @@
                 $row = mysqli_fetch_assoc($res);
                 $_SESSION['idUtente'] = $row['idUtente'];
                 $_SESSION['userName'] = $row['nome']; 
-                $_SESSION['permessi'] = false; 
+                $_SESSION['permessi'] = "false"; 
                 $autenticato = true;
             }
             else 
@@ -25,7 +25,7 @@
                     $row = mysqli_fetch_assoc($res);
                     $_SESSION['idUtente'] = $row['idPersonale'];
                     $_SESSION['userName'] = $row['nomeUtente']; 
-                    $_SESSION['permessi'] = true; 
+                    $_SESSION['permessi'] = "true"; 
                     $autenticato = true;
                 }
                 else

@@ -28,10 +28,10 @@
         </div>
 
         <script>
-            document.getElementById("loginForm").addEventListener("submit", function(event)
-            {
+            document.getElementById("loginForm").addEventListener("submit", function(event) {
                 event.preventDefault();
-                var formData = new FormData(this);
+                var formData = "username=" + encodeURIComponent(document.getElementById("username").value) +
+                            "&password=" + encodeURIComponent(document.getElementById("password").value);
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "auth.php", true);
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -41,14 +41,14 @@
                         var j = JSON.parse(res);
                         if (!j.autenticato) {
                             var errText = document.getElementById("erroreCredenziali");
-                            errText.innerHTML= "Credenziali errate";
+                            errText.innerHTML = "Credenziali errate";
                         } else {
                             window.location = "index.php";
                         }
                     }
-            };
-            xhr.send(new URLSearchParams(formData).toString());
-        });
+                };
+                xhr.send(formData);
+            });
         </script>
         
     </body>

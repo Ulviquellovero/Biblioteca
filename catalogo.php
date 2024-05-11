@@ -377,7 +377,7 @@
                                         else
                                         {
                                             disponibile.className = "datoLibro nonDisponibile";
-                                            disponibile.textContent = "Non disponibile";
+                                            disponibile.textContent = "In prestito";
                                         }
                                         containerAutoreDisponibile.appendChild(disponibile);
                                     }
@@ -477,25 +477,8 @@
                     lineaFiltri.style.display = "none";
                     var btnIndietro = document.getElementById("btnIndietro");
                     btnIndietro.style.display = "block";
-                    /*var lineaFiltri = document.getElementById("sceltaCategoria");
-                    lineaFiltri.style.display = "none";*/
-                    /*var btnIndietro = document.getElementById("btnIndietro");
-                    btnIndietro.style.display = "block";*/
                     for(var i=0; i < j.Result.length; i++)
                     {
-                        /*var disponibile = document.createElement("span");
-                        if(j.Result[i].disponibile == 1)
-                        {
-                            disponibile.className = "datoLibro disponibile";
-                            disponibile.textContent = "Disponibile";
-                        }
-                        else
-                        {
-                            disponibile.className = "datoLibro nonDisponibile";
-                            disponibile.textContent = "Non disponibile";
-                        }
-                        containerLibro.appendChild(disponibile);*/
-
                         var divDettagli = document.createElement("div");
                         divDettagli.id = "divDettagli";
 
@@ -544,6 +527,26 @@
                         divDettagli.appendChild(isbn);
 
                         visualizzazione.appendChild(divDettagli);
+
+                        if(j.Result[i].permessi == "false")
+                        {
+                            var prenotaBtn = document.createElement("button");
+                            prenotaBtn.id = "prenotaBtn";
+                            prenotaBtn.textContent = "Prenota";
+                            if(j.Result[i].userId != undefined)
+                            {
+                                prenotaBtn.addEventListener("click", function() {
+                                    alert("Hai cliccato sul pulsante Prenota!");
+                                });
+                            }
+                            else
+                            {
+                                prenotaBtn.addEventListener("click", function() {
+                                    window.location.href = "login.php";
+                                });
+                            }
+                            visualizzazione.appendChild(prenotaBtn);
+                        }
                     }
                 }
                 else
@@ -621,7 +624,7 @@
                         else
                         {
                             disponibile.className = "datoLibro nonDisponibile";
-                            disponibile.textContent = "Non disponibile";
+                            disponibile.textContent = "In prestito";
                         }
                         containerLibro.appendChild(disponibile);
 
