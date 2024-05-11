@@ -545,9 +545,15 @@
                             prenotaBtn.textContent = "Prenota";
                             if(j.Result[i].userId != undefined)
                             {
-                                prenotaBtn.addEventListener("click", function() {
-                                    alert("Hai cliccato sul pulsante Prenota!");
-                                });
+                                if (j.Result[i].tipo == "volumi") {
+                                    var idVolume = j.Result[i].id;
+                                    function prenotaVolumeClick(id) {
+                                        return function() {
+                                            prenotaVolume(id);
+                                        };
+                                    }
+                                    prenotaBtn.addEventListener("click", prenotaVolumeClick(idVolume));
+                                }
                             }
                             else
                             {
@@ -668,6 +674,21 @@
             btnIndietro.style.display = "none";
             var titoloPagina = document.getElementById("titoloPagina");
             titoloPagina.textContent = "Catalogo";
+        }
+
+        function prenotaVolume(idVolume)
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                if(j.prenotato == "true")
+                    alert("Volume prenotato! Per maggiori informazioni consulta la sezione 'Le mie prenotazioni'");
+                else
+                    alert("Hai già prenotato questo volume!");
+            }
+            xhttp.open("POST", "prenota_volume.php?idVolume=" + idVolume, true);
+            xhttp.send();
         }
     </script>
 </html>

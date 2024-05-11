@@ -33,6 +33,7 @@
                 "ISBN" => $array['ISBN'],
                 "userId" => $userId,
                 "permessi" => $permessi,
+                "tipo" => "volumi"
                 );
         }
         else
