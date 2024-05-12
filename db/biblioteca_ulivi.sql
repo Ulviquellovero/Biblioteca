@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Creato il: Mag 06, 2024 alle 13:50
--- Versione del server: 10.11.4-MariaDB-1~deb12u1
--- Versione PHP: 8.2.7
+-- Host: 127.0.0.1
+-- Creato il: Mag 12, 2024 alle 09:46
+-- Versione del server: 10.4.32-MariaDB
+-- Versione PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,43 @@ SET time_zone = "+00:00";
 --
 -- Database: `biblioteca_ulivi`
 --
+
+DELIMITER $$
+--
+-- Procedure
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertPrenotazioneCarta` (IN `idUtente` INT, IN `idCarta` INT)   BEGIN
+    -- Inserisci un record nella tabella tprenotazionevolume
+    INSERT INTO tprenotazionecarta (idUtente, idCarta, data)
+    VALUES (idUtente, idCarta, NOW());
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertPrenotazioneLibro` (IN `idUtente` INT, IN `idLibro` INT)   BEGIN
+    -- Inserisci un record nella tabella tprenotazionevolume
+    INSERT INTO tprenotazionelibro (idUtente, idLibro, data)
+    VALUES (idUtente, idLibro, NOW());
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertPrenotazioneVolume` (IN `idUtente` INT, IN `idVolume` INT)   BEGIN
+    -- Inserisci un record nella tabella tprenotazionevolume
+    INSERT INTO tprenotazionevolume (idUtente, idVolume, data)
+    VALUES (idUtente, idVolume, NOW());
+END$$
+
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura stand-in per le viste `prenotazionilibri`
+-- (Vedi sotto per la vista effettiva)
+--
+CREATE TABLE `prenotazionilibri` (
+`data` date
+,`titolo` varchar(255)
+,`idUtente` int(11)
+,`idLibro` int(11)
+);
 
 -- --------------------------------------------------------
 
@@ -266,6 +303,15 @@ CREATE TABLE `tprenotazionecarta` (
   `idCarta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dump dei dati per la tabella `tprenotazionecarta`
+--
+
+INSERT INTO `tprenotazionecarta` (`idPrenotazioneCarta`, `data`, `idUtente`, `idCarta`) VALUES
+(1, '2024-05-11', 1, 3),
+(2, '2024-05-11', 1, 1),
+(3, '2024-05-11', 1, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -279,6 +325,14 @@ CREATE TABLE `tprenotazionelibro` (
   `idLibro` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dump dei dati per la tabella `tprenotazionelibro`
+--
+
+INSERT INTO `tprenotazionelibro` (`idPrenotazioneLibro`, `data`, `idUtente`, `idLibro`) VALUES
+(1, '2024-05-11', 1, 10),
+(2, '2024-05-11', 1, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -291,6 +345,13 @@ CREATE TABLE `tprenotazionevolume` (
   `idUtente` int(11) NOT NULL,
   `idVolume` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dump dei dati per la tabella `tprenotazionevolume`
+--
+
+INSERT INTO `tprenotazionevolume` (`idPrenotazioneVolume`, `data`, `idUtente`, `idVolume`) VALUES
+(7, '2024-05-11', 1, 15);
 
 -- --------------------------------------------------------
 
@@ -317,10 +378,17 @@ CREATE TABLE `tprestitolibro` (
   `idPrestitoLibro` int(11) NOT NULL,
   `data` date NOT NULL,
   `idPersonaleErogatore` int(11) NOT NULL,
-  `idPersonaleConsegna` int(11) NOT NULL,
+  `idPersonaleConsegna` int(11) DEFAULT NULL,
   `idUtente` int(11) NOT NULL,
   `idLibro` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dump dei dati per la tabella `tprestitolibro`
+--
+
+INSERT INTO `tprestitolibro` (`idPrestitoLibro`, `data`, `idPersonaleErogatore`, `idPersonaleConsegna`, `idUtente`, `idLibro`) VALUES
+(1, '2024-05-12', 1, NULL, 1, 10);
 
 -- --------------------------------------------------------
 
@@ -469,7 +537,17 @@ INSERT INTO `tvolume` (`idVolume`, `numero`, `ISBN`, `disponibile`, `idEnciclope
 (15, 3, '265-3-54-64363-0', 1, 4),
 (16, 1, '324-1-34-42353-4', 1, 5),
 (17, 2, '324-2-34-42353-4', 1, 5),
-(18, 3, '324-3-34-42353-4', 0, 5);
+(18, 3, '324-3-34-42353-4', 0, 5),
+(19, 4, '324-4-34-42353-4', 1, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Struttura per vista `prenotazionilibri`
+--
+DROP TABLE IF EXISTS `prenotazionilibri`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `prenotazionilibri`  AS SELECT `tpb`.`data` AS `data`, `tl`.`titolo` AS `titolo`, `tpb`.`idUtente` AS `idUtente`, `tpb`.`idLibro` AS `idLibro` FROM (`tprenotazionelibro` `tpb` join `tlibro` `tl` on(`tpb`.`idLibro` = `tl`.`idLibro`)) ;
 
 --
 -- Indici per le tabelle scaricate
@@ -705,19 +783,19 @@ ALTER TABLE `tposizione`
 -- AUTO_INCREMENT per la tabella `tprenotazionecarta`
 --
 ALTER TABLE `tprenotazionecarta`
-  MODIFY `idPrenotazioneCarta` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idPrenotazioneCarta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT per la tabella `tprenotazionelibro`
 --
 ALTER TABLE `tprenotazionelibro`
-  MODIFY `idPrenotazioneLibro` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idPrenotazioneLibro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT per la tabella `tprenotazionevolume`
 --
 ALTER TABLE `tprenotazionevolume`
-  MODIFY `idPrenotazioneVolume` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idPrenotazioneVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT per la tabella `tprestitocarta`
@@ -729,7 +807,7 @@ ALTER TABLE `tprestitocarta`
 -- AUTO_INCREMENT per la tabella `tprestitolibro`
 --
 ALTER TABLE `tprestitolibro`
-  MODIFY `idPrestitoLibro` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idPrestitoLibro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT per la tabella `tprestitovolume`
@@ -777,7 +855,7 @@ ALTER TABLE `tutente`
 -- AUTO_INCREMENT per la tabella `tvolume`
 --
 ALTER TABLE `tvolume`
-  MODIFY `idVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `idVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Limiti per le tabelle scaricate

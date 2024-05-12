@@ -19,11 +19,11 @@ body
     padding: 0.5vw;
     padding-bottom: 2vw;
     padding-left: 2vw;
-    transition: transform 0.3s ease;
+    transition: margin-left 0.3s ease;
 }
 
 .containerElemento:hover {
-  transform: scale(0.98);
+    margin-left: 4vw;
 }
 
 .containerDati
@@ -31,14 +31,14 @@ body
     display: flex;
 }
 
-.containerDataCasa
+.containerDate
 {
     display: flex;
     flex-direction: column;
     gap: 0.5vw;
 }
 
-.containerAutoreDisponibile
+.containerStato
 {
     margin-left: 2vw;
     display: flex;
@@ -46,12 +46,12 @@ body
     gap: 0.5vw;
 }
 
-.disponibile
+.concesso
 {
   color: #01b101;
 }
 
-.nonDisponibile
+.nonConcesso
 {
     color: red;
 }
@@ -73,6 +73,7 @@ body
     gap: 1vw;
     width: 60%;
     margin-left: 21vw;
+    margin-bottom: 3.5vw;
 }
 
 #btnEnc
@@ -110,29 +111,6 @@ body
     transform: scale(0.9);
 }
 
-#lineaFiltri
-{
-   width: 90%;
-   margin-left: 4.5vw;
-    margin-top: 2vw;
-}
-
-#rigaTestiGuida
-{
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    font-weight: bold;
-}
-
-#contBoxFiltri
-{
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    margin-bottom: 5vw;
-}
-
 #noResult
 {
     width: 100%;
@@ -142,128 +120,10 @@ body
 
 #footerLogin
 {
-    margin-top: 10vw;
+    margin-top: 5vw;
 }
 
-#filtroTitolo
+.commentoGrigio
 {
-    padding: 0.7vw 0.7vw;
-    width: 20vw;
-    border: 1px solid #000;
-    border-radius: 5px;
-    font-size: 110%;
-    margin-left: 4.5vw;
-}
-
-#divFiltroTitolo button
-{
-    font-size: 110%;
-    padding: 0.7vw 1vw;
-    background-color: #b69a79;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-family: inherit;
-}
-
-#divFiltroTitolo button:hover
-{
-    background-color: #998165;
-}
-
-#filtroAnno
-{
-    border-radius: 5px;
-    padding: 0.7vw;
-}
-
-#filtroCasaEditrice
-{
-    border-radius: 5px;
-    padding: 0.7vw;
-}
-
-#labelForTitolo
-{
-    margin-left: -7vw;
-}
-
-#labelForCasa
-{
-    margin-right: 5vw;
-}
-
-#btnIndietro
-{
-    display: none;
-    font-size: 110%;
-    padding: 0.7vw 1vw;
-    background-color: #b69a79;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-family: inherit;
-    margin: 2vw;
-}
-
-#btnIndietro:hover
-{
-    background-color: #998165;
-}
-
-#divDettagli
-{
-    width: 100%;
-    text-align: center;
-}
-
-#titoloLibro
-{
-    font-size: 3vw;
-    margin-top: 3vw;
-    margin-inline: 3vw;
-}
-
-#prenotaBtn
-{
-    position: absolute;
-    right: 10vw;
-    font-size: 150%;
-    padding: 0.7vw 1vw;
-    background-color: #01b901;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-family: inherit;
-    margin-top: 2vw;
-}
-
-#prenotaBtn:hover
-{
-    background-color: green;
-}
-
-#btnAggiungiLibro
-{
-    background-color: #b69a79;
-    color: #fff;
-    font-size: 3vw;
-    border-radius: 50%;
-    border: none;
-    width: 5vw;
-    height: 5vw;
-    position: fixed;
-    bottom: 1.5vw;
-    right: 1.5vw;
-}
-
-#btnAggiungiLibro:hover
-{
-    background-color: #998165;
+    color: #80808085;
 }

@@ -139,16 +139,24 @@
 
             function costruisciLinkLeMiePrenotazioni()
             {
-                var selectedLink = document.createElement("a");
-                selectedLink.href = "le_mie_prenotazioni.php";
                 var currentPage = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
                 if(currentPage == "le_mie_prenotazioni.php")
+                {
+                    var selectedLink = document.createElement("span");
                     selectedLink.className = "selectedLink";
+                    selectedLink.textContent = "Le mie prenotazioni";
+                    var parteSinistraPagina = document.getElementById("parte_sinistra_header");
+                    parteSinistraPagina.appendChild(selectedLink);
+                }
                 else
+                {
+                    var selectedLink = document.createElement("a");
+                    selectedLink.href = "le_mie_prenotazioni.php";
                     selectedLink.className = "link";
-                selectedLink.textContent = "Le mie prenotazioni";
-                var parteSinistraPagina = document.getElementById("parte_sinistra_header");
-                parteSinistraPagina.appendChild(selectedLink);
+                    selectedLink.textContent = "Le mie prenotazioni";
+                    var parteSinistraPagina = document.getElementById("parte_sinistra_header");
+                    parteSinistraPagina.appendChild(selectedLink);
+                }
             }
         </script>
 </html>
