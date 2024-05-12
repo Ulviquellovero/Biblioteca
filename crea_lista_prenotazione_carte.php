@@ -1,14 +1,14 @@
 <?php
     require_once("var_conn.php");
     $userId = $_SESSION['idUtente'];
-	$sql = "SELECT idLibro, data, titolo FROM prenotazionilibri WHERE idUtente = $userId ORDER BY titolo ASC";
+	$sql = "SELECT idCarta, data, titolo FROM vprenotazionicarte WHERE idUtente = $userId ORDER BY titolo ASC";
     $res = mysqli_query($con, $sql);
     $i = 0;
     $resArr = null;
     while($array = mysqli_fetch_array($res)) 
     {
-        $idLibro = $array['idLibro'];
-        $sqlPrestiti = "SELECT data AS dataPrestito FROM tprestitolibro WHERE idUtente = $userId AND idLibro = $idLibro"; 
+        $idCarta = $array['idCarta'];
+        $sqlPrestiti = "SELECT data AS dataPrestito FROM tprestitocarta WHERE idUtente = $userId AND idCarta = $idCarta"; 
         $resPrestiti = mysqli_query($con, $sqlPrestiti);
         if(mysqli_num_rows($resPrestiti) != 0)
         {

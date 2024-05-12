@@ -66,7 +66,7 @@
                 visualizzazione.innerHTML = "";
                 creaHtmlLibri(j, visualizzazione);
             }
-            xhttp.open("POST", "crea_catalogo_carte.php?annoSelez="+annoSelez+"&casaSelez="+casaSelez+"&testoInserito="+testoInserito, true);
+            xhttp.open("POST", "crea_lista_prenotazione_carte.php", true);
             xhttp.send();
         
         }
@@ -88,7 +88,7 @@
                 visualizzazione.innerHTML = "";
                 creaHtmlLibri(j, visualizzazione);
             }
-            xhttp.open("POST", "crea_catalogo_enciclopedie.php?annoSelez="+annoSelez+"&casaSelez="+casaSelez+"&testoInserito="+testoInserito, true);
+            xhttp.open("POST", "crea_lista_prenotazione_volumi.php", true);
             xhttp.send();
         }
         
@@ -158,7 +158,7 @@
                 {
                     var nessunRisultato = document.createElement("h1");
                     nessunRisultato.id = "noResult";
-                    nessunRisultato.textContent = "Nessun risultato trovato corrispondente alla ricerca";
+                    nessunRisultato.textContent = "Nessuna prenotazione trovata";
                     visualizzazione.appendChild(nessunRisultato);
                 }
             }
@@ -166,7 +166,7 @@
             {
                 var nessunRisultato = document.createElement("h1");
                 nessunRisultato.id = "noResult";
-                nessunRisultato.textContent = "Nessun risultato trovato corrispondente alla ricerca";
+                nessunRisultato.textContent = "Nessuna prenotazione trovata";
                 visualizzazione.appendChild(nessunRisultato);
             }
         }

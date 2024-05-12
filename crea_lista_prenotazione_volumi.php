@@ -1,21 +1,22 @@
 <?php
     require_once("var_conn.php");
     $userId = $_SESSION['idUtente'];
-	$sql = "SELECT idLibro, data, titolo FROM prenotazionilibri WHERE idUtente = $userId ORDER BY titolo ASC";
+	$sql = "SELECT idVolume, numero, data, titolo FROM vprenotazionivolumi WHERE idUtente = $userId ORDER BY titolo ASC";
     $res = mysqli_query($con, $sql);
     $i = 0;
     $resArr = null;
     while($array = mysqli_fetch_array($res)) 
     {
-        $idLibro = $array['idLibro'];
-        $sqlPrestiti = "SELECT data AS dataPrestito FROM tprestitolibro WHERE idUtente = $userId AND idLibro = $idLibro"; 
+        $idVolume = $array['idVolume'];
+        $sqlPrestiti = "SELECT data AS dataPrestito FROM tprestitovolume WHERE idUtente = $userId AND idVolume = $idVolume"; 
         $resPrestiti = mysqli_query($con, $sqlPrestiti);
+        $arrayPrestiti = mysqli_fetch_array($resPrestiti);
+        $titolo = $array['titolo'] . " Volume " . $array['numero'];
         if(mysqli_num_rows($resPrestiti) != 0)
         {
-            $arrayPrestiti = mysqli_fetch_array($resPrestiti);
             $row = array(
                 "dataPrenotazione" => $array['data'],
-                "titolo" => $array['titolo'],
+                "titolo" => $titolo,
                 "dataPrestito" => $arrayPrestiti['dataPrestito']
             );
         }
@@ -23,7 +24,7 @@
         {
             $row = array(
                 "dataPrenotazione" => $array['data'],
-                "titolo" => $array['titolo']
+                "titolo" => $titolo
             );
         }
 		$resArr[$i] = $row;
