@@ -25,3 +25,12 @@ h1
     margin-inline: 20vw;
     font-size: 2vw;
 }
+
+#dvMap
+{
+    height: 70%; 
+    width: 70%;
+    margin-inline: 15vw;
+    border-radius: 15px;
+    margin-bottom: 5vw;
+}
