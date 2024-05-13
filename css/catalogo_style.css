@@ -268,3 +268,15 @@ body
 {
     background-color: #998165;
 }
+
+.notificaLibro
+{
+    position: absolute;
+    right: 0;
+    margin-right: 3vw;
+    background-color: #998165;
+    color: white;
+    padding: 0.5vw;
+    margin-top: 1vw;  
+    border-radius: 15px;
+}

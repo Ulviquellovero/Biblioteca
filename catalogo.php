@@ -328,6 +328,17 @@
                                 creaCatalogoVolumi(id);
                         };
 
+                        if(j.Result[i].permessi != undefined)
+                        {
+                            if(j.Result[i].permessi == "true" && j.Result[i].notifica == "true")
+                            {
+                                var notifica = document.createElement("span");
+                                notifica.className = "notificaLibro";
+                                notifica.textContent = "Prenotazione in attesa di prestito!";
+                                containerLibro.appendChild(notifica);
+                            }
+                        }
+
                             var titolo = document.createElement("h1");
                             titolo.className = "titoloLibro";
                             titolo.textContent = j.Result[i].titolo;

@@ -42,26 +42,42 @@
 		$idLibro = $array['idLibro'];
 		$sqlPrestiti = "SELECT idPrestitoLibro FROM tprestitolibro WHERE idLibro = $idLibro";
 		$resPrestiti = mysqli_query($con, $sqlPrestiti);
-		$notifica = false;
+		$notifica = "false";
 		if(mysqli_num_rows($resPrestiti) == 0)
 		{
 			$sqlPrenotazioni = "SELECT idPrenotazioneLibro FROM tprenotazionelibro WHERE idLibro = $idLibro";
 			$resPrenotazioni = mysqli_query($con, $sqlPrenotazioni);
 			if(mysqli_num_rows($resPrenotazioni) != 0)
-				$notifica = true;
+				$notifica = "true";
 		}
 		$autore = $array['nomeAutore'] . " " . $array['cognomeAutore'];
 		if($permessi != null)
 		{
-			$row = array(
-				"id" => $array['idLibro'],
-				"titolo" => $array['titolo'],
-				"annoPub" => $array['annoPubblicazione'],
-				"autore" => $autore,
-				"nomeCasaEditrice" => $array['nomeCasaEditrice'],
-				"disponibile" => $array['disponibile'],
-				"permessi" => $permessi
-				);
+			if($permessi == true)
+			{
+				$row = array(
+					"id" => $array['idLibro'],
+					"titolo" => $array['titolo'],
+					"annoPub" => $array['annoPubblicazione'],
+					"autore" => $autore,
+					"nomeCasaEditrice" => $array['nomeCasaEditrice'],
+					"disponibile" => $array['disponibile'],
+					"permessi" => $permessi,
+					"notifica" => $notifica
+					);
+			}
+			else
+			{
+				$row = array(
+					"id" => $array['idLibro'],
+					"titolo" => $array['titolo'],
+					"annoPub" => $array['annoPubblicazione'],
+					"autore" => $autore,
+					"nomeCasaEditrice" => $array['nomeCasaEditrice'],
+					"disponibile" => $array['disponibile'],
+					"permessi" => $permessi
+					);
+			}
 		}
 		else
 		{
