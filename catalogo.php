@@ -657,6 +657,17 @@
                             mostraVolumi(id);
                         };
 
+                        if(j.Result[i].permessi != undefined)
+                        {
+                            if(j.Result[i].permessi == "true" && j.Result[i].notifica == "true")
+                            {
+                                var notifica = document.createElement("span");
+                                notifica.className = "notificaLibro";
+                                notifica.textContent = "Prenotazione in attesa di conferma!";
+                                containerLibro.appendChild(notifica);
+                            }
+                        }
+
                         var titolo = document.createElement("h1");
                         titolo.className = "titoloLibro";
                         titolo.textContent = "Volume numero "+j.Result[i].numero;
@@ -692,6 +703,18 @@
                 nessunRisultato.id = "noResult";
                 nessunRisultato.textContent = "Nessun risultato trovato corrispondente alla ricerca";
                 visualizzazione.appendChild(nessunRisultato);
+            }
+            if(j.Result[0].permessi != undefined)
+            {
+                if(j.Result[0].permessi == "true")
+                {
+                    var btnAggiungiLibro = document.createElement("button");
+                    btnAggiungiLibro.id = "btnAggiungiLibro";
+                    btnAggiungiLibro.textContent = "+";
+                    visualizzazione.appendChild(btnAggiungiLibro);
+                    var titoloPagina = document.getElementById("titoloPagina");
+                    titoloPagina.textContent = "Catalogo, Prenotazioni e Prestiti";
+                }
             }
         }
 
