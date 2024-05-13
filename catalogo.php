@@ -408,6 +408,8 @@
                     btnAggiungiLibro.id = "btnAggiungiLibro";
                     btnAggiungiLibro.textContent = "+";
                     visualizzazione.appendChild(btnAggiungiLibro);
+                    var titoloPagina = document.getElementById("titoloPagina");
+                    titoloPagina.textContent = "Catalogo, Prenotazioni e Prestiti";
                 }
             }
         }
