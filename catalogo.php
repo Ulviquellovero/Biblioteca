@@ -334,7 +334,7 @@
                             {
                                 var notifica = document.createElement("span");
                                 notifica.className = "notificaLibro";
-                                notifica.textContent = "Prenotazione in attesa di prestito!";
+                                notifica.textContent = "Prenotazione in attesa di conferma!";
                                 containerLibro.appendChild(notifica);
                             }
                         }
