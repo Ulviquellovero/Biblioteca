@@ -54,6 +54,8 @@
                     {
                         if(j.permessi == "false")
                             costruisciLinkLeMiePrenotazioni();
+                        else
+                            modificaHeaderPersonale();
                         htmlElement = document.createElement("span");
                         htmlElement.id = "benvenuto_utente";
                         htmlElement.textContent = "Benvenuto/a " + j.userName;
@@ -86,6 +88,7 @@
                 var catalogLink = document.createElement("a");
                 catalogLink.className = "link";
                 catalogLink.href = "catalogo.php";
+                catalogLink.id = "catalogoLink";
                 catalogLink.textContent = "Catalogo";
                 var parteSinistraPagina = document.getElementById("parte_sinistra_header");
                 parteSinistraPagina.appendChild(selectedLink);
@@ -101,6 +104,7 @@
                 homeLink.textContent = "Home";
                 var catalogLink = document.createElement("a");
                 catalogLink.className = "link";
+                catalogLink.id = "catalogoLink";
                 catalogLink.href = "catalogo.php";
                 catalogLink.textContent = "Catalogo";
                 var parteSinistraPagina = document.getElementById("parte_sinistra_header");
@@ -115,6 +119,7 @@
                 selectedLink.className = "link";
                 selectedLink.textContent = "Home";
                 var catalogLink = document.createElement("span");
+                catalogLink.id = "catalogoLink";
                 catalogLink.className = "selectedLink";
                 catalogLink.textContent = "Catalogo";
                 var parteSinistraPagina = document.getElementById("parte_sinistra_header");
@@ -129,6 +134,7 @@
                 selectedLink.className = "link";
                 selectedLink.textContent = "Home";
                 var catalogLink = document.createElement("a");
+                catalogLink.id = "catalogoLink";
                 catalogLink.className = "link";
                 catalogLink.href = "catalogo.php";
                 catalogLink.textContent = "Catalogo";
@@ -157,6 +163,12 @@
                     var parteSinistraPagina = document.getElementById("parte_sinistra_header");
                     parteSinistraPagina.appendChild(selectedLink);
                 }
+            }
+
+            function modificaHeaderPersonale()
+            {
+                var catalogLink = document.getElementById("catalogoLink");
+                catalogLink.textContent = "Catalogo, Prenotazioni e Prestiti";
             }
         </script>
 </html>
