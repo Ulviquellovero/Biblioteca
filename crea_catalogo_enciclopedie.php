@@ -28,6 +28,9 @@
 			$sqlWhere = $sqlWhere . "WHERE titolo LIKE '%$testoInserito%' ";
 	}
 	$sql = $sql . $sqlWhere . "ORDER BY titolo ASC";
+    $permessi = null;
+	if(isset($_SESSION['permessi']))
+        $permessi = $_SESSION['permessi'];
     $res = mysqli_query($con, $sql);
     $resArr = array();
     while ($array = mysqli_fetch_array($res)) {
@@ -38,14 +41,55 @@
         while ($rowAutore = mysqli_fetch_assoc($resAutore)) {
             $autori .= ", " . $rowAutore['nome'] . " " . $rowAutore['cognome'];
         }
-        $row = array(
-            "id" => $array['idEnciclopedia'],
-            "titolo" => $array['titolo'],
-            "annoPub" => $array['annoPubblicazione'],
-            "autore" => ltrim($autori, ', '),
-            "nomeCasaEditrice" => $array['nomeCasaEditrice'],
-            "volumi" => $array['nVolumi']
-        );
+        $sqlPrestiti = "SELECT idPrestitoVolume FROM tprestitovolume tpv JOIN tvolume tv ON tpv.idVolume = tv.idVolume WHERE idEnciclopedia = $idLibro";
+		$resPrestiti = mysqli_query($con, $sqlPrestiti);
+		$notifica = "false";
+		if(mysqli_num_rows($resPrestiti) == 0)
+		{
+			$sqlPrenotazioni = "SELECT idPrenotazioneVolume FROM tprenotazionevolume tpv JOIN tvolume tv ON tpv.idVolume = tv.idVolume WHERE idEnciclopedia = $idLibro";
+			$resPrenotazioni = mysqli_query($con, $sqlPrenotazioni);
+			if(mysqli_num_rows($resPrenotazioni) != 0)
+				$notifica = "true";
+		}
+        if($permessi != null)
+		{
+			if($permessi == true)
+			{
+                $row = array(
+                    "id" => $array['idEnciclopedia'],
+                    "titolo" => $array['titolo'],
+                    "annoPub" => $array['annoPubblicazione'],
+                    "autore" => ltrim($autori, ', '),
+                    "nomeCasaEditrice" => $array['nomeCasaEditrice'],
+                    "volumi" => $array['nVolumi'],
+                    "permessi" => $permessi,
+					"notifica" => $notifica
+                );
+			}
+			else
+			{
+				$row = array(
+                    "id" => $array['idEnciclopedia'],
+                    "titolo" => $array['titolo'],
+                    "annoPub" => $array['annoPubblicazione'],
+                    "autore" => ltrim($autori, ', '),
+                    "nomeCasaEditrice" => $array['nomeCasaEditrice'],
+                    "volumi" => $array['nVolumi'],
+                    "permessi" => $permessi
+                );
+			}
+		}
+		else
+		{
+			$row = array(
+                "id" => $array['idEnciclopedia'],
+                "titolo" => $array['titolo'],
+                "annoPub" => $array['annoPubblicazione'],
+                "autore" => ltrim($autori, ', '),
+                "nomeCasaEditrice" => $array['nomeCasaEditrice'],
+                "volumi" => $array['nVolumi']
+            );
+		}
         $resArr[] = $row;
     }
     $risFin = array(

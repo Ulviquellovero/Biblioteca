@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Mag 12, 2024 alle 10:56
+-- Creato il: Mag 14, 2024 alle 18:31
 -- Versione del server: 10.4.32-MariaDB
 -- Versione PHP: 8.2.12
 
@@ -399,13 +399,6 @@ CREATE TABLE `tprestitolibro` (
   `idLibro` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dump dei dati per la tabella `tprestitolibro`
---
-
-INSERT INTO `tprestitolibro` (`idPrestitoLibro`, `data`, `idPersonaleErogatore`, `idPersonaleConsegna`, `idUtente`, `idLibro`) VALUES
-(1, '2024-05-12', 1, NULL, 1, 10);
-
 -- --------------------------------------------------------
 
 --
@@ -426,7 +419,7 @@ CREATE TABLE `tprestitovolume` (
 --
 
 INSERT INTO `tprestitovolume` (`idPrestitoVolume`, `data`, `idPersonaleErogatore`, `idPersonaleConsegna`, `idUtente`, `idVolume`) VALUES
-(1, '2024-05-13', 1, NULL, 2, 13);
+(2, '2024-05-14', 1, NULL, 1, 13);
 
 -- --------------------------------------------------------
 
@@ -881,7 +874,7 @@ ALTER TABLE `tprestitolibro`
 -- AUTO_INCREMENT per la tabella `tprestitovolume`
 --
 ALTER TABLE `tprestitovolume`
-  MODIFY `idPrestitoVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idPrestitoVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT per la tabella `trestituzionecarta`
