@@ -617,18 +617,42 @@
                                 btnRevoca.textContent = "Contrassegna come restituito";
                                 btnRevoca.setAttribute("libro-id", j.Result[i].id);
                                 btnRevoca.setAttribute("utente-id", j.Result[i].idUtente);
-                                btnRevoca.onclick = function() {
-                                    var idLibro = this.getAttribute("libro-id");
-                                    var idUtente = this.getAttribute("utente-id");
-                                    revocaPrestito(idLibro, idUtente);
-                                };
+                                if( j.Result[i].tipo == "volumi")
+                                {
+                                    btnRevoca.onclick = function() {
+                                        var idLibro = this.getAttribute("libro-id");
+                                        var idUtente = this.getAttribute("utente-id");
+                                        revocaPrestitoVolume(idLibro, idUtente);
+                                    };
+                                }
+                                if( j.Result[i].tipo == "libri")
+                                {
+                                    btnRevoca.onclick = function() {
+                                        var idLibro = this.getAttribute("libro-id");
+                                        var idUtente = this.getAttribute("utente-id");
+                                        revocaPrestitoLibro(idLibro, idUtente);
+                                    };
+                                }
+                                else
+                                {
+                                    btnRevoca.onclick = function() {
+                                        var idLibro = this.getAttribute("libro-id");
+                                        var idUtente = this.getAttribute("utente-id");
+                                        revocaPrestitoCarta(idLibro, idUtente);
+                                    };
+                                }
                                 divDettagliPrestito.appendChild(btnRevoca);
                             }
                             else
                             {
                                 var nomeUtente = document.createElement("h2");
                                 nomeUtente.className = "elementoDettagli";
-                                nomeUtente.textContent = "L'elemento non è in prestito";
+                                if( j.Result[i].tipo == "volumi")
+                                    nomeUtente.textContent = "Il volume non è in prestito";
+                                if( j.Result[i].tipo == "libri")
+                                    nomeUtente.textContent = "Il libro non è in prestito";
+                                else
+                                    nomeUtente.textContent = "La carta non è in prestito";
                                 divDettagliPrestito.appendChild(nomeUtente);
                             }
                             visualizzazione.appendChild(divDettagliPrestito);
@@ -696,10 +720,61 @@
             }
         }
         
-        function revocaPrestito(idLibro, idUtente)
+        function revocaPrestitoLibro(idLibro, idUtente)
         {
-            alert(idLibro);
-            alert(idUtente);
+            Swal.fire({
+                title: "Sei sicuro di voler contrassegnare come restituito il prestito?",
+                text: "L'azione non può essere annullata!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sì, contrassegna"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        revocaPrestitoLibroQuery(idLibro, idUtente);
+                        Swal.fire({
+                        title: "Prestito contrassegnato come restituito!",
+                        text: "Il prestito è appena stato contrassegnato come restituito",
+                        icon: "success"
+                    });
+                }
+            });
+        }
+
+        function revocaPrestitoLibroQuery(idLibro, idUtente)
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                mostraLibro(idLibro);
+            }
+            xhttp.open("POST", "revoca_prestito_libro.php?idLibro="+idLibro+"&idUtente="+idUtente, true);
+            xhttp.send();
+        }
+
+        function revocaPrestitoCarta(idLibro, idUtente)
+        {
+            Swal.fire({
+                title: "Sei sicuro di voler contrassegnare come restituito il prestito?",
+                text: "L'azione non può essere annullata!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sì, contrassegna"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                        title: "Prestito contrassegnato come restituito!",
+                        text: "Il prestito è appena stato contrassegnato come restituito",
+                        icon: "success"
+                    });
+                }
+            });
+        }
+
+        function revocaPrestitoVolume(idLibro, idUtente)
+        {
             Swal.fire({
                 title: "Sei sicuro di voler contrassegnare come restituito il prestito?",
                 text: "L'azione non può essere annullata!",
