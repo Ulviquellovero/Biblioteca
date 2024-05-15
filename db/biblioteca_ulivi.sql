@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Creato il: Mag 15, 2024 alle 08:49
--- Versione del server: 10.11.4-MariaDB-1~deb12u1
--- Versione PHP: 8.2.7
+-- Host: 127.0.0.1
+-- Creato il: Mag 15, 2024 alle 16:28
+-- Versione del server: 10.4.32-MariaDB
+-- Versione PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -41,6 +41,27 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertPrenotazioneVolume` (IN `idUt
     -- Inserisci un record nella tabella tprenotazionevolume
     INSERT INTO tprenotazionevolume (idUtente, idVolume, data)
     VALUES (idUtente, idVolume, NOW());
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `RevocaPrestitoCarta` (IN `insIdCarta` INT, IN `insIdUtente` INT, IN `insIdPersonale` INT)   BEGIN
+    DELETE FROM tprestitocarta WHERE idUtente = insIdUtente AND idCarta = insIdCarta;
+	DELETE FROM tprenotazionecarta WHERE idUtente = insIdUtente AND idCarta = insIdCarta;
+	UPDATE tcarta SET disponibile = 1 WHERE idCarta = insIdCarta;
+    INSERT INTO trestituzionecarta (data, idPersonale, idUtente, idCarta) VALUES (NOW(), insIdPersonale, insIdUtente, insIdCarta);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `RevocaPrestitoLibro` (IN `insIdLibro` INT, IN `insIdUtente` INT, IN `insIdPersonale` INT)   BEGIN
+    DELETE FROM tprestitolibro WHERE idUtente = insIdUtente AND idLibro = insIdLibro;
+	DELETE FROM tprenotazionelibro WHERE idUtente = insIdUtente AND idLibro = insIdLibro;
+	UPDATE tlibro SET disponibile = 1 WHERE idLibro = insIdLibro;
+    INSERT INTO trestituzionelibro (data, idPersonale, idUtente, idLibro) VALUES (NOW(), insIdPersonale, insIdUtente, insIdLibro);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `RevocaPrestitoVolume` (IN `insIdVolume` INT, IN `insIdUtente` INT, IN `insIdPersonale` INT)   BEGIN
+    DELETE FROM tprestitovolume WHERE idUtente = insIdUtente AND idVolume = insIdVolume;
+	DELETE FROM tprenotazionevolume WHERE idUtente = insIdUtente AND idVolume = insIdVolume;
+	UPDATE tvolume SET disponibile = 1 WHERE idVolume = insIdVolume;
+    INSERT INTO trestituzionevolume (data, idPersonale, idUtente, idVolume) VALUES (NOW(), insIdPersonale, insIdUtente, insIdVolume);
 END$$
 
 DELIMITER ;
@@ -224,7 +245,7 @@ INSERT INTO `tlibro` (`idLibro`, `titolo`, `annoPubblicazione`, `ISBN`, `disponi
 (7, 'Ritorno al passato', '2023', '978-17-24-56789-0', 1, 'De Agostini', 'Marco', 'Rossi', 6),
 (8, 'La trappola mortale', '2021', '978-18-34-56789-0', 1, 'Zanichelli', 'Giulia', 'Marini', 7),
 (9, 'Il segreto della montagna', '2020', '978-19-24-56789-0', 1, 'Giunti', 'Antonio', 'Bianchi', 8),
-(10, 'Il mistero del lago', '2019', '978-20-34-56789-0', 0, 'Giunti', 'Sara', 'Rossi', 9),
+(10, 'Il mistero del lago', '2019', '978-20-34-56789-0', 1, 'Giunti', 'Sara', 'Rossi', 9),
 (11, 'La maledizione della cripta', '2022', '978-21-24-56789-0', 0, 'Mondadori', 'Marco', 'Verdi', 10);
 
 -- --------------------------------------------------------
@@ -332,7 +353,6 @@ CREATE TABLE `tprenotazionelibro` (
 --
 
 INSERT INTO `tprenotazionelibro` (`idPrenotazioneLibro`, `data`, `idUtente`, `idLibro`) VALUES
-(1, '2024-05-11', 1, 10),
 (2, '2024-05-11', 1, 3),
 (4, '2024-05-12', 1, 9),
 (5, '2024-05-12', 1, 5),
@@ -377,6 +397,13 @@ CREATE TABLE `tprestitocarta` (
   `idCarta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dump dei dati per la tabella `tprestitocarta`
+--
+
+INSERT INTO `tprestitocarta` (`idPrestitoCarta`, `data`, `idPersonaleErogatore`, `idPersonaleConsegna`, `idUtente`, `idCarta`) VALUES
+(1, '2024-05-08', 2, 1, 1, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -406,6 +433,13 @@ CREATE TABLE `tprestitovolume` (
   `idUtente` int(11) NOT NULL,
   `idVolume` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dump dei dati per la tabella `tprestitovolume`
+--
+
+INSERT INTO `tprestitovolume` (`idPrestitoVolume`, `data`, `idPersonaleErogatore`, `idPersonaleConsegna`, `idUtente`, `idVolume`) VALUES
+(1, '2024-05-12', 2, 2, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -603,52 +637,43 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- Indici per le tabelle `tautorecarta`
 --
 ALTER TABLE `tautorecarta`
-  ADD PRIMARY KEY (`idAutoreCarta`),
-  ADD KEY `idCarta` (`idCarta`);
+  ADD PRIMARY KEY (`idAutoreCarta`);
 
 --
 -- Indici per le tabelle `tautoreenciclopedia`
 --
 ALTER TABLE `tautoreenciclopedia`
-  ADD PRIMARY KEY (`idAutoreEnciclopedia`),
-  ADD KEY `tautoreenciclopedia_ibfk_1` (`idEnciclopedia`);
+  ADD PRIMARY KEY (`idAutoreEnciclopedia`);
 
 --
 -- Indici per le tabelle `tcarta`
 --
 ALTER TABLE `tcarta`
-  ADD PRIMARY KEY (`idCarta`),
-  ADD UNIQUE KEY `ISBN` (`ISBN`),
-  ADD KEY `codiceScaffale` (`codiceScaffale`);
+  ADD PRIMARY KEY (`idCarta`);
 
 --
 -- Indici per le tabelle `tenciclopedia`
 --
 ALTER TABLE `tenciclopedia`
-  ADD PRIMARY KEY (`idEnciclopedia`),
-  ADD KEY `codiceScaffale` (`codiceScaffale`);
+  ADD PRIMARY KEY (`idEnciclopedia`);
 
 --
 -- Indici per le tabelle `tfigurazionecarta`
 --
 ALTER TABLE `tfigurazionecarta`
-  ADD PRIMARY KEY (`idFigurazioneCarta`),
-  ADD KEY `idCarta` (`idCarta`);
+  ADD PRIMARY KEY (`idFigurazioneCarta`);
 
 --
 -- Indici per le tabelle `tlibro`
 --
 ALTER TABLE `tlibro`
-  ADD PRIMARY KEY (`idLibro`),
-  ADD UNIQUE KEY `ISBN` (`ISBN`),
-  ADD KEY `codiceScaffale` (`codiceScaffale`);
+  ADD PRIMARY KEY (`idLibro`);
 
 --
 -- Indici per le tabelle `tpersonale`
 --
 ALTER TABLE `tpersonale`
-  ADD PRIMARY KEY (`idPersonale`),
-  ADD UNIQUE KEY `nomeUtente` (`nomeUtente`);
+  ADD PRIMARY KEY (`idPersonale`);
 
 --
 -- Indici per le tabelle `tposizione`
@@ -660,118 +685,79 @@ ALTER TABLE `tposizione`
 -- Indici per le tabelle `tprenotazionecarta`
 --
 ALTER TABLE `tprenotazionecarta`
-  ADD PRIMARY KEY (`idPrenotazioneCarta`),
-  ADD KEY `idUtente` (`idUtente`),
-  ADD KEY `idCarta` (`idCarta`);
+  ADD PRIMARY KEY (`idPrenotazioneCarta`);
 
 --
 -- Indici per le tabelle `tprenotazionelibro`
 --
 ALTER TABLE `tprenotazionelibro`
-  ADD PRIMARY KEY (`idPrenotazioneLibro`),
-  ADD KEY `idUtente` (`idUtente`),
-  ADD KEY `idLibro` (`idLibro`);
+  ADD PRIMARY KEY (`idPrenotazioneLibro`);
 
 --
 -- Indici per le tabelle `tprenotazionevolume`
 --
 ALTER TABLE `tprenotazionevolume`
-  ADD PRIMARY KEY (`idPrenotazioneVolume`),
-  ADD KEY `idUtente` (`idUtente`),
-  ADD KEY `idVolume` (`idVolume`);
+  ADD PRIMARY KEY (`idPrenotazioneVolume`);
 
 --
 -- Indici per le tabelle `tprestitocarta`
 --
 ALTER TABLE `tprestitocarta`
-  ADD PRIMARY KEY (`idPrestitoCarta`),
-  ADD UNIQUE KEY `unique_data_carta` (`data`,`idCarta`),
-  ADD KEY `idPersonaleErogatore` (`idPersonaleErogatore`),
-  ADD KEY `idPersonaleConsegna` (`idPersonaleConsegna`),
-  ADD KEY `idUtente` (`idUtente`),
-  ADD KEY `idCarta` (`idCarta`);
+  ADD PRIMARY KEY (`idPrestitoCarta`);
 
 --
 -- Indici per le tabelle `tprestitolibro`
 --
 ALTER TABLE `tprestitolibro`
-  ADD PRIMARY KEY (`idPrestitoLibro`),
-  ADD UNIQUE KEY `unique_data_libro` (`data`,`idLibro`),
-  ADD KEY `idPersonaleErogatore` (`idPersonaleErogatore`),
-  ADD KEY `idPersonaleConsegna` (`idPersonaleConsegna`),
-  ADD KEY `idUtente` (`idUtente`),
-  ADD KEY `idLibro` (`idLibro`);
+  ADD PRIMARY KEY (`idPrestitoLibro`);
 
 --
 -- Indici per le tabelle `tprestitovolume`
 --
 ALTER TABLE `tprestitovolume`
-  ADD PRIMARY KEY (`idPrestitoVolume`),
-  ADD UNIQUE KEY `unique_data_volume` (`data`,`idVolume`),
-  ADD KEY `idPersonaleErogatore` (`idPersonaleErogatore`),
-  ADD KEY `idPersonaleConsegna` (`idPersonaleConsegna`),
-  ADD KEY `idUtente` (`idUtente`),
-  ADD KEY `idVolume` (`idVolume`);
+  ADD PRIMARY KEY (`idPrestitoVolume`);
 
 --
 -- Indici per le tabelle `trestituzionecarta`
 --
 ALTER TABLE `trestituzionecarta`
-  ADD PRIMARY KEY (`idRestituzioneCarta`),
-  ADD UNIQUE KEY `unique_data_carta` (`data`,`idCarta`),
-  ADD KEY `idPersonale` (`idPersonale`),
-  ADD KEY `idUtente` (`idUtente`),
-  ADD KEY `idCarta` (`idCarta`);
+  ADD PRIMARY KEY (`idRestituzioneCarta`);
 
 --
 -- Indici per le tabelle `trestituzionelibro`
 --
 ALTER TABLE `trestituzionelibro`
-  ADD PRIMARY KEY (`idRestituzioneLibro`),
-  ADD UNIQUE KEY `unique_data_libro` (`data`,`idLibro`),
-  ADD KEY `idPersonale` (`idPersonale`),
-  ADD KEY `idUtente` (`idUtente`),
-  ADD KEY `idLibro` (`idLibro`);
+  ADD PRIMARY KEY (`idRestituzioneLibro`);
 
 --
 -- Indici per le tabelle `trestituzionevolume`
 --
 ALTER TABLE `trestituzionevolume`
-  ADD PRIMARY KEY (`idRestituzioneVolume`),
-  ADD UNIQUE KEY `unique_data_volume` (`data`,`idVolume`),
-  ADD KEY `idPersonale` (`idPersonale`),
-  ADD KEY `idUtente` (`idUtente`),
-  ADD KEY `idVolume` (`idVolume`);
+  ADD PRIMARY KEY (`idRestituzioneVolume`);
 
 --
 -- Indici per le tabelle `tscritturaenciclopedia`
 --
 ALTER TABLE `tscritturaenciclopedia`
-  ADD PRIMARY KEY (`idScritturaEnciclopedia`),
-  ADD KEY `idEnciclopedia` (`idEnciclopedia`);
+  ADD PRIMARY KEY (`idScritturaEnciclopedia`);
 
 --
 -- Indici per le tabelle `ttelefono`
 --
 ALTER TABLE `ttelefono`
-  ADD PRIMARY KEY (`numero`),
-  ADD KEY `idUtente` (`idUtente`);
+  ADD PRIMARY KEY (`numero`);
 
 --
 -- Indici per le tabelle `tutente`
 --
 ALTER TABLE `tutente`
-  ADD PRIMARY KEY (`idUtente`),
-  ADD UNIQUE KEY `codiceFiscale` (`codiceFiscale`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD PRIMARY KEY (`idUtente`);
 
 --
 -- Indici per le tabelle `tvolume`
 --
 ALTER TABLE `tvolume`
-  ADD PRIMARY KEY (`idVolume`),
-  ADD UNIQUE KEY `ISBN` (`ISBN`),
-  ADD KEY `idEnciclopedia` (`idEnciclopedia`);
+  ADD PRIMARY KEY (`idVolume`);
 
 --
 -- AUTO_INCREMENT per le tabelle scaricate
@@ -781,7 +767,7 @@ ALTER TABLE `tvolume`
 -- AUTO_INCREMENT per la tabella `tautorecarta`
 --
 ALTER TABLE `tautorecarta`
-  MODIFY `idAutoreCarta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `idAutoreCarta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT per la tabella `tautoreenciclopedia`
@@ -847,19 +833,19 @@ ALTER TABLE `tprenotazionevolume`
 -- AUTO_INCREMENT per la tabella `tprestitocarta`
 --
 ALTER TABLE `tprestitocarta`
-  MODIFY `idPrestitoCarta` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idPrestitoCarta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT per la tabella `tprestitolibro`
 --
 ALTER TABLE `tprestitolibro`
-  MODIFY `idPrestitoLibro` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idPrestitoLibro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT per la tabella `tprestitovolume`
 --
 ALTER TABLE `tprestitovolume`
-  MODIFY `idPrestitoVolume` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idPrestitoVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT per la tabella `trestituzionecarta`
@@ -886,152 +872,16 @@ ALTER TABLE `tscritturaenciclopedia`
   MODIFY `idScritturaEnciclopedia` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT per la tabella `ttelefono`
---
-ALTER TABLE `ttelefono`
-  MODIFY `numero` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4324324236;
-
---
 -- AUTO_INCREMENT per la tabella `tutente`
 --
 ALTER TABLE `tutente`
-  MODIFY `idUtente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `idUtente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT per la tabella `tvolume`
 --
 ALTER TABLE `tvolume`
   MODIFY `idVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
-
---
--- Limiti per le tabelle scaricate
---
-
---
--- Limiti per la tabella `tautorecarta`
---
-ALTER TABLE `tautorecarta`
-  ADD CONSTRAINT `tautorecarta_ibfk_1` FOREIGN KEY (`idCarta`) REFERENCES `tcarta` (`idCarta`);
-
---
--- Limiti per la tabella `tautoreenciclopedia`
---
-ALTER TABLE `tautoreenciclopedia`
-  ADD CONSTRAINT `tautoreenciclopedia_ibfk_1` FOREIGN KEY (`idEnciclopedia`) REFERENCES `tenciclopedia` (`idEnciclopedia`);
-
---
--- Limiti per la tabella `tcarta`
---
-ALTER TABLE `tcarta`
-  ADD CONSTRAINT `tcarta_ibfk_1` FOREIGN KEY (`codiceScaffale`) REFERENCES `tposizione` (`codiceScaffale`);
-
---
--- Limiti per la tabella `tenciclopedia`
---
-ALTER TABLE `tenciclopedia`
-  ADD CONSTRAINT `tenciclopedia_ibfk_1` FOREIGN KEY (`codiceScaffale`) REFERENCES `tposizione` (`codiceScaffale`);
-
---
--- Limiti per la tabella `tfigurazionecarta`
---
-ALTER TABLE `tfigurazionecarta`
-  ADD CONSTRAINT `tfigurazionecarta_ibfk_1` FOREIGN KEY (`idCarta`) REFERENCES `tcarta` (`idCarta`);
-
---
--- Limiti per la tabella `tlibro`
---
-ALTER TABLE `tlibro`
-  ADD CONSTRAINT `tlibro_ibfk_1` FOREIGN KEY (`codiceScaffale`) REFERENCES `tposizione` (`codiceScaffale`);
-
---
--- Limiti per la tabella `tprenotazionecarta`
---
-ALTER TABLE `tprenotazionecarta`
-  ADD CONSTRAINT `tprenotazionecarta_ibfk_1` FOREIGN KEY (`idUtente`) REFERENCES `tutente` (`idUtente`),
-  ADD CONSTRAINT `tprenotazionecarta_ibfk_2` FOREIGN KEY (`idCarta`) REFERENCES `tcarta` (`idCarta`);
-
---
--- Limiti per la tabella `tprenotazionelibro`
---
-ALTER TABLE `tprenotazionelibro`
-  ADD CONSTRAINT `tprenotazionelibro_ibfk_1` FOREIGN KEY (`idUtente`) REFERENCES `tutente` (`idUtente`),
-  ADD CONSTRAINT `tprenotazionelibro_ibfk_2` FOREIGN KEY (`idLibro`) REFERENCES `tlibro` (`idLibro`);
-
---
--- Limiti per la tabella `tprenotazionevolume`
---
-ALTER TABLE `tprenotazionevolume`
-  ADD CONSTRAINT `tprenotazionevolume_ibfk_1` FOREIGN KEY (`idUtente`) REFERENCES `tutente` (`idUtente`),
-  ADD CONSTRAINT `tprenotazionevolume_ibfk_2` FOREIGN KEY (`idVolume`) REFERENCES `tvolume` (`idVolume`);
-
---
--- Limiti per la tabella `tprestitocarta`
---
-ALTER TABLE `tprestitocarta`
-  ADD CONSTRAINT `tprestitocarta_ibfk_1` FOREIGN KEY (`idPersonaleErogatore`) REFERENCES `tpersonale` (`idPersonale`),
-  ADD CONSTRAINT `tprestitocarta_ibfk_2` FOREIGN KEY (`idPersonaleConsegna`) REFERENCES `tpersonale` (`idPersonale`),
-  ADD CONSTRAINT `tprestitocarta_ibfk_3` FOREIGN KEY (`idUtente`) REFERENCES `tutente` (`idUtente`),
-  ADD CONSTRAINT `tprestitocarta_ibfk_4` FOREIGN KEY (`idCarta`) REFERENCES `tcarta` (`idCarta`);
-
---
--- Limiti per la tabella `tprestitolibro`
---
-ALTER TABLE `tprestitolibro`
-  ADD CONSTRAINT `tprestitolibro_ibfk_1` FOREIGN KEY (`idPersonaleErogatore`) REFERENCES `tpersonale` (`idPersonale`),
-  ADD CONSTRAINT `tprestitolibro_ibfk_2` FOREIGN KEY (`idPersonaleConsegna`) REFERENCES `tpersonale` (`idPersonale`),
-  ADD CONSTRAINT `tprestitolibro_ibfk_3` FOREIGN KEY (`idUtente`) REFERENCES `tutente` (`idUtente`),
-  ADD CONSTRAINT `tprestitolibro_ibfk_4` FOREIGN KEY (`idLibro`) REFERENCES `tlibro` (`idLibro`);
-
---
--- Limiti per la tabella `tprestitovolume`
---
-ALTER TABLE `tprestitovolume`
-  ADD CONSTRAINT `tprestitovolume_ibfk_1` FOREIGN KEY (`idPersonaleErogatore`) REFERENCES `tpersonale` (`idPersonale`),
-  ADD CONSTRAINT `tprestitovolume_ibfk_2` FOREIGN KEY (`idPersonaleConsegna`) REFERENCES `tpersonale` (`idPersonale`),
-  ADD CONSTRAINT `tprestitovolume_ibfk_3` FOREIGN KEY (`idUtente`) REFERENCES `tutente` (`idUtente`),
-  ADD CONSTRAINT `tprestitovolume_ibfk_4` FOREIGN KEY (`idVolume`) REFERENCES `tvolume` (`idVolume`);
-
---
--- Limiti per la tabella `trestituzionecarta`
---
-ALTER TABLE `trestituzionecarta`
-  ADD CONSTRAINT `trestituzionecarta_ibfk_1` FOREIGN KEY (`idPersonale`) REFERENCES `tpersonale` (`idPersonale`),
-  ADD CONSTRAINT `trestituzionecarta_ibfk_2` FOREIGN KEY (`idUtente`) REFERENCES `tutente` (`idUtente`),
-  ADD CONSTRAINT `trestituzionecarta_ibfk_3` FOREIGN KEY (`idCarta`) REFERENCES `tcarta` (`idCarta`);
-
---
--- Limiti per la tabella `trestituzionelibro`
---
-ALTER TABLE `trestituzionelibro`
-  ADD CONSTRAINT `trestituzionelibro_ibfk_1` FOREIGN KEY (`idPersonale`) REFERENCES `tpersonale` (`idPersonale`),
-  ADD CONSTRAINT `trestituzionelibro_ibfk_2` FOREIGN KEY (`idUtente`) REFERENCES `tutente` (`idUtente`),
-  ADD CONSTRAINT `trestituzionelibro_ibfk_3` FOREIGN KEY (`idLibro`) REFERENCES `tlibro` (`idLibro`);
-
---
--- Limiti per la tabella `trestituzionevolume`
---
-ALTER TABLE `trestituzionevolume`
-  ADD CONSTRAINT `trestituzionevolume_ibfk_1` FOREIGN KEY (`idPersonale`) REFERENCES `tpersonale` (`idPersonale`),
-  ADD CONSTRAINT `trestituzionevolume_ibfk_2` FOREIGN KEY (`idUtente`) REFERENCES `tutente` (`idUtente`),
-  ADD CONSTRAINT `trestituzionevolume_ibfk_3` FOREIGN KEY (`idVolume`) REFERENCES `tvolume` (`idVolume`);
-
---
--- Limiti per la tabella `tscritturaenciclopedia`
---
-ALTER TABLE `tscritturaenciclopedia`
-  ADD CONSTRAINT `tscritturaenciclopedia_ibfk_1` FOREIGN KEY (`idEnciclopedia`) REFERENCES `tenciclopedia` (`idEnciclopedia`);
-
---
--- Limiti per la tabella `ttelefono`
---
-ALTER TABLE `ttelefono`
-  ADD CONSTRAINT `ttelefono_ibfk_1` FOREIGN KEY (`idUtente`) REFERENCES `tutente` (`idUtente`);
-
---
--- Limiti per la tabella `tvolume`
---
-ALTER TABLE `tvolume`
-  ADD CONSTRAINT `tvolume_ibfk_1` FOREIGN KEY (`idEnciclopedia`) REFERENCES `tenciclopedia` (`idEnciclopedia`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
