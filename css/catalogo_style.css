@@ -295,5 +295,19 @@ body
 
 #btnRevoca
 {
+    font-size: 110%;
+    padding: 0.7vw 1vw;
+    background-color: red;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: inherit;
+    margin: 2vw;
+}
 
+#btnRevoca:hover
+{
+    background-color: #b60000;
 }
