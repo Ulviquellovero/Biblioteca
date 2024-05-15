@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Creato il: Mag 14, 2024 alle 18:31
--- Versione del server: 10.4.32-MariaDB
--- Versione PHP: 8.2.12
+-- Host: localhost
+-- Creato il: Mag 15, 2024 alle 08:49
+-- Versione del server: 10.11.4-MariaDB-1~deb12u1
+-- Versione PHP: 8.2.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -175,7 +175,7 @@ CREATE TABLE `tenciclopedia` (
 
 INSERT INTO `tenciclopedia` (`idEnciclopedia`, `titolo`, `annoPubblicazione`, `nVolumi`, `nomeCasaEditrice`, `codiceScaffale`) VALUES
 (1, 'Enciclopedia Universale: Dal Big Bang alla Vita Moderna', '2005', 3, 'Zanichelli', 21),
-(2, 'Enciclopedia sulla Robotica', '2005', 3, 'Mondadori', 22),
+(2, 'Enciclopedia Universale: Dal Big Bang alla Vita Moderna', '2005', 3, 'Mondadori', 22),
 (3, 'Enciclopedia Storica del Mondo Antico', '2020', 2, 'Treccani', 23),
 (4, 'Enciclopedia delle Arti e della Cultura Globale', '2008', 3, 'Treccani', 24),
 (5, 'Enciclopedia dei Popoli del Mondo: Storia, Cultura e Tradizioni', '2024', 4, 'Zanichelli', 25);
@@ -255,40 +255,40 @@ INSERT INTO `tpersonale` (`idPersonale`, `nomeUtente`, `password`) VALUES
 
 CREATE TABLE `tposizione` (
   `codiceScaffale` int(11) NOT NULL,
-  `codiceArmadio` int(11) NOT NULL,
-  `codiceStanza` int(11) NOT NULL
+  `identificativoArmadio` varchar(255) NOT NULL,
+  `identificativoStanza` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dump dei dati per la tabella `tposizione`
 --
 
-INSERT INTO `tposizione` (`codiceScaffale`, `codiceArmadio`, `codiceStanza`) VALUES
-(1, 1, 1),
-(2, 1, 1),
-(3, 1, 1),
-(4, 1, 1),
-(5, 1, 1),
-(6, 2, 1),
-(7, 2, 1),
-(8, 2, 1),
-(9, 2, 1),
-(10, 2, 1),
-(11, 3, 2),
-(12, 3, 2),
-(13, 3, 2),
-(14, 4, 2),
-(15, 4, 2),
-(16, 4, 2),
-(17, 5, 2),
-(18, 5, 2),
-(19, 5, 2),
-(20, 6, 2),
-(21, 7, 3),
-(22, 7, 3),
-(23, 7, 3),
-(24, 8, 3),
-(25, 8, 3);
+INSERT INTO `tposizione` (`codiceScaffale`, `identificativoArmadio`, `identificativoStanza`) VALUES
+(1, 'A', 'Stanza Libri'),
+(2, 'A', 'Stanza Libri'),
+(3, 'A', 'Stanza Libri'),
+(4, 'A', 'Stanza Libri'),
+(5, 'A', 'Stanza Libri'),
+(6, 'B', 'Stanza Libri'),
+(7, 'B', 'Stanza Libri'),
+(8, 'B', 'Stanza Libri'),
+(9, 'B', 'Stanza Libri'),
+(10, 'B', 'Stanza Libri'),
+(11, 'C', 'Stanza Carte'),
+(12, 'C', 'Stanza Carte'),
+(13, 'C', 'Stanza Carte'),
+(14, 'C', 'Stanza Carte'),
+(15, 'C', 'Stanza Carte'),
+(16, 'C', 'Stanza Carte'),
+(17, 'D', 'Stanza Carte'),
+(18, 'D', 'Stanza Carte'),
+(19, 'D', 'Stanza Carte'),
+(20, 'E', 'Stanza Carte'),
+(21, 'F', 'Stanza Enciclopedie'),
+(22, 'F', 'Stanza Enciclopedie'),
+(23, 'F', 'Stanza Enciclopedie'),
+(24, 'G', 'Stanza Enciclopedie'),
+(25, 'G', 'Stanza Enciclopedie');
 
 -- --------------------------------------------------------
 
@@ -372,17 +372,10 @@ CREATE TABLE `tprestitocarta` (
   `idPrestitoCarta` int(11) NOT NULL,
   `data` date NOT NULL,
   `idPersonaleErogatore` int(11) NOT NULL,
-  `idPersonaleConsegna` int(11) DEFAULT NULL,
+  `idPersonaleConsegna` int(11) NOT NULL,
   `idUtente` int(11) NOT NULL,
   `idCarta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dump dei dati per la tabella `tprestitocarta`
---
-
-INSERT INTO `tprestitocarta` (`idPrestitoCarta`, `data`, `idPersonaleErogatore`, `idPersonaleConsegna`, `idUtente`, `idCarta`) VALUES
-(3, '2024-05-13', 2, NULL, 2, 15);
 
 -- --------------------------------------------------------
 
@@ -394,7 +387,7 @@ CREATE TABLE `tprestitolibro` (
   `idPrestitoLibro` int(11) NOT NULL,
   `data` date NOT NULL,
   `idPersonaleErogatore` int(11) NOT NULL,
-  `idPersonaleConsegna` int(11) DEFAULT NULL,
+  `idPersonaleConsegna` int(11) NOT NULL,
   `idUtente` int(11) NOT NULL,
   `idLibro` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -409,17 +402,10 @@ CREATE TABLE `tprestitovolume` (
   `idPrestitoVolume` int(11) NOT NULL,
   `data` date NOT NULL,
   `idPersonaleErogatore` int(11) NOT NULL,
-  `idPersonaleConsegna` int(11) DEFAULT NULL,
+  `idPersonaleConsegna` int(11) NOT NULL,
   `idUtente` int(11) NOT NULL,
   `idVolume` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dump dei dati per la tabella `tprestitovolume`
---
-
-INSERT INTO `tprestitovolume` (`idPrestitoVolume`, `data`, `idPersonaleErogatore`, `idPersonaleConsegna`, `idUtente`, `idVolume`) VALUES
-(2, '2024-05-14', 1, NULL, 1, 13);
 
 -- --------------------------------------------------------
 
@@ -553,8 +539,7 @@ INSERT INTO `tvolume` (`idVolume`, `numero`, `ISBN`, `disponibile`, `idEnciclope
 (15, 3, '265-3-54-64363-0', 1, 4),
 (16, 1, '324-1-34-42353-4', 1, 5),
 (17, 2, '324-2-34-42353-4', 1, 5),
-(18, 3, '324-3-34-42353-4', 0, 5),
-(19, 4, '324-4-34-42353-4', 1, 5);
+(18, 3, '324-3-34-42353-4', 0, 5);
 
 -- --------------------------------------------------------
 
@@ -862,19 +847,19 @@ ALTER TABLE `tprenotazionevolume`
 -- AUTO_INCREMENT per la tabella `tprestitocarta`
 --
 ALTER TABLE `tprestitocarta`
-  MODIFY `idPrestitoCarta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idPrestitoCarta` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT per la tabella `tprestitolibro`
 --
 ALTER TABLE `tprestitolibro`
-  MODIFY `idPrestitoLibro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idPrestitoLibro` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT per la tabella `tprestitovolume`
 --
 ALTER TABLE `tprestitovolume`
-  MODIFY `idPrestitoVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idPrestitoVolume` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT per la tabella `trestituzionecarta`
@@ -916,7 +901,7 @@ ALTER TABLE `tutente`
 -- AUTO_INCREMENT per la tabella `tvolume`
 --
 ALTER TABLE `tvolume`
-  MODIFY `idVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `idVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Limiti per le tabelle scaricate

@@ -551,6 +551,33 @@
 
                         visualizzazione.appendChild(divDettagli);
 
+                        if(j.Result[i].permessi == "true")
+                        {
+                            var divPosizione = document.createElement("div");
+                            divPosizione.id = "divPosizione";
+
+                            var titoloPagina = document.createElement("h1");
+                            titoloPagina.textContent = "Posizione Fisica nella Biblioteca";
+                            divPosizione.appendChild(titoloPagina);
+
+                            var codiceScaffale = document.createElement("h2");
+                            codiceScaffale.className = "elementoDettagli";
+                            codiceScaffale.textContent = "Numero scaffale: "+j.Result[i].codiceScaffale;
+                            divPosizione.appendChild(codiceScaffale);
+
+                            var identificativoArmadio = document.createElement("h2");
+                            identificativoArmadio.className = "elementoDettagli";
+                            identificativoArmadio.textContent = "Armadio: "+j.Result[i].identificativoArmadio;
+                            divPosizione.appendChild(identificativoArmadio);
+
+                            var identificativoStanza = document.createElement("h2");
+                            identificativoStanza.className = "elementoDettagli";
+                            identificativoStanza.textContent = "Stanza: "+j.Result[i].identificativoStanza;
+                            divPosizione.appendChild(identificativoStanza);
+
+                            visualizzazione.appendChild(divPosizione);
+                        }
+
                         if(j.Result[i].permessi == "false")
                         {
                             var prenotaBtn = document.createElement("button");
