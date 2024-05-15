@@ -615,6 +615,9 @@
                                 var btnRevoca = document.createElement("button");
                                 btnRevoca.id = "btnRevoca";
                                 btnRevoca.textContent = "Revoca Prestito";
+                                btnRevoca.onclick = function() {
+                                    revocaPrestito();
+                                };
                                 divDettagliPrestito.appendChild(btnRevoca);
                             }
                             else
@@ -687,6 +690,27 @@
                 nessunRisultato.textContent = "Nessun risultato trovato corrispondente alla ricerca";
                 visualizzazione.appendChild(nessunRisultato);
             }
+        }
+        
+        function revocaPrestito()
+        {
+            Swal.fire({
+                title: "Sei sicuro di voler revocare il prestito?",
+                text: "L'azione non può essere annullata!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sì, revoca"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                        title: "Prestito revocato correttamente!",
+                        text: "Il prestito è appena stato revocato",
+                        icon: "success"
+                    });
+                }
+            });
         }
 
         function formatData(data) {
