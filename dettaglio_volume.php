@@ -9,7 +9,7 @@
         if(isset($_SESSION['permessi']))
             $permessi = $_SESSION['permessi'];
         $id = $_GET['id'];
-        $sql = "SELECT idVolume, tc.titolo, numero, ISBN, tc.annoPubblicazione, tc.nVolumi, tc.nomeCasaEditrice, disponibile, tv.idEnciclopedia 
+        $sql = "SELECT idVolume, tc.codiceScaffale, tc.titolo, numero, ISBN, tc.annoPubblicazione, tc.nVolumi, tc.nomeCasaEditrice, disponibile, tv.idEnciclopedia 
                 FROM tvolume tv JOIN tenciclopedia tc ON tv.idEnciclopedia = tc.idEnciclopedia WHERE tv.idVolume = $id";
         $res = mysqli_query($con, $sql);
         $array = mysqli_fetch_array($res);
@@ -21,20 +21,48 @@
             $autori .= ", " . $rowAutore['nome'] . " " . $rowAutore['cognome'];
         if($userId != null && $permessi != null)
         {
-            $row = array(
-                "id" => $array['idVolume'],
-                "titolo" => $array['titolo'],
-                "numero" => $array['numero'],
-                "annoPub" => $array['annoPubblicazione'],
-                "nVolumi" => $array['nVolumi'],
-                "autore" => ltrim($autori, ', '),
-                "nomeCasaEditrice" => $array['nomeCasaEditrice'],
-                "disponibile" => $array['disponibile'],
-                "ISBN" => $array['ISBN'],
-                "userId" => $userId,
-                "permessi" => $permessi,
-                "tipo" => "volumi"
-                );
+            if($permessi == true)
+            {
+                $codiceScaffale = $array['codiceScaffale'];
+                $sqlPosizione = "SELECT codiceScaffale, identificativoArmadio, identificativoStanza
+                FROM tposizione WHERE codiceScaffale = $codiceScaffale";
+                $resPosizione = mysqli_query($con, $sqlPosizione);
+                $arrayPosizione = mysqli_fetch_array($resPosizione);
+                $row = array(
+                    "id" => $array['idVolume'],
+                    "titolo" => $array['titolo'],
+                    "numero" => $array['numero'],
+                    "annoPub" => $array['annoPubblicazione'],
+                    "nVolumi" => $array['nVolumi'],
+                    "autore" => ltrim($autori, ', '),
+                    "nomeCasaEditrice" => $array['nomeCasaEditrice'],
+                    "disponibile" => $array['disponibile'],
+                    "ISBN" => $array['ISBN'],
+                    "userId" => $userId,
+                    "permessi" => $permessi,
+                    "tipo" => "volumi",
+                    "codiceScaffale" => $arrayPosizione['codiceScaffale'],
+                    "identificativoArmadio" => $arrayPosizione['identificativoArmadio'],
+                    "identificativoStanza" => $arrayPosizione['identificativoStanza']
+                    );
+            }
+            else
+            {
+                $row = array(
+                    "id" => $array['idVolume'],
+                    "titolo" => $array['titolo'],
+                    "numero" => $array['numero'],
+                    "annoPub" => $array['annoPubblicazione'],
+                    "nVolumi" => $array['nVolumi'],
+                    "autore" => ltrim($autori, ', '),
+                    "nomeCasaEditrice" => $array['nomeCasaEditrice'],
+                    "disponibile" => $array['disponibile'],
+                    "ISBN" => $array['ISBN'],
+                    "userId" => $userId,
+                    "permessi" => $permessi,
+                    "tipo" => "volumi"
+                    );
+            }
         }
         else
         {
