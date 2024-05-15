@@ -614,9 +614,13 @@
 
                                 var btnRevoca = document.createElement("button");
                                 btnRevoca.id = "btnRevoca";
-                                btnRevoca.textContent = "Revoca Prestito";
+                                btnRevoca.textContent = "Contrassegna come restituito";
+                                btnRevoca.setAttribute("libro-id", j.Result[i].id);
+                                btnRevoca.setAttribute("utente-id", j.Result[i].idUtente);
                                 btnRevoca.onclick = function() {
-                                    revocaPrestito();
+                                    var idLibro = this.getAttribute("libro-id");
+                                    var idUtente = this.getAttribute("utente-id");
+                                    revocaPrestito(idLibro, idUtente);
                                 };
                                 divDettagliPrestito.appendChild(btnRevoca);
                             }
@@ -692,21 +696,23 @@
             }
         }
         
-        function revocaPrestito()
+        function revocaPrestito(idLibro, idUtente)
         {
+            alert(idLibro);
+            alert(idUtente);
             Swal.fire({
-                title: "Sei sicuro di voler revocare il prestito?",
+                title: "Sei sicuro di voler contrassegnare come restituito il prestito?",
                 text: "L'azione non può essere annullata!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Sì, revoca"
+                confirmButtonText: "Sì, contrassegna"
                 }).then((result) => {
                     if (result.isConfirmed) {
                         Swal.fire({
-                        title: "Prestito revocato correttamente!",
-                        text: "Il prestito è appena stato revocato",
+                        title: "Prestito contrassegnato come restituito!",
+                        text: "Il prestito è appena stato contrassegnato come restituito",
                         icon: "success"
                     });
                 }

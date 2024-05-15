@@ -40,7 +40,7 @@
                 );
 
                 $idLibro = $array['idLibro'];
-                $sqlPrenotazione = "SELECT tpl.data AS data, tu.nome AS nome, tu.cognome AS cognome, tu.codiceFiscale AS codiceFiscale, tpl.idPersonaleErogatore AS idPersonaleErogatore, tpl.idPersonaleConsegna AS idPersonaleConsegna FROM tprestitolibro tpl JOIN tutente tu ON tpl.idUtente = tu.idUtente WHERE tpl.idLibro = $idLibro";
+                $sqlPrenotazione = "SELECT tpl.idUtente AS idUtente, tpl.data AS data, tu.nome AS nome, tu.cognome AS cognome, tu.codiceFiscale AS codiceFiscale, tpl.idPersonaleErogatore AS idPersonaleErogatore, tpl.idPersonaleConsegna AS idPersonaleConsegna FROM tprestitolibro tpl JOIN tutente tu ON tpl.idUtente = tu.idUtente WHERE tpl.idLibro = $idLibro";
                 $resPrenotazione = mysqli_query($con, $sqlPrenotazione);
                 if(mysqli_num_rows($resPrenotazione) != 0) 
                 {
@@ -59,6 +59,7 @@
                     $resPersonaleConsegna = mysqli_query($con, $sqlPersonaleConsegna);
                     $arrayPersonaleConsegna = mysqli_fetch_array($resPersonaleConsegna);
                     $row["nomeUtentePersonaleConsegna"] = $arrayPersonaleConsegna['nomeUtente'];
+                    $row["idUtente"] = $arrayPrenotazione['idUtente'];
                 }
             }
             else
