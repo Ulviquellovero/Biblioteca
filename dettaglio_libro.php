@@ -38,6 +38,28 @@
                     "identificativoArmadio" => $arrayPosizione['identificativoArmadio'],
                     "identificativoStanza" => $arrayPosizione['identificativoStanza']
                 );
+
+                $idLibro = $array['idLibro'];
+                $sqlPrenotazione = "SELECT tpl.data AS data, tu.nome AS nome, tu.cognome AS cognome, tu.codiceFiscale AS codiceFiscale, tpl.idPersonaleErogatore AS idPersonaleErogatore, tpl.idPersonaleConsegna AS idPersonaleConsegna FROM tprestitolibro tpl JOIN tutente tu ON tpl.idUtente = tu.idUtente WHERE tpl.idLibro = $idLibro";
+                $resPrenotazione = mysqli_query($con, $sqlPrenotazione);
+                if(mysqli_num_rows($resPrenotazione) != 0) 
+                {
+                    $arrayPrenotazione = mysqli_fetch_array($resPrenotazione);
+                    $nomeUtente = $arrayPrenotazione['nome'] . " " . $arrayPrenotazione['cognome'];
+                    $row["data"] = $arrayPrenotazione['data'];
+                    $row["nomeUtente"] = $nomeUtente;
+                    $row["codiceFiscale"] = $arrayPrenotazione['codiceFiscale'];
+                    $idPersonaleErogatore = $arrayPrenotazione['idPersonaleErogatore'];
+                    $sqlPersonaleErogatore = "SELECT nomeUtente FROM tpersonale WHERE idPersonale = $idPersonaleErogatore";
+                    $resPersonaleErogatore = mysqli_query($con, $sqlPersonaleErogatore);
+                    $arrayPersonaleErogatore = mysqli_fetch_array($resPersonaleErogatore);
+                    $row["nomeUtentePersonaleErogatore"] = $arrayPersonaleErogatore['nomeUtente'];
+                    $idPersonaleConsegna = $arrayPrenotazione['idPersonaleConsegna'];
+                    $sqlPersonaleConsegna = "SELECT nomeUtente FROM tpersonale WHERE idPersonale = $idPersonaleConsegna";
+                    $resPersonaleConsegna = mysqli_query($con, $sqlPersonaleConsegna);
+                    $arrayPersonaleConsegna = mysqli_fetch_array($resPersonaleConsegna);
+                    $row["nomeUtentePersonaleConsegna"] = $arrayPersonaleConsegna['nomeUtente'];
+                }
             }
             else
             {

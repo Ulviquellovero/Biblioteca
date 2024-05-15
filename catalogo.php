@@ -3,6 +3,7 @@
         <title>Catalogo</title>
         <link rel="icon" type="image/png" href="img/Sapienza.png">
         <link rel="stylesheet" href="css/catalogo_style.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
 
     <body>
@@ -506,7 +507,7 @@
                         divDettagli.id = "divDettagli";
 
                         var titoloPagina = document.createElement("h1");
-                        titoloPagina.id = "titoloLibro";
+                        titoloPagina.id = "titoloPagina";
                         if(j.Result[i].numero != undefined)
                             titoloPagina.textContent = j.Result[i].titolo + " Volume " + j.Result[i].numero;
                         else
@@ -576,6 +577,54 @@
                             divPosizione.appendChild(identificativoStanza);
 
                             visualizzazione.appendChild(divPosizione);
+
+                            var divDettagliPrestito = document.createElement("div");
+                            divDettagliPrestito.id = "divPosizione";
+
+                            var titoloSezione = document.createElement("h1");
+                            titoloSezione.textContent = "Dettagli Riguardanti il Prestito";
+                            divDettagliPrestito.appendChild(titoloSezione);
+
+                            if(j.Result[i].nomeUtentePersonaleErogatore != undefined)
+                            {
+                                var nomeUtente = document.createElement("h2");
+                                nomeUtente.className = "elementoDettagli";
+                                nomeUtente.textContent = "Destinatario del prestito: "+j.Result[i].nomeUtente;
+                                divDettagliPrestito.appendChild(nomeUtente);
+
+                                var codiceFiscale = document.createElement("h2");
+                                codiceFiscale.className = "elementoDettagli";
+                                codiceFiscale.textContent = "Codice fiscale del destinatario: "+j.Result[i].codiceFiscale;
+                                divDettagliPrestito.appendChild(codiceFiscale);
+
+                                var data = document.createElement("h2");
+                                data.className = "elementoDettagli";
+                                data.textContent = "Data del prestito: " + formatData(j.Result[i].data);
+                                divDettagliPrestito.appendChild(data);
+                                
+                                var nomeUtentePersonaleErogatore = document.createElement("h2");
+                                nomeUtentePersonaleErogatore.className = "elementoDettagli";
+                                nomeUtentePersonaleErogatore.textContent = "Erogatore del prestito: " + j.Result[i].nomeUtentePersonaleErogatore;
+                                divDettagliPrestito.appendChild(nomeUtentePersonaleErogatore);
+
+                                var nomeUtentePersonaleConsegna = document.createElement("h2");
+                                nomeUtentePersonaleConsegna.className = "elementoDettagli";
+                                nomeUtentePersonaleConsegna.textContent = "Addetto alla consegna: " + j.Result[i].nomeUtentePersonaleConsegna;
+                                divDettagliPrestito.appendChild(nomeUtentePersonaleConsegna);
+
+                                var btnRevoca = document.createElement("button");
+                                btnRevoca.id = "btnRevoca";
+                                btnRevoca.textContent = "Revoca Prestito";
+                                divDettagliPrestito.appendChild(btnRevoca);
+                            }
+                            else
+                            {
+                                var nomeUtente = document.createElement("h2");
+                                nomeUtente.className = "elementoDettagli";
+                                nomeUtente.textContent = "L'elemento non è in prestito";
+                                divDettagliPrestito.appendChild(nomeUtente);
+                            }
+                            visualizzazione.appendChild(divDettagliPrestito);
                         }
 
                         if(j.Result[i].permessi == "false")
@@ -638,6 +687,11 @@
                 nessunRisultato.textContent = "Nessun risultato trovato corrispondente alla ricerca";
                 visualizzazione.appendChild(nessunRisultato);
             }
+        }
+
+        function formatData(data) {
+            var parts = data.split('-');
+            return parts[2] + '/' + parts[1] + '/' + parts[0];
         }
         
         function creaCatalogoVolumi(id)
@@ -764,9 +818,21 @@
                 var res = xhttp.responseText;
                 var j = JSON.parse(res);
                 if(j.prenotato == "true")
-                    alert("Volume prenotato! Per maggiori informazioni consulta la sezione 'Le mie prenotazioni'");
+                {
+                    Swal.fire({
+                        title: "Volume prenotato!",
+                        text: "Il volume è stato prenotato! Per maggiori informazioni consulta la sezione 'Le mie prenotazioni'",
+                        icon: "success"
+                    });
+                }
                 else
-                    alert("Hai già prenotato questo volume!");
+                {
+                    Swal.fire({
+                        title: "Hai già prenotato questo volume!",
+                        text: "Hai già prenotato questo volume! Non puoi prenotare lo stesso volume più volte",
+                        icon: "error"
+                    });
+                }
             }
             xhttp.open("POST", "prenota_volume.php?idVolume=" + idVolume, true);
             xhttp.send();
@@ -779,9 +845,21 @@
                 var res = xhttp.responseText;
                 var j = JSON.parse(res);
                 if(j.prenotato == "true")
-                    alert("Libro prenotato! Per maggiori informazioni consulta la sezione 'Le mie prenotazioni'");
+                {
+                    Swal.fire({
+                        title: "Libro prenotato!",
+                        text: "Il libro è stato prenotato! Per maggiori informazioni consulta la sezione 'Le mie prenotazioni'",
+                        icon: "success"
+                    });
+                }
                 else
-                    alert("Hai già prenotato questo libro!");
+                {
+                    Swal.fire({
+                        title: "Hai già prenotato questo libro!",
+                        text: "Hai già prenotato questo libro! Non puoi prenotare lo stesso libro più volte",
+                        icon: "error"
+                    });
+                }
             }
             xhttp.open("POST", "prenota_libro.php?idLibro=" + idLibro, true);
             xhttp.send();
@@ -794,9 +872,21 @@
                 var res = xhttp.responseText;
                 var j = JSON.parse(res);
                 if(j.prenotato == "true")
-                    alert("Carta prenotata! Per maggiori informazioni consulta la sezione 'Le mie prenotazioni'");
+                {
+                    Swal.fire({
+                        title: "Carta prenotata!",
+                        text: "La carta è stata prenotata! Per maggiori informazioni consulta la sezione 'Le mie prenotazioni'",
+                        icon: "success"
+                    });
+                }
                 else
-                    alert("Hai già prenotato questa carta!");
+                {
+                    Swal.fire({
+                        title: "Hai già prenotato questa carta!",
+                        text: "Hai già prenotato questa carta! Non puoi prenotare la stessa carta più volte",
+                        icon: "error"
+                    });
+                }
             }
             xhttp.open("POST", "prenota_carta.php?idCarta=" + idCarta, true);
             xhttp.send();
