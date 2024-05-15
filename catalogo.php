@@ -625,21 +625,24 @@
                                         revocaPrestitoVolume(idLibro, idUtente);
                                     };
                                 }
-                                if( j.Result[i].tipo == "libri")
-                                {
-                                    btnRevoca.onclick = function() {
-                                        var idLibro = this.getAttribute("libro-id");
-                                        var idUtente = this.getAttribute("utente-id");
-                                        revocaPrestitoLibro(idLibro, idUtente);
-                                    };
-                                }
                                 else
                                 {
-                                    btnRevoca.onclick = function() {
-                                        var idLibro = this.getAttribute("libro-id");
-                                        var idUtente = this.getAttribute("utente-id");
-                                        revocaPrestitoCarta(idLibro, idUtente);
-                                    };
+                                    if( j.Result[i].tipo == "libri")
+                                    {
+                                        btnRevoca.onclick = function() {
+                                            var idLibro = this.getAttribute("libro-id");
+                                            var idUtente = this.getAttribute("utente-id");
+                                            revocaPrestitoLibro(idLibro, idUtente);
+                                        };
+                                    }
+                                    else
+                                    {
+                                        btnRevoca.onclick = function() {
+                                            var idLibro = this.getAttribute("libro-id");
+                                            var idUtente = this.getAttribute("utente-id");
+                                            revocaPrestitoCarta(idLibro, idUtente);
+                                        };
+                                    }
                                 }
                                 divDettagliPrestito.appendChild(btnRevoca);
                             }
@@ -649,10 +652,13 @@
                                 nomeUtente.className = "elementoDettagli";
                                 if( j.Result[i].tipo == "volumi")
                                     nomeUtente.textContent = "Il volume non è in prestito";
-                                if( j.Result[i].tipo == "libri")
-                                    nomeUtente.textContent = "Il libro non è in prestito";
                                 else
-                                    nomeUtente.textContent = "La carta non è in prestito";
+                                {
+                                    if( j.Result[i].tipo == "libri")
+                                    nomeUtente.textContent = "Il libro non è in prestito";
+                                    else
+                                        nomeUtente.textContent = "La carta non è in prestito";
+                                }
                                 divDettagliPrestito.appendChild(nomeUtente);
                             }
                             visualizzazione.appendChild(divDettagliPrestito);
@@ -796,6 +802,7 @@
                 confirmButtonText: "Sì, contrassegna"
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        revocaPrestitoVolumeQuery(idLibro, idUtente);
                         Swal.fire({
                         title: "Prestito contrassegnato come restituito!",
                         text: "Il prestito è appena stato contrassegnato come restituito",
@@ -803,6 +810,16 @@
                     });
                 }
             });
+        }
+
+        function revocaPrestitoVolumeQuery(idVolume, idUtente)
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                mostraVolumi(idVolume);
+            }
+            xhttp.open("POST", "revoca_prestito_volume.php?idVolume="+idVolume+"&idUtente="+idUtente, true);
+            xhttp.send();
         }
 
         function formatData(data) {
