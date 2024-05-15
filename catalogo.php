@@ -764,6 +764,7 @@
                 confirmButtonText: "Sì, contrassegna"
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        revocaPrestitoCartaQuery(idLibro, idUtente);
                         Swal.fire({
                         title: "Prestito contrassegnato come restituito!",
                         text: "Il prestito è appena stato contrassegnato come restituito",
@@ -771,6 +772,16 @@
                     });
                 }
             });
+        }
+
+        function revocaPrestitoCartaQuery(idCarta, idUtente)
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                mostraCarta(idCarta);
+            }
+            xhttp.open("POST", "revoca_prestito_carta.php?idCarta="+idCarta+"&idUtente="+idUtente, true);
+            xhttp.send();
         }
 
         function revocaPrestitoVolume(idLibro, idUtente)
