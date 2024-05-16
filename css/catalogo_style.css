@@ -348,3 +348,22 @@ body
     text-align: center;
     margin-top: 5vw;
 }
+
+#btnPresta
+{
+    font-size: 110%;
+    padding: 0.7vw 1vw;
+    background-color: #01b901;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: inherit;
+    margin-left: 2vw;
+}
+
+#btnPresta:hover
+{
+    background-color: green;
+}

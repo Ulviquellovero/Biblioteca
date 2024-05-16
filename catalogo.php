@@ -664,19 +664,22 @@
                             
                             visualizzazione.appendChild(divDettagliPrestito);
 
+                            $inPrestito = false;
+                            if(j.Result[i].nomeUtentePersonaleErogatore != undefined)   
+                                $inPrestito = true;
                             if( j.Result[i].tipo == "volumi")
                             {
-                                creaListaPrenotazioniVolume(j.Result[i].id);
+                                creaListaPrenotazioniVolume(j.Result[i].id, $inPrestito);
                             }
                             else
                             {
                                 if( j.Result[i].tipo == "libri")
                                 {
-                                    creaListaPrenotazioniLibro(j.Result[i].id);
+                                    creaListaPrenotazioniLibro(j.Result[i].id, $inPrestito);
                                 }
                                 else
                                 {
-                                    creaListaPrenotazioniCarta(j.Result[i].id);
+                                    creaListaPrenotazioniCarta(j.Result[i].id, $inPrestito);
                                 }
                             }
                         }
@@ -1042,20 +1045,20 @@
             xhttp.send();
         }
 
-        function creaListaPrenotazioniLibro(id)
+        function creaListaPrenotazioniLibro(id, inPrestito)
         {
             const xhttp = new XMLHttpRequest();
             xhttp.onload = function() {
                 var res = xhttp.responseText;
                 var j = JSON.parse(res);
                 var visualizzazione = document.getElementById("visualizzazione");
-                creaHtmlListaPrenotazioniLibro(j, visualizzazione);
+                creaHtmlListaPrenotazioniLibro(j, visualizzazione, inPrestito);
             }
             xhttp.open("POST", "crea_lista_prenotazioni_libro_noUser.php?id="+id, true);
             xhttp.send();
         }
 
-        function creaHtmlListaPrenotazioniLibro(j, visualizzazione)
+        function creaHtmlListaPrenotazioniLibro(j, visualizzazione, inPrestito)
         {
             var divPrenotazioni = document.createElement("div");
             divPrenotazioni.id = "divPrenotazioni";
@@ -1091,6 +1094,14 @@
                                     dataPrenotazione.className = "datoLibro";
                                     dataPrenotazione.textContent = "Data di prenotazione: " + formatData(j.Result[i].dataPrenotazione);
                                     containerDate.appendChild(dataPrenotazione);
+
+                            if(inPrestito == false && i == 0)
+                            {
+                                var btnPresta = document.createElement("btn");
+                                btnPresta.id = "btnPresta";
+                                btnPresta.textContent = "Presta l'elemento";
+                                containerDate.appendChild(btnPresta);
+                            }
                         divLista.appendChild(containerLibro);
                     }
                     divPrenotazioni.appendChild(divLista);
