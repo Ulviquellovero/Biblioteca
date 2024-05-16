@@ -1410,7 +1410,7 @@
                 confirmButtonText: "Sì, contrassegna"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        //prestaCartaQuery(idVolume, idUtente);
+                        consegnaVolumeQuery(idVolume, idUtente);
                         Swal.fire({
                         title: "Volume consegnato!",
                         text: "Il volume è stata consegnato! Sei stato registrato come responsabile della consegna di questo prestito.",
@@ -1418,6 +1418,16 @@
                     });
                 }
             });
+        }
+
+        function consegnaVolumeQuery(idVolume, idUtente)
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                mostraVolumi(idVolume);
+            }
+            xhttp.open("POST", "consegna_volume.php?idVolume="+idVolume+"&idUtente="+idUtente, true);
+            xhttp.send();
         }
     </script>
 </html>
