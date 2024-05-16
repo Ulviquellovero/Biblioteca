@@ -1058,6 +1058,32 @@
             xhttp.send();
         }
 
+        function creaListaPrenotazioniCarta(id, inPrestito)
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                var visualizzazione = document.getElementById("visualizzazione");
+                creaHtmlListaPrenotazioniLibro(j, visualizzazione, inPrestito);
+            }
+            xhttp.open("POST", "crea_lista_prenotazioni_carta_noUser.php?id="+id, true);
+            xhttp.send();
+        }
+
+        function creaListaPrenotazioniVolume(id, inPrestito)
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                var visualizzazione = document.getElementById("visualizzazione");
+                creaHtmlListaPrenotazioniLibro(j, visualizzazione, inPrestito);
+            }
+            xhttp.open("POST", "crea_lista_prenotazioni_volume_noUser.php?id="+id, true);
+            xhttp.send();
+        }
+
         function creaHtmlListaPrenotazioniLibro(j, visualizzazione, inPrestito)
         {
             var divPrenotazioni = document.createElement("div");
