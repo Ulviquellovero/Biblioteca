@@ -1125,7 +1125,44 @@
                             {
                                 var btnPresta = document.createElement("btn");
                                 btnPresta.id = "btnPresta";
-                                btnPresta.textContent = "Presta l'elemento";
+                                if(j.Result[i].tipo == "volumi")
+                                    btnPresta.textContent = "Presta il volume";
+                                else
+                                {
+                                    if(j.Result[i].tipo == "libri")
+                                        btnPresta.textContent = "Presta il libro";
+                                    else
+                                        btnPresta.textContent = "Presta la carta";
+                                }
+                                btnPresta.setAttribute("libro-id", j.Result[i].id);
+                                btnPresta.setAttribute("utente-id", j.Result[i].idUtente);
+                                if( j.Result[i].tipo == "volumi")
+                                {
+                                    btnPresta.onclick = function() {
+                                        var idLibro = this.getAttribute("libro-id");
+                                        var idUtente = this.getAttribute("utente-id");
+                                        prestaVolume(idLibro, idUtente);
+                                    };
+                                }
+                                else
+                                {
+                                    if(j.Result[i].tipo == "libri")
+                                    {
+                                        btnPresta.onclick = function() {
+                                            var idLibro = this.getAttribute("libro-id");
+                                            var idUtente = this.getAttribute("utente-id");
+                                            prestaLibro(idLibro, idUtente);
+                                        };
+                                    }
+                                    else
+                                    {
+                                        btnPresta.onclick = function() {
+                                            var idLibro = this.getAttribute("libro-id");
+                                            var idUtente = this.getAttribute("utente-id");
+                                            prestaCarta(idLibro, idUtente);
+                                        };
+                                    }
+                                }
                                 containerDate.appendChild(btnPresta);
                             }
                         divLista.appendChild(containerLibro);
@@ -1148,6 +1185,70 @@
                 divPrenotazioni.appendChild(nessunRisultato);
             }
             visualizzazione.appendChild(divPrenotazioni);
+        }
+
+        function prestaVolume(idVolume, idUtente)
+        {
+            Swal.fire({
+                title: "Sei sicuro di voler prestare il volume?",
+                text: "L'azione non può essere annullata!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sì, presta"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        prestaVolumeQuery(idVolume, idUtente);
+                        Swal.fire({
+                        title: "Volume prestato!",
+                        text: "L'utente selezionato è appena stato avvisato della conferma della prenotazione. Per ufficializzare il prestito, lo stesso si dovrà presentare in biblioteca per ritirare il volume e un addetto dovrà contrassegnare il volume come consegnato.",
+                        icon: "success"
+                    });
+                }
+            });
+        }
+
+        function prestaVolumeQuery(idVolume, idUtente)
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                mostraVolumi(idVolume);
+            }
+            xhttp.open("POST", "presta_volume.php?idVolume="+idVolume+"&idUtente="+idUtente, true);
+            xhttp.send();
+        }
+
+        function prestaCarta(idCarta, idUtente)
+        {
+            Swal.fire({
+                title: "Sei sicuro di voler prestare la carta?",
+                text: "L'azione non può essere annullata!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sì, presta"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        prestaCartaQuery(idCarta, idUtente);
+                        Swal.fire({
+                        title: "Carta prestata!",
+                        text: "L'utente selezionato è appena stato avvisato della conferma della prenotazione. Per ufficializzare il prestito, lo stesso si dovrà presentare in biblioteca per ritirare la carta e un addetto dovrà contrassegnare la carta come consegnata.",
+                        icon: "success"
+                    });
+                }
+            });
+        }
+
+        function prestaCartaQuery(idCarta, idUtente)
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                mostraCarta(idCarta);
+            }
+            xhttp.open("POST", "presta_carta.php?idCarta="+idCarta+"&idUtente="+idUtente, true);
+            xhttp.send();
         }
     </script>
 </html>

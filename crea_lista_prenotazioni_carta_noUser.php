@@ -18,6 +18,9 @@
                 $nomeUtente = $array['nome'] . " " . $array['cognome'];
                 $arrayPrestiti = mysqli_fetch_array($resPrestiti);
                 $row = array(
+                    "id" => $array['idCarta'],
+                    "idUtente" => $userId,
+                    "tipo" => "carte",
                     "dataPrenotazione" => $array['data'],
                     "nomeUtente" => $nomeUtente
                 );

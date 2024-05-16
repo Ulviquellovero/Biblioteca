@@ -60,10 +60,16 @@
                     $arrayPersonaleErogatore = mysqli_fetch_array($resPersonaleErogatore);
                     $row["nomeUtentePersonaleErogatore"] = $arrayPersonaleErogatore['nomeUtente'];
                     $idPersonaleConsegna = $arrayPrenotazione['idPersonaleConsegna'];
-                    $sqlPersonaleConsegna = "SELECT nomeUtente FROM tpersonale WHERE idPersonale = $idPersonaleConsegna";
-                    $resPersonaleConsegna = mysqli_query($con, $sqlPersonaleConsegna);
-                    $arrayPersonaleConsegna = mysqli_fetch_array($resPersonaleConsegna);
-                    $row["nomeUtentePersonaleConsegna"] = $arrayPersonaleConsegna['nomeUtente'];
+                    if($idPersonaleConsegna != null)
+                    {
+                        $sqlPersonaleConsegna = "SELECT nomeUtente FROM tpersonale WHERE idPersonale = $idPersonaleConsegna";
+                        $resPersonaleConsegna = mysqli_query($con, $sqlPersonaleConsegna);
+                        $arrayPersonaleConsegna = mysqli_fetch_array($resPersonaleConsegna);
+                        echo $idPersonaleConsegna;
+                        $row["nomeUtentePersonaleConsegna"] = $arrayPersonaleConsegna['nomeUtente'];
+                    }
+                    else
+                        $row["nomeUtentePersonaleConsegna"] = "Il volume non è ancora stato consegnato";
                     $row["idUtente"] = $arrayPrenotazione['idUtente'];
                 }
             }

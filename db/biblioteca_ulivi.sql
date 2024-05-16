@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Mag 15, 2024 alle 16:28
+-- Creato il: Mag 16, 2024 alle 13:08
 -- Versione del server: 10.4.32-MariaDB
 -- Versione PHP: 8.2.12
 
@@ -41,6 +41,21 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertPrenotazioneVolume` (IN `idUt
     -- Inserisci un record nella tabella tprenotazionevolume
     INSERT INTO tprenotazionevolume (idUtente, idVolume, data)
     VALUES (idUtente, idVolume, NOW());
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PrestaCarta` (IN `insIdCarta` INT, IN `insIdUtente` INT, IN `insIdPersonaleErogatore` INT)   BEGIN
+    UPDATE tcarta SET disponibile = 0 WHERE idCarta = insIdCarta;
+    INSERT INTO tprestitocarta (data, idPersonaleErogatore, idUtente, idCarta) VALUES (NOW(), insIdPersonaleErogatore, insIdUtente, insIdCarta);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PrestaLibro` (IN `insIdLibro` INT, IN `insIdUtente` INT, IN `insIdPersonaleErogatore` INT)   BEGIN
+    UPDATE tlibro SET disponibile = 0 WHERE idLibro = insIdLibro;
+    INSERT INTO tprestitolibro (data, idPersonaleErogatore, idUtente, idLibro) VALUES (NOW(), insIdPersonaleErogatore, insIdUtente, insIdLibro);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PrestaVolume` (IN `insIdVolume` INT, IN `insIdUtente` INT, IN `insIdPersonaleErogatore` INT)   BEGIN
+    UPDATE tvolume SET disponibile = 0 WHERE idVolume = insIdVolume;
+    INSERT INTO tprestitovolume (data, idPersonaleErogatore, idUtente, idVolume) VALUES (NOW(), insIdPersonaleErogatore, insIdUtente, insIdVolume);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `RevocaPrestitoCarta` (IN `insIdCarta` INT, IN `insIdUtente` INT, IN `insIdPersonale` INT)   BEGIN
@@ -166,7 +181,7 @@ CREATE TABLE `tcarta` (
 INSERT INTO `tcarta` (`idCarta`, `titolo`, `annoPubblicazione`, `ISBN`, `annoRiferimento`, `disponibile`, `nomeCasaEditrice`, `codiceScaffale`) VALUES
 (1, 'Carta Geo-Politica Italia', '2011', '978-1-23-456789-7', '2010', 1, 'Mondadori', 11),
 (2, 'Carta Geo-Politica Europa', '2024', '423-9-31-43190-0', '2023', 1, 'Treccani', 12),
-(3, 'Carta Geo-Politica Africa', '2015', '378-1-23-31234-7', '2013', 0, 'De Agostini', 13),
+(3, 'Carta Geo-Politica Africa', '2015', '378-1-23-31234-7', '2013', 1, 'De Agostini', 13),
 (11, 'Mappa Politica Asia', '2015', '378-2-23-31234-7', '2013', 0, 'De Agostini', 14),
 (12, 'Carta Geo-Politica Mondiale', '2018', '978-1-45-987654-3', '2016', 1, 'National Geographic', 15),
 (13, 'Mappa Politica Europa', '2014', '438-5-63-48765-9', '2012', 0, 'De Agostini', 16),
@@ -329,7 +344,6 @@ CREATE TABLE `tprenotazionecarta` (
 --
 
 INSERT INTO `tprenotazionecarta` (`idPrenotazioneCarta`, `data`, `idUtente`, `idCarta`) VALUES
-(1, '2024-05-11', 1, 3),
 (2, '2024-05-11', 1, 1),
 (3, '2024-05-11', 1, 2),
 (4, '2024-05-12', 2, 2),
@@ -357,7 +371,9 @@ INSERT INTO `tprenotazionelibro` (`idPrenotazioneLibro`, `data`, `idUtente`, `id
 (4, '2024-05-12', 1, 9),
 (5, '2024-05-12', 1, 5),
 (6, '2024-05-12', 2, 10),
-(7, '2024-05-12', 2, 4);
+(7, '2024-05-12', 2, 4),
+(12, '2024-05-08', 2, 2),
+(13, '2024-05-14', 3, 2);
 
 -- --------------------------------------------------------
 
@@ -377,7 +393,6 @@ CREATE TABLE `tprenotazionevolume` (
 --
 
 INSERT INTO `tprenotazionevolume` (`idPrenotazioneVolume`, `data`, `idUtente`, `idVolume`) VALUES
-(7, '2024-05-11', 1, 15),
 (8, '2024-05-12', 2, 14),
 (9, '2024-05-12', 2, 13),
 (10, '2024-05-12', 2, 15);
@@ -397,13 +412,6 @@ CREATE TABLE `tprestitocarta` (
   `idCarta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dump dei dati per la tabella `tprestitocarta`
---
-
-INSERT INTO `tprestitocarta` (`idPrestitoCarta`, `data`, `idPersonaleErogatore`, `idPersonaleConsegna`, `idUtente`, `idCarta`) VALUES
-(1, '2024-05-08', 2, 1, 1, 3);
-
 -- --------------------------------------------------------
 
 --
@@ -414,7 +422,7 @@ CREATE TABLE `tprestitolibro` (
   `idPrestitoLibro` int(11) NOT NULL,
   `data` date NOT NULL,
   `idPersonaleErogatore` int(11) NOT NULL,
-  `idPersonaleConsegna` int(11) NOT NULL,
+  `idPersonaleConsegna` int(11) DEFAULT NULL,
   `idUtente` int(11) NOT NULL,
   `idLibro` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -429,7 +437,7 @@ CREATE TABLE `tprestitovolume` (
   `idPrestitoVolume` int(11) NOT NULL,
   `data` date NOT NULL,
   `idPersonaleErogatore` int(11) NOT NULL,
-  `idPersonaleConsegna` int(11) NOT NULL,
+  `idPersonaleConsegna` int(11) DEFAULT NULL,
   `idUtente` int(11) NOT NULL,
   `idVolume` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -439,7 +447,7 @@ CREATE TABLE `tprestitovolume` (
 --
 
 INSERT INTO `tprestitovolume` (`idPrestitoVolume`, `data`, `idPersonaleErogatore`, `idPersonaleConsegna`, `idUtente`, `idVolume`) VALUES
-(1, '2024-05-12', 2, 2, 2, 3);
+(5, '2024-05-16', 1, NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -455,6 +463,25 @@ CREATE TABLE `trestituzionecarta` (
   `idCarta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dump dei dati per la tabella `trestituzionecarta`
+--
+
+INSERT INTO `trestituzionecarta` (`idRestituzioneCarta`, `data`, `idPersonale`, `idUtente`, `idCarta`) VALUES
+(1, '2024-05-15', 2, 1, 3),
+(2, '2024-05-15', 2, 1, 15),
+(3, '2024-05-15', 2, 1, 15),
+(4, '2024-05-15', 2, 1, 15),
+(5, '2024-05-15', 2, 1, 15),
+(6, '2024-05-15', 2, 1, 15),
+(7, '2024-05-15', 2, 1, 15),
+(8, '2024-05-15', 2, 1, 15),
+(9, '2024-05-15', 2, 1, 15),
+(10, '2024-05-15', 2, 1, 15),
+(11, '2024-05-15', 2, 1, 15),
+(12, '2024-05-15', 2, 1, 15),
+(13, '2024-05-15', 2, 1, 15);
+
 -- --------------------------------------------------------
 
 --
@@ -469,6 +496,14 @@ CREATE TABLE `trestituzionelibro` (
   `idLibro` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dump dei dati per la tabella `trestituzionelibro`
+--
+
+INSERT INTO `trestituzionelibro` (`idRestituzioneLibro`, `data`, `idPersonale`, `idUtente`, `idLibro`) VALUES
+(3, '2024-05-15', 2, 1, 10),
+(4, '2024-05-16', 2, 1, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -482,6 +517,13 @@ CREATE TABLE `trestituzionevolume` (
   `idUtente` int(11) NOT NULL,
   `idVolume` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dump dei dati per la tabella `trestituzionevolume`
+--
+
+INSERT INTO `trestituzionevolume` (`idRestituzioneVolume`, `data`, `idPersonale`, `idUtente`, `idVolume`) VALUES
+(4, '2024-05-15', 2, 1, 15);
 
 -- --------------------------------------------------------
 
@@ -560,7 +602,7 @@ CREATE TABLE `tvolume` (
 --
 
 INSERT INTO `tvolume` (`idVolume`, `numero`, `ISBN`, `disponibile`, `idEnciclopedia`) VALUES
-(1, 1, '978-1-23-456789-7', 1, 1),
+(1, 1, '978-1-23-456789-7', 0, 1),
 (2, 2, '978-2-23-456789-7', 1, 1),
 (3, 3, '978-3-23-456789-7', 1, 1),
 (7, 1, '343-1-54-47653-9', 1, 2),
@@ -821,13 +863,13 @@ ALTER TABLE `tprenotazionecarta`
 -- AUTO_INCREMENT per la tabella `tprenotazionelibro`
 --
 ALTER TABLE `tprenotazionelibro`
-  MODIFY `idPrenotazioneLibro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `idPrenotazioneLibro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT per la tabella `tprenotazionevolume`
 --
 ALTER TABLE `tprenotazionevolume`
-  MODIFY `idPrenotazioneVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idPrenotazioneVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT per la tabella `tprestitocarta`
@@ -839,31 +881,31 @@ ALTER TABLE `tprestitocarta`
 -- AUTO_INCREMENT per la tabella `tprestitolibro`
 --
 ALTER TABLE `tprestitolibro`
-  MODIFY `idPrestitoLibro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idPrestitoLibro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT per la tabella `tprestitovolume`
 --
 ALTER TABLE `tprestitovolume`
-  MODIFY `idPrestitoVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idPrestitoVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT per la tabella `trestituzionecarta`
 --
 ALTER TABLE `trestituzionecarta`
-  MODIFY `idRestituzioneCarta` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idRestituzioneCarta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT per la tabella `trestituzionelibro`
 --
 ALTER TABLE `trestituzionelibro`
-  MODIFY `idRestituzioneLibro` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idRestituzioneLibro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT per la tabella `trestituzionevolume`
 --
 ALTER TABLE `trestituzionevolume`
-  MODIFY `idRestituzioneVolume` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idRestituzioneVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT per la tabella `tscritturaenciclopedia`

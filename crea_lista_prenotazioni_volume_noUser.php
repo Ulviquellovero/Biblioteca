@@ -18,7 +18,10 @@
                 $nomeUtente = $array['nome'] . " " . $array['cognome'];
                 $arrayPrestiti = mysqli_fetch_array($resPrestiti);
                 $row = array(
+                    "id" => $array['idVolume'],
+                    "idUtente" => $userId,
                     "dataPrenotazione" => $array['data'],
+                    "tipo" => "volumi",
                     "nomeUtente" => $nomeUtente
                 );
                 $resArr[$i] = $row;
