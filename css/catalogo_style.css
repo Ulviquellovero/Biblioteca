@@ -311,3 +311,40 @@ body
 {
     background-color: green;
 }
+
+.titoloLibroPrenotazioni
+{
+    font-size: 2vw;
+}
+
+
+.containerElementoPrenotazioni
+{
+    margin: 2vw;
+    background-color: #b69a7942;
+    border-radius: 1vw;
+    padding: 0.5vw;
+    padding-bottom: 2vw;
+    padding-left: 2vw;
+    transition: margin-left 0.3s ease;
+    text-align: left !important;
+}
+
+.containerElementoPrenotazioni:hover {
+    margin-left: 4vw;
+}
+
+#divPrenotazioniLista
+{
+    overflow: auto; 
+    height: 30%; 
+    width: 85%;
+    margin-inline: 5vw;
+    border-radius: 15px;
+}
+
+#divPrenotazioni
+{
+    text-align: center;
+    margin-top: 5vw;
+}

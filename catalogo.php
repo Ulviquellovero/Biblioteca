@@ -661,7 +661,24 @@
                                 }
                                 divDettagliPrestito.appendChild(nomeUtente);
                             }
+                            
                             visualizzazione.appendChild(divDettagliPrestito);
+
+                            if( j.Result[i].tipo == "volumi")
+                            {
+                                creaListaPrenotazioniVolume(j.Result[i].id);
+                            }
+                            else
+                            {
+                                if( j.Result[i].tipo == "libri")
+                                {
+                                    creaListaPrenotazioniLibro(j.Result[i].id);
+                                }
+                                else
+                                {
+                                    creaListaPrenotazioniCarta(j.Result[i].id);
+                                }
+                            }
                         }
 
                         if(j.Result[i].permessi == "false")
@@ -1023,6 +1040,77 @@
             }
             xhttp.open("POST", "prenota_carta.php?idCarta=" + idCarta, true);
             xhttp.send();
+        }
+
+        function creaListaPrenotazioniLibro(id)
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                var visualizzazione = document.getElementById("visualizzazione");
+                creaHtmlListaPrenotazioniLibro(j, visualizzazione);
+            }
+            xhttp.open("POST", "crea_lista_prenotazioni_libro_noUser.php?id="+id, true);
+            xhttp.send();
+        }
+
+        function creaHtmlListaPrenotazioniLibro(j, visualizzazione)
+        {
+            var divPrenotazioni = document.createElement("div");
+            divPrenotazioni.id = "divPrenotazioni";
+
+            var titoloSezione = document.createElement("h1");
+            titoloSezione.textContent = "Prenotazioni Attive";
+            divPrenotazioni.appendChild(titoloSezione);
+            if(j.Result != null)
+            {
+                if(j.Result.length != 0)
+                {
+                    var divLista = document.createElement("div");
+                    divLista.id = "divPrenotazioniLista";
+                    for(var i=0; i < j.Result.length; i++)
+                    {
+                        var containerLibro = document.createElement("div");
+                        containerLibro.className = "containerElementoPrenotazioni";
+
+                            var titolo = document.createElement("h1");
+                            titolo.className = "titoloLibroPrenotazioni";
+                            titolo.textContent = "Prenotazione effettuata da " + j.Result[i].nomeUtente;
+                            containerLibro.appendChild(titolo);
+
+                            var containerDati = document.createElement("div");
+                            containerDati.className = "containerDati";
+                            containerLibro.appendChild(containerDati);
+                            
+                                var containerDate = document.createElement("div");
+                                containerDate.className = "containerDate";
+                                containerDati.appendChild(containerDate);
+
+                                    var dataPrenotazione = document.createElement("span");
+                                    dataPrenotazione.className = "datoLibro";
+                                    dataPrenotazione.textContent = "Data di prenotazione: " + formatData(j.Result[i].dataPrenotazione);
+                                    containerDate.appendChild(dataPrenotazione);
+                        divLista.appendChild(containerLibro);
+                    }
+                    divPrenotazioni.appendChild(divLista);
+                }
+                else
+                {
+                    var nessunRisultato = document.createElement("h2");
+                    nessunRisultato.className = "elementoDettagli";
+                    nessunRisultato.textContent = "Nessuna prenotazione trovata";
+                    divPrenotazioni.appendChild(nessunRisultato);
+                }
+            }
+            else
+            {
+                var nessunRisultato = document.createElement("h2");
+                nessunRisultato.className = "elementoDettagli";
+                nessunRisultato.textContent = "Nessuna prenotazione trovata";
+                divPrenotazioni.appendChild(nessunRisultato);
+            }
+            visualizzazione.appendChild(divPrenotazioni);
         }
     </script>
 </html>
