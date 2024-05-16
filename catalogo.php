@@ -1378,7 +1378,7 @@
                 confirmButtonText: "Sì, contrassegna"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        //prestaCartaQuery(idLibro, idUtente);
+                        consegnaLibroQuery(idLibro, idUtente);
                         Swal.fire({
                         title: "Libro consegnato!",
                         text: "Il libro è stata consegnato! Sei stato registrato come responsabile della consegna di questo prestito.",
@@ -1386,6 +1386,16 @@
                     });
                 }
             });
+        }
+
+        function consegnaLibroQuery(idLibro, idUtente)
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                mostraLibro(idLibro);
+            }
+            xhttp.open("POST", "consegna_libro.php?idLibro="+idLibro+"&idUtente="+idUtente, true);
+            xhttp.send();
         }
 
         function consegnaVolume(idVolume, idUtente)
