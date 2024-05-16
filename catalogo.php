@@ -1250,5 +1250,37 @@
             xhttp.open("POST", "presta_carta.php?idCarta="+idCarta+"&idUtente="+idUtente, true);
             xhttp.send();
         }
+
+        function prestaLibro(idLibro, idUtente)
+        {
+            Swal.fire({
+                title: "Sei sicuro di voler prestare il libro?",
+                text: "L'azione non può essere annullata!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sì, presta"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        prestaLibroQuery(idLibro, idUtente);
+                        Swal.fire({
+                        title: "Libro prestato!",
+                        text: "L'utente selezionato è appena stato avvisato della conferma della prenotazione. Per ufficializzare il prestito, lo stesso si dovrà presentare in biblioteca per ritirare il libro e un addetto dovrà contrassegnare il libro come consegnato.",
+                        icon: "success"
+                    });
+                }
+            });
+        }
+
+        function prestaLibroQuery(idLibro, idUtente)
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                mostraLibro(idLibro);
+            }
+            xhttp.open("POST", "presta_libro.php?idLibro="+idLibro+"&idUtente="+idUtente, true);
+            xhttp.send();
+        }
     </script>
 </html>

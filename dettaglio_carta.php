@@ -65,7 +65,6 @@
                         $sqlPersonaleConsegna = "SELECT nomeUtente FROM tpersonale WHERE idPersonale = $idPersonaleConsegna";
                         $resPersonaleConsegna = mysqli_query($con, $sqlPersonaleConsegna);
                         $arrayPersonaleConsegna = mysqli_fetch_array($resPersonaleConsegna);
-                        echo $idPersonaleConsegna;
                         $row["nomeUtentePersonaleConsegna"] = $arrayPersonaleConsegna['nomeUtente'];
                     }
                     else
