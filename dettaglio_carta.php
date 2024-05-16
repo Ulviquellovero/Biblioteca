@@ -68,7 +68,7 @@
                         $row["nomeUtentePersonaleConsegna"] = $arrayPersonaleConsegna['nomeUtente'];
                     }
                     else
-                        $row["nomeUtentePersonaleConsegna"] = "Il volume non è ancora stato consegnato";
+                        $row["nomeUtentePersonaleConsegna"] = "La carta non è ancora stata consegnata";
                     $row["idUtente"] = $arrayPrenotazione['idUtente'];
                 }
             }

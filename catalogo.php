@@ -612,39 +612,90 @@
                                 nomeUtentePersonaleConsegna.textContent = "Addetto alla consegna: " + j.Result[i].nomeUtentePersonaleConsegna;
                                 divDettagliPrestito.appendChild(nomeUtentePersonaleConsegna);
 
-                                var btnRevoca = document.createElement("button");
-                                btnRevoca.id = "btnRevoca";
-                                btnRevoca.textContent = "Contrassegna come restituito";
-                                btnRevoca.setAttribute("libro-id", j.Result[i].id);
-                                btnRevoca.setAttribute("utente-id", j.Result[i].idUtente);
-                                if( j.Result[i].tipo == "volumi")
+                                if(j.Result[i].nomeUtentePersonaleConsegna == "Il volume non è ancora stato consegnato")
                                 {
-                                    btnRevoca.onclick = function() {
+                                    var btnConsegna = document.createElement("button");
+                                    btnConsegna.id = "btnConsegna";
+                                    btnConsegna.textContent = "Contrassegna come consegnato";
+                                    btnConsegna.setAttribute("libro-id", j.Result[i].id);
+                                    btnConsegna.setAttribute("utente-id", j.Result[i].idUtente);
+                                    btnConsegna.onclick = function() {
                                         var idLibro = this.getAttribute("libro-id");
                                         var idUtente = this.getAttribute("utente-id");
-                                        revocaPrestitoVolume(idLibro, idUtente);
+                                        consegnaVolume(idLibro, idUtente);
                                     };
+                                    divDettagliPrestito.appendChild(btnConsegna);
                                 }
                                 else
                                 {
-                                    if( j.Result[i].tipo == "libri")
+                                    if(j.Result[i].nomeUtentePersonaleConsegna == "Il libro non è ancora stato consegnato")
                                     {
-                                        btnRevoca.onclick = function() {
+                                        var btnConsegna = document.createElement("button");
+                                        btnConsegna.id = "btnConsegna";
+                                        btnConsegna.textContent = "Contrassegna come consegnato";
+                                        btnConsegna.setAttribute("libro-id", j.Result[i].id);
+                                        btnConsegna.setAttribute("utente-id", j.Result[i].idUtente);
+                                        btnConsegna.onclick = function() {
                                             var idLibro = this.getAttribute("libro-id");
                                             var idUtente = this.getAttribute("utente-id");
-                                            revocaPrestitoLibro(idLibro, idUtente);
+                                            consegnaLibro(idLibro, idUtente);
                                         };
+                                        divDettagliPrestito.appendChild(btnConsegna);
                                     }
                                     else
                                     {
-                                        btnRevoca.onclick = function() {
-                                            var idLibro = this.getAttribute("libro-id");
-                                            var idUtente = this.getAttribute("utente-id");
-                                            revocaPrestitoCarta(idLibro, idUtente);
-                                        };
+                                        if(j.Result[i].nomeUtentePersonaleConsegna == "La carta non è ancora stata consegnata")
+                                        {
+                                            var btnConsegna = document.createElement("button");
+                                            btnConsegna.id = "btnConsegna";
+                                            btnConsegna.textContent = "Contrassegna come consegnata";
+                                            btnConsegna.setAttribute("libro-id", j.Result[i].id);
+                                            btnConsegna.setAttribute("utente-id", j.Result[i].idUtente);
+                                            btnConsegna.onclick = function() {
+                                                var idLibro = this.getAttribute("libro-id");
+                                                var idUtente = this.getAttribute("utente-id");
+                                                consegnaCarta(idLibro, idUtente);
+                                            };
+                                            divDettagliPrestito.appendChild(btnConsegna);
+                                        }
+                                        else
+                                        {
+                                            var btnRevoca = document.createElement("button");
+                                            btnRevoca.id = "btnRevoca";
+                                            btnRevoca.textContent = "Contrassegna come restituito";
+                                            btnRevoca.setAttribute("libro-id", j.Result[i].id);
+                                            btnRevoca.setAttribute("utente-id", j.Result[i].idUtente);
+                                            if( j.Result[i].tipo == "volumi")
+                                            {
+                                                btnRevoca.onclick = function() {
+                                                    var idLibro = this.getAttribute("libro-id");
+                                                    var idUtente = this.getAttribute("utente-id");
+                                                    revocaPrestitoVolume(idLibro, idUtente);
+                                                };
+                                            }
+                                            else
+                                            {
+                                                if( j.Result[i].tipo == "libri")
+                                                {
+                                                    btnRevoca.onclick = function() {
+                                                        var idLibro = this.getAttribute("libro-id");
+                                                        var idUtente = this.getAttribute("utente-id");
+                                                        revocaPrestitoLibro(idLibro, idUtente);
+                                                    };
+                                                }
+                                                else
+                                                {
+                                                    btnRevoca.onclick = function() {
+                                                        var idLibro = this.getAttribute("libro-id");
+                                                        var idUtente = this.getAttribute("utente-id");
+                                                        revocaPrestitoCarta(idLibro, idUtente);
+                                                    };
+                                                }
+                                            }
+                                            divDettagliPrestito.appendChild(btnRevoca);
+                                        }
                                     }
                                 }
-                                divDettagliPrestito.appendChild(btnRevoca);
                             }
                             else
                             {
@@ -1281,6 +1332,82 @@
             }
             xhttp.open("POST", "presta_libro.php?idLibro="+idLibro+"&idUtente="+idUtente, true);
             xhttp.send();
+        }
+
+        function consegnaCarta(idCarta, idUtente)
+        {
+            Swal.fire({
+                title: "Sei sicuro di voler contrassegnare la carta come consegnata?",
+                text: "L'azione non può essere annullata!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sì, contrassegna"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        consegnaCartaQuery(idCarta, idUtente);
+                        Swal.fire({
+                        title: "Carta consegnata!",
+                        text: "La carta è stata consegnata! Sei stato registrato come responsabile della consegna di questo prestito.",
+                        icon: "success"
+                    });
+                }
+            });
+        }
+
+        function consegnaCartaQuery(idCarta, idUtente)
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                mostraCarta(idCarta);
+            }
+            xhttp.open("POST", "consegna_carta.php?idCarta="+idCarta+"&idUtente="+idUtente, true);
+            xhttp.send();
+        }
+
+        function consegnaLibro(idLibro, idUtente)
+        {
+            Swal.fire({
+                title: "Sei sicuro di voler contrassegnare il libro come consegnato?",
+                text: "L'azione non può essere annullata!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sì, contrassegna"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //prestaCartaQuery(idLibro, idUtente);
+                        Swal.fire({
+                        title: "Libro consegnato!",
+                        text: "Il libro è stata consegnato! Sei stato registrato come responsabile della consegna di questo prestito.",
+                        icon: "success"
+                    });
+                }
+            });
+        }
+
+        function consegnaVolume(idVolume, idUtente)
+        {
+            Swal.fire({
+                title: "Sei sicuro di voler contrassegnare il volume come consegnato?",
+                text: "L'azione non può essere annullata!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sì, contrassegna"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //prestaCartaQuery(idVolume, idUtente);
+                        Swal.fire({
+                        title: "Volume consegnato!",
+                        text: "Il volume è stata consegnato! Sei stato registrato come responsabile della consegna di questo prestito.",
+                        icon: "success"
+                    });
+                }
+            });
         }
     </script>
 </html>

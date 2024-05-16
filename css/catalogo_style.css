@@ -297,7 +297,7 @@ body
 {
     font-size: 110%;
     padding: 0.7vw 1vw;
-    background-color: #01b901;
+    background-color: red;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -308,6 +308,25 @@ body
 }
 
 #btnRevoca:hover
+{
+    background-color: #c10101;
+}
+
+#btnConsegna
+{
+    font-size: 110%;
+    padding: 0.7vw 1vw;
+    background-color: #01b901;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: inherit;
+    margin: 2vw;
+}
+
+#btnConsegna:hover
 {
     background-color: green;
 }
