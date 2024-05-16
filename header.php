@@ -56,9 +56,27 @@
                             costruisciLinkLeMiePrenotazioni();
                         else
                             modificaHeaderPersonale();
-                        htmlElement = document.createElement("span");
-                        htmlElement.id = "benvenuto_utente";
-                        htmlElement.textContent = "Benvenuto/a " + j.userName;
+
+                        htmlElement = document.createElement("div");
+                        htmlElement.id = "logoutRow";
+
+                        benvenuto = document.createElement("span");
+                        benvenuto.id = "benvenuto_utente";
+                        benvenuto.textContent = "Benvenuto/a " + j.userName;
+                        
+                        logoutLink = document.createElement("a");
+                        logoutLink.id = "link_login";
+                        logoutLink.href = "logout.php";
+                        
+                        var imgElement = document.createElement("img");
+                        imgElement.id = "img_logout";
+                        imgElement.src = "img/logout_icon.png";
+                        imgElement.alt = "Login";
+                        
+                        logoutLink.appendChild(imgElement);
+
+                        htmlElement.appendChild(benvenuto);
+                        htmlElement.appendChild(logoutLink);
                     }
                     var parteDestraPagina = document.getElementById("parte_destra_header");
                     parteDestraPagina.innerHTML = "";

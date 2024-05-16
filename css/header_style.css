@@ -89,3 +89,20 @@ a {
     font-size: 1.5vw;
     color: #454444;
 }
+
+#img_logout
+{
+    width: 4vw;
+    margin-left: 2vw;
+    transition: transform 0.2s;
+}
+
+#img_logout:hover
+{
+    transform: scale(0.9);
+}
+
+#logoutRow
+{
+    display: flex;
+}
