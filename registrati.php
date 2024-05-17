@@ -48,7 +48,7 @@
             </div>
             <div class="riga">
                 <input type="text" class="elemento" id="codiceFiscale" name="codiceFiscale" maxlength="16" placeholder="Es. BTDDXD72E63M298N" oninput="uppercaseInput()" required>
-                <input type="email" maxlength="50" class="elemento" id='emailPersona' name="email" placeholder="example@gmail.com" required>
+                <input type="email" maxlength="50" class="elemento" id='emailPersona' name="email" placeholder="Es. example@gmail.com" required>
             </div>
             <div class="riga">
                 <label class="elemento" for="primoNumero">Inserisci il tuo/i tuoi numeri di telefono (opzionali):</label>

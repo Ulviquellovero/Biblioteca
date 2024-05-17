@@ -262,11 +262,14 @@ body
     position: fixed;
     bottom: 1.5vw;
     right: 1.5vw;
+    cursor: pointer;
+    transition: transform 0.2s;
 }
 
 #btnAggiungiLibro:hover
 {
     background-color: #998165;
+    transform: scale(0.95);
 }
 
 .notificaLibro

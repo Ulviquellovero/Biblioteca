@@ -419,6 +419,14 @@
                     var btnAggiungiLibro = document.createElement("button");
                     btnAggiungiLibro.id = "btnAggiungiLibro";
                     btnAggiungiLibro.textContent = "+";
+                    btnAggiungiLibro.onclick = function() {
+                        if(tipoSelezionato == "Libri")
+                            nuovoLibro();
+                        if(tipoSelezionato == "Carte")
+                            nuovaCarta();
+                        if(tipoSelezionato == "Enciclopedie")
+                            nuovaEnciclopedia();
+                    };
                     visualizzazione.appendChild(btnAggiungiLibro);
                     var titoloPagina = document.getElementById("titoloPagina");
                     titoloPagina.textContent = "Catalogo, Prenotazioni e Prestiti";
@@ -1537,6 +1545,21 @@
                 divPrenotazioni.appendChild(nessunRisultato);
             }
             visualizzazione.appendChild(divPrenotazioni);
+        }
+
+        function nuovoLibro()
+        {
+            window.location.href = "nuovoLibro.php";
+        }
+
+        function nuovaCarta()
+        {
+            window.location.href = "nuovaCarta.php";
+        }
+
+        function nuovaEnciclopedia()
+        {
+            window.location.href = "nuovaEnciclopedia.php";
         }
     </script>
 </html>

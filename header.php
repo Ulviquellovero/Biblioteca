@@ -90,7 +90,7 @@
                 var currentPage = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
                 if(currentPage == "index.php" || currentPage == "")
                     costruisciLinkIndex(); 
-                if(currentPage == "catalogo.php")
+                if(currentPage == "catalogo.php" || currentPage == "nuovoLibro.php")
                     costruisciLinkCatalogo();
                 if(currentPage == "login.php" || currentPage == "registrati.php")
                     costruisciLinkLogin();
