@@ -1435,7 +1435,28 @@
 
         function creaListaStoricoRestituzioniVolumi(id)
         {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                var visualizzazione = document.getElementById("visualizzazione");
+                creaHtmlListaStoricoRestituzioniLibri(j, visualizzazione);
+            }
+            xhttp.open("POST", "crea_lista_storico_prenotazioni_volumi.php?id="+id, true);
+            xhttp.send();
+        }
 
+        function creaListaStoricoRestituzioniCarte(id)
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                var visualizzazione = document.getElementById("visualizzazione");
+                creaHtmlListaStoricoRestituzioniLibri(j, visualizzazione);
+            }
+            xhttp.open("POST", "crea_lista_storico_prenotazioni_carte.php?id="+id, true);
+            xhttp.send();
         }
 
         function creaListaStoricoRestituzioniLibri(id)
@@ -1504,7 +1525,7 @@
                 {
                     var nessunRisultato = document.createElement("h2");
                     nessunRisultato.className = "elementoDettagli";
-                    nessunRisultato.textContent = "Nessuna prenotazione trovata";
+                    nessunRisultato.textContent = "Nessuna dato trovato riguardante le restituzioni";
                     divPrenotazioni.appendChild(nessunRisultato);
                 }
             }
@@ -1512,15 +1533,10 @@
             {
                 var nessunRisultato = document.createElement("h2");
                 nessunRisultato.className = "elementoDettagli";
-                nessunRisultato.textContent = "Nessuna prenotazione trovata";
+                nessunRisultato.textContent = "Nessuna dato trovato riguardante le restituzioni";
                 divPrenotazioni.appendChild(nessunRisultato);
             }
             visualizzazione.appendChild(divPrenotazioni);
-        }
-
-        function creaListaStoricoRestituzioniCarte(id)
-        {
-
         }
     </script>
 </html>
