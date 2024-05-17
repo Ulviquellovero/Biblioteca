@@ -41,15 +41,25 @@
         while ($rowAutore = mysqli_fetch_assoc($resAutore)) {
             $autori .= ", " . $rowAutore['nome'] . " " . $rowAutore['cognome'];
         }
-        $sqlPrestiti = "SELECT idPrestitoVolume FROM tprestitovolume tpv JOIN tvolume tv ON tpv.idVolume = tv.idVolume WHERE idEnciclopedia = $idLibro";
-		$resPrestiti = mysqli_query($con, $sqlPrestiti);
+
 		$notifica = "false";
-		if(mysqli_num_rows($resPrestiti) == 0)
+		$sqlVolumi = "SELECT idVolume FROM tvolume WHERE idEnciclopedia = $idLibro";
+		$resVolumi = mysqli_query($con, $sqlVolumi);
+		while($row = mysqli_fetch_assoc($resVolumi))
 		{
-			$sqlPrenotazioni = "SELECT idPrenotazioneVolume FROM tprenotazionevolume tpv JOIN tvolume tv ON tpv.idVolume = tv.idVolume WHERE idEnciclopedia = $idLibro";
-			$resPrenotazioni = mysqli_query($con, $sqlPrenotazioni);
-			if(mysqli_num_rows($resPrenotazioni) != 0)
-				$notifica = "true";
+			$idVolume = $row['idVolume'];
+			$sqlPrestiti = "SELECT idPrestitoVolume FROM tprestitovolume WHERE idVolume = $idVolume";
+			$resPrestiti = mysqli_query($con, $sqlPrestiti);
+			if(mysqli_num_rows($resPrestiti) == 0)
+			{
+				$sqlPrenotazioni = "SELECT idPrenotazioneVolume FROM tprenotazionevolume WHERE idVolume = $idVolume";
+				$resPrenotazioni = mysqli_query($con, $sqlPrenotazioni);
+				if(mysqli_num_rows($resPrenotazioni) != 0)
+				{
+					$notifica = "true";
+					break;
+				}
+			}
 		}
         if($permessi != null)
 		{
