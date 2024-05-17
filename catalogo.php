@@ -721,16 +721,19 @@
                             if( j.Result[i].tipo == "volumi")
                             {
                                 creaListaPrenotazioniVolume(j.Result[i].id, $inPrestito);
+                                creaListaStoricoRestituzioniVolumi(j.Result[i].id);
                             }
                             else
                             {
                                 if( j.Result[i].tipo == "libri")
                                 {
                                     creaListaPrenotazioniLibro(j.Result[i].id, $inPrestito);
+                                    creaListaStoricoRestituzioniLibri(j.Result[i].id);
                                 }
                                 else
                                 {
                                     creaListaPrenotazioniCarta(j.Result[i].id, $inPrestito);
+                                    creaListaStoricoRestituzioniCarte(j.Result[i].id);
                                 }
                             }
                         }
@@ -1428,6 +1431,96 @@
             }
             xhttp.open("POST", "consegna_volume.php?idVolume="+idVolume+"&idUtente="+idUtente, true);
             xhttp.send();
+        }
+
+        function creaListaStoricoRestituzioniVolumi(id)
+        {
+
+        }
+
+        function creaListaStoricoRestituzioniLibri(id)
+        {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                var res = xhttp.responseText;
+                var j = JSON.parse(res);
+                var visualizzazione = document.getElementById("visualizzazione");
+                creaHtmlListaStoricoRestituzioniLibri(j, visualizzazione);
+            }
+            xhttp.open("POST", "crea_lista_storico_prenotazioni_libri.php?id="+id, true);
+            xhttp.send();
+        }
+
+        function creaHtmlListaStoricoRestituzioniLibri(j, visualizzazione)
+        {
+            var divPrenotazioni = document.createElement("div");
+            divPrenotazioni.id = "divPrenotazioni";
+
+            var titoloSezione = document.createElement("h1");
+            titoloSezione.textContent = "Storico Restituzioni";
+            divPrenotazioni.appendChild(titoloSezione);
+            if(j.Result != null)
+            {
+                if(j.Result.length != 0)
+                {
+                    var divLista = document.createElement("div");
+                    divLista.id = "divPrenotazioniLista";
+                    for(var i=0; i < j.Result.length; i++)
+                    {
+                        var containerLibro = document.createElement("div");
+                        containerLibro.className = "containerElementoPrenotazioni";
+
+                            var titolo = document.createElement("h1");
+                            titolo.className = "titoloLibroPrenotazioni";
+                            titolo.textContent = "Restituzione effettuata da " + j.Result[i].nomeUtente;
+                            containerLibro.appendChild(titolo);
+
+                            var containerDati = document.createElement("div");
+                            containerDati.className = "containerDati";
+                            containerLibro.appendChild(containerDati);
+                            
+                                var containerDate = document.createElement("div");
+                                containerDate.className = "containerDate";
+                                containerDati.appendChild(containerDate);
+
+                                    var dataPrenotazione = document.createElement("span");
+                                    dataPrenotazione.className = "datoLibro";
+                                    dataPrenotazione.textContent = "Data di restituzione: " + formatData(j.Result[i].data);
+                                    containerDate.appendChild(dataPrenotazione);
+
+                                    var dataPrenotazione = document.createElement("br");
+                                    containerDate.appendChild(dataPrenotazione);
+
+                                    var dataPrenotazione = document.createElement("span");
+                                    dataPrenotazione.className = "datoLibro";
+                                    dataPrenotazione.textContent = "Addetto responsabile del ritiro: " + j.Result[i].nomePersonale;
+                                    containerDate.appendChild(dataPrenotazione);
+
+                        divLista.appendChild(containerLibro);
+                    }
+                    divPrenotazioni.appendChild(divLista);
+                }
+                else
+                {
+                    var nessunRisultato = document.createElement("h2");
+                    nessunRisultato.className = "elementoDettagli";
+                    nessunRisultato.textContent = "Nessuna prenotazione trovata";
+                    divPrenotazioni.appendChild(nessunRisultato);
+                }
+            }
+            else
+            {
+                var nessunRisultato = document.createElement("h2");
+                nessunRisultato.className = "elementoDettagli";
+                nessunRisultato.textContent = "Nessuna prenotazione trovata";
+                divPrenotazioni.appendChild(nessunRisultato);
+            }
+            visualizzazione.appendChild(divPrenotazioni);
+        }
+
+        function creaListaStoricoRestituzioniCarte(id)
+        {
+
         }
     </script>
 </html>
