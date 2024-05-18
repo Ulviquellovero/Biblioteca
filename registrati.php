@@ -6,6 +6,7 @@
         <link rel="stylesheet" type="text/css" href="css/registrati_style.css">
         <title>Registrazione</title>
         <link rel="icon" type="image/png" href="img/Sapienza.png">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script>
             function uppercaseInput() {
@@ -17,7 +18,11 @@
                 var password = document.getElementById("password").value;
                 var confermaPassword = document.getElementById("confermaPassword").value;
                 if (password !== confermaPassword) {
-                    alert("Le password non corrispondono!");
+                    Swal.fire({
+                        icon: "error",
+                        title: "Le password non corrispondono!",
+                        text: "Le password non corrispondono! Non puoi creare un nuovo account se la password non è identica alla password di conferma."
+                    });
                     return false;
                 }
                 return true;

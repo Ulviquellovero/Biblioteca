@@ -41,7 +41,7 @@
             <div class="riga">
                 
                 <input type="text" minlength="4" class="elemento" id='titoloElemento' name="titolo" placeholder="Es. Harry Potter e la Pietra Filosofale" required>
-                <input type="number" class="elemento" min="0" max="2024" id='annoPubblicazione' name="anno" placeholder="Es. 1997" required>
+                <input type="number" class="elemento" min="1000" max="2024" id='annoPubblicazione' name="anno" placeholder="Es. 1997" required>
             </div>
             <div class="riga">
                 <label class="elemento" for="isbn">Inserisci l'ISBN:</label>
