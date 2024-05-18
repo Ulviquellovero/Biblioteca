@@ -13,6 +13,6 @@
                 VALUES ('$titolo', '$anno', '$isbn', 1, '$casaEditrice', '$nomeAutore', '$cognomeAutore', $scaffale)";
         mysqli_query($con, $sql);
     }
-    require_once("catalogo.php");
-    header("Location: index.php");
+    require_once("var_connclose.php");
+    header("Location: catalogo.php");
 ?>
