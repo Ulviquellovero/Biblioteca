@@ -59,12 +59,12 @@
                 <label class="elemento" for="primoNumero">Inserisci il tuo/i tuoi numeri di telefono (opzionali):</label>
             </div>
             <div class="riga">
-                <input type="tel" class="elemento" id='primoNumero' name="numTelefoni[]" pattern="[0-9]{10}" maxlength="10"  placeholder="+39 (numero principale)">
-                <input type="tel" class="elemento" name="numTelefoni[]" pattern="[0-9]{10}" maxlength="10"  placeholder="+39 (numero secondario)">
+                <input type="tel" class="elemento" id='primoNumero' name="numTelefoni[]" pattern="[0-9]{10}" maxlength="10"  placeholder="(+39) es. 0407659876 (numero principale)">
+                <input type="tel" class="elemento" name="numTelefoni[]" pattern="[0-9]{10}" maxlength="10"  placeholder="(+39) es. 0915689576 (numero secondario)">
             </div>
 
             <div class="riga">
-                <input type="tel" id='terzoNumero' class="elemento" name="numTelefoni[]" pattern="[0-9]{10}" maxlength="10"  placeholder="+39 (terzo numero)">
+                <input type="tel" id='terzoNumero' class="elemento" name="numTelefoni[]" pattern="[0-9]{10}" maxlength="10"  placeholder="(+39) es. 5890863456 (terzo numero)">
             </div>
 
             <div class="riga">

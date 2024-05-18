@@ -54,6 +54,22 @@
                     $resPersonaleErogatore = mysqli_query($con, $sqlPersonaleErogatore);
                     $arrayPersonaleErogatore = mysqli_fetch_array($resPersonaleErogatore);
                     $row["nomeUtentePersonaleErogatore"] = $arrayPersonaleErogatore['nomeUtente'];
+
+                    $idUtente = $arrayPrenotazione['idUtente'];
+                    $sqlNumeriTel = "SELECT numero FROM ttelefono WHERE idUtente = $idUtente";
+                    $resNumeriTel = mysqli_query($con, $sqlNumeriTel);
+                    $counterNumeri = 0;
+                    while($rowNumeriTel = mysqli_fetch_array($resNumeriTel))
+                    {
+                        if($counterNumeri == 0)
+                            $row["primoNumero"] = $rowNumeriTel['numero'];
+                        if($counterNumeri == 1)
+                            $row["secondoNumero"] = $rowNumeriTel['numero'];
+                        if($counterNumeri == 2)
+                            $row["terzoNumero"] = $rowNumeriTel['numero'];
+                        ++$counterNumeri;
+                    }
+
                     $idPersonaleConsegna = $arrayPrenotazione['idPersonaleConsegna'];
                     if($idPersonaleConsegna != null)
                     {

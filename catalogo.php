@@ -605,6 +605,36 @@
                                 codiceFiscale.textContent = "Codice fiscale del destinatario: "+j.Result[i].codiceFiscale;
                                 divDettagliPrestito.appendChild(codiceFiscale);
 
+                                if(j.Result[i].primoNumero != undefined)
+                                {
+                                    var numeroTelefono = j.Result[i].primoNumero.toString();
+                                    var numeroFormattato = numeroTelefono.slice(0, 3) + ' ' + numeroTelefono.slice(3, 6) + ' ' + numeroTelefono.slice(6);
+                                    var primoNumero = document.createElement("h2");
+                                    primoNumero.className = "elementoDettagli";
+                                    primoNumero.textContent = "Numero del destinatario: " + numeroFormattato;
+                                    divDettagliPrestito.appendChild(primoNumero);
+                                }
+
+                                if(j.Result[i].secondoNumero != undefined)
+                                {
+                                    var numeroTelefono = j.Result[i].secondoNumero.toString();
+                                    var numeroFormattato = numeroTelefono.slice(0, 3) + ' ' + numeroTelefono.slice(3, 6) + ' ' + numeroTelefono.slice(6);
+                                    var secondoNumero = document.createElement("h2");
+                                    secondoNumero.className = "elementoDettagli";
+                                    secondoNumero.textContent = "Secondo numero del destinatario: " + numeroFormattato;
+                                    divDettagliPrestito.appendChild(secondoNumero);
+                                }
+
+                                if(j.Result[i].terzoNumero != undefined)
+                                {
+                                    var numeroTelefono = j.Result[i].terzoNumero.toString();
+                                    var numeroFormattato = numeroTelefono.slice(0, 3) + ' ' + numeroTelefono.slice(3, 6) + ' ' + numeroTelefono.slice(6);
+                                    var terzoNumero = document.createElement("h2");
+                                    terzoNumero.className = "elementoDettagli";
+                                    terzoNumero.textContent = "Terzo numero del destinatario: " + numeroFormattato;
+                                    divDettagliPrestito.appendChild(terzoNumero);
+                                }
+
                                 var data = document.createElement("h2");
                                 data.className = "elementoDettagli";
                                 data.textContent = "Data del prestito: " + formatData(j.Result[i].data);

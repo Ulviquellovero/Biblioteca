@@ -28,11 +28,16 @@
         $idUtente = $_SESSION['idUtente'];
         for($idx = 0; $idx < $dimensioneArray; $idx++)
         {
-            $numero = $arrayNumeriTelefono[$idx];
-            $sql = "INSERT INTO ttelefono (numero, idUtente) VALUES ('$numero', $idUtente)";
-            mysqli_query($con, $sql);
+            echo $arrayNumeriTelefono[$idx];
+            if($arrayNumeriTelefono[$idx] != "")
+            {
+                $numero = $arrayNumeriTelefono[$idx];
+                $sql = "INSERT INTO ttelefono (numero, idUtente) VALUES ('$numero', $idUtente)";
+                mysqli_query($con, $sql);
+            }
         }
     }
     require_once("var_connclose.php");
+    require_once("logout.php");
     header("Location: index.php");
 ?>

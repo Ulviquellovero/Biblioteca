@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Mag 16, 2024 alle 15:59
+-- Creato il: Mag 18, 2024 alle 12:35
 -- Versione del server: 10.4.32-MariaDB
 -- Versione PHP: 8.2.12
 
@@ -126,7 +126,9 @@ INSERT INTO `tautorecarta` (`idAutoreCarta`, `nome`, `cognome`, `idCarta`) VALUE
 (12, 'Maria', 'Bianchi', 15),
 (13, 'Marco', 'Verdi', 15),
 (14, 'Laura', 'Russo', 16),
-(15, 'Luca', 'Ferrari', 17);
+(15, 'Luca', 'Ferrari', 17),
+(16, 'Matteo', 'Rossi', 19),
+(17, 'Leonardo', 'Sussa', 19);
 
 -- --------------------------------------------------------
 
@@ -155,7 +157,10 @@ INSERT INTO `tautoreenciclopedia` (`idAutoreEnciclopedia`, `nome`, `cognome`, `i
 (7, 'Francesca', 'Conti', 4),
 (8, 'Andrea', 'Russo', 4),
 (9, 'Laura', 'Ferrari', 5),
-(10, 'Matteo', 'Esposito', 5);
+(10, 'Matteo', 'Esposito', 5),
+(11, 'Ethan', 'Walker', 6),
+(12, 'Isabella', 'Hughes', 6),
+(13, 'Mason', 'Patel', 6);
 
 -- --------------------------------------------------------
 
@@ -181,14 +186,15 @@ CREATE TABLE `tcarta` (
 INSERT INTO `tcarta` (`idCarta`, `titolo`, `annoPubblicazione`, `ISBN`, `annoRiferimento`, `disponibile`, `nomeCasaEditrice`, `codiceScaffale`) VALUES
 (1, 'Carta Geo-Politica Italia', '2011', '978-1-23-456789-7', '2010', 1, 'Mondadori', 11),
 (2, 'Carta Geo-Politica Europa', '2024', '423-9-31-43190-0', '2023', 1, 'Treccani', 12),
-(3, 'Carta Geo-Politica Africa', '2015', '378-1-23-31234-7', '2013', 1, 'De Agostini', 13),
+(3, 'Carta Geo-Politica Africa', '2015', '378-1-23-31234-7', '2013', 0, 'De Agostini', 13),
 (11, 'Mappa Politica Asia', '2015', '378-2-23-31234-7', '2013', 1, 'De Agostini', 14),
 (12, 'Carta Geo-Politica Mondiale', '2018', '978-1-45-987654-3', '2016', 1, 'National Geographic', 15),
 (13, 'Mappa Politica Europa', '2014', '438-5-63-48765-9', '2012', 1, 'De Agostini', 16),
 (14, 'Mappa Storica Antica Roma', '2010', '273-9-82-12345-2', '2008', 1, 'Mondadori', 17),
 (15, 'Mappa Politica Canada', '2017', '764-2-34-98765-1', '2016', 1, 'Mondadori', 18),
 (16, 'Mappa Politica Finlandia', '2019', '647-8-91-87654-0', '2018', 1, 'Feltrinelli', 19),
-(17, 'Mappa Politica Russia', '2016', '567-3-45-67890-4', '2015', 1, 'Feltrnelli', 20);
+(17, 'Mappa Politica Russia', '2016', '567-3-45-67890-4', '2015', 1, 'Feltrnelli', 20),
+(19, 'Carta Geo-Politica Russia', '2020', '332-43-34325-44-7', '2018', 1, 'National Geographic', 36);
 
 -- --------------------------------------------------------
 
@@ -211,10 +217,11 @@ CREATE TABLE `tenciclopedia` (
 
 INSERT INTO `tenciclopedia` (`idEnciclopedia`, `titolo`, `annoPubblicazione`, `nVolumi`, `nomeCasaEditrice`, `codiceScaffale`) VALUES
 (1, 'Enciclopedia Universale: Dal Big Bang alla Vita Moderna', '2005', 3, 'Zanichelli', 21),
-(2, 'Enciclopedia Universale: Dal Big Bang alla Vita Moderna', '2005', 3, 'Mondadori', 22),
+(2, 'Enciclopedia di astronomia e cosmologia', '2005', 3, 'Mondadori', 22),
 (3, 'Enciclopedia Storica del Mondo Antico', '2020', 2, 'Treccani', 23),
 (4, 'Enciclopedia delle Arti e della Cultura Globale', '2008', 3, 'Treccani', 24),
-(5, 'Enciclopedia dei Popoli del Mondo: Storia, Cultura e Tradizioni', '2024', 4, 'Zanichelli', 25);
+(5, 'Enciclopedia dei Popoli del Mondo: Storia, Cultura e Tradizioni', '2024', 4, 'Zanichelli', 25),
+(6, 'Enciclopedia degli Animali', '2024', 10, 'World Wildlife Fund', 44);
 
 -- --------------------------------------------------------
 
@@ -252,16 +259,17 @@ CREATE TABLE `tlibro` (
 --
 
 INSERT INTO `tlibro` (`idLibro`, `titolo`, `annoPubblicazione`, `ISBN`, `disponibile`, `nomeCasaEditrice`, `nomeAutore`, `cognomeAutore`, `codiceScaffale`) VALUES
-(2, 'Il mistero della villa abbandonata', '2023', '978-12-34-56789-0', 1, 'Mondadori', 'Giulia', 'Marini', 1),
+(2, 'Il mistero della villa abbandonata', '2023', '978-12-34-56789-0', 0, 'Mondadori', 'Giulia', 'Marini', 1),
 (3, 'L\'eredità ritrovata', '2021', '978-13-24-56789-0', 1, 'Feltrinelli', 'Marco', 'Rossi', 2),
 (4, 'Segreti nel buio', '1988', '978-14-34-56789-0', 1, 'Feltrinelli', 'Laura', 'Bianchi', 3),
-(5, 'Viaggio nel tempo', '1998', '978-15-24-56789-0', 1, 'Mondadori', 'Giuseppe', 'Verdi', 4),
+(5, 'Viaggio nel tempo', '1998', '978-15-24-56789-0', 0, 'Mondadori', 'Giuseppe', 'Verdi', 4),
 (6, 'Il segreto del faro', '2011', '978-16-34-56789-0', 1, 'Zanichelli', 'Sara', 'Gialli', 5),
 (7, 'Ritorno al passato', '2023', '978-17-24-56789-0', 1, 'De Agostini', 'Marco', 'Rossi', 6),
 (8, 'La trappola mortale', '2021', '978-18-34-56789-0', 1, 'Zanichelli', 'Giulia', 'Marini', 7),
 (9, 'Il segreto della montagna', '2020', '978-19-24-56789-0', 1, 'Giunti', 'Antonio', 'Bianchi', 8),
 (10, 'Il mistero del lago', '2019', '978-20-34-56789-0', 1, 'Giunti', 'Sara', 'Rossi', 9),
-(11, 'La maledizione della cripta', '2022', '978-21-24-56789-0', 1, 'Mondadori', 'Marco', 'Verdi', 10);
+(11, 'La maledizione della cripta', '2022', '978-21-24-56789-0', 0, 'Mondadori', 'Marco', 'Verdi', 10),
+(12, 'Harry Potter e la Pietra Filosofale', '1997', '978-88-77827-02-9', 0, 'Bloomsbury', 'Joanne', 'Rowling', 26);
 
 -- --------------------------------------------------------
 
@@ -324,7 +332,29 @@ INSERT INTO `tposizione` (`codiceScaffale`, `identificativoArmadio`, `identifica
 (22, 'F', 'Stanza Enciclopedie'),
 (23, 'F', 'Stanza Enciclopedie'),
 (24, 'G', 'Stanza Enciclopedie'),
-(25, 'G', 'Stanza Enciclopedie');
+(25, 'G', 'Stanza Enciclopedie'),
+(26, 'A', 'Stanza Libri'),
+(27, 'A', 'Stanza Libri'),
+(28, 'A', 'Stanza Libri'),
+(29, 'A', 'Stanza Libri'),
+(30, 'A', 'Stanza Libri'),
+(31, 'B', 'Stanza Libri'),
+(32, 'B', 'Stanza Libri'),
+(33, 'B', 'Stanza Libri'),
+(34, 'B', 'Stanza Libri'),
+(35, 'B', 'Stanza Libri'),
+(36, 'D', 'Stanza Carte'),
+(37, 'D', 'Stanza Carte'),
+(38, 'D', 'Stanza Carte'),
+(39, 'E', 'Stanza Carte'),
+(40, 'E', 'Stanza Carte'),
+(41, 'E', 'Stanza Carte'),
+(42, 'E', 'Stanza Carte'),
+(43, 'E', 'Stanza Carte'),
+(44, 'G', 'Stanza Enciclopedie'),
+(45, 'H', 'Stanza Enciclopedie'),
+(46, 'H', 'Stanza Enciclopedie'),
+(47, 'H', 'Stanza Enciclopedie');
 
 -- --------------------------------------------------------
 
@@ -344,7 +374,7 @@ CREATE TABLE `tprenotazionecarta` (
 --
 
 INSERT INTO `tprenotazionecarta` (`idPrenotazioneCarta`, `data`, `idUtente`, `idCarta`) VALUES
-(2, '2024-05-16', 1, 12);
+(3, '2024-05-18', 1, 3);
 
 -- --------------------------------------------------------
 
@@ -359,6 +389,16 @@ CREATE TABLE `tprenotazionelibro` (
   `idLibro` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dump dei dati per la tabella `tprenotazionelibro`
+--
+
+INSERT INTO `tprenotazionelibro` (`idPrenotazioneLibro`, `data`, `idUtente`, `idLibro`) VALUES
+(5, '2024-05-18', 1, 12),
+(6, '2024-05-18', 2, 11),
+(7, '2024-05-18', 3, 5),
+(8, '2024-05-18', 28, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -371,6 +411,16 @@ CREATE TABLE `tprenotazionevolume` (
   `idUtente` int(11) NOT NULL,
   `idVolume` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dump dei dati per la tabella `tprenotazionevolume`
+--
+
+INSERT INTO `tprenotazionevolume` (`idPrenotazioneVolume`, `data`, `idUtente`, `idVolume`) VALUES
+(4, '2024-05-17', 2, 17),
+(5, '2024-05-17', 2, 18),
+(6, '2024-05-17', 2, 16),
+(7, '2024-05-18', 1, 19);
 
 -- --------------------------------------------------------
 
@@ -387,6 +437,13 @@ CREATE TABLE `tprestitocarta` (
   `idCarta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dump dei dati per la tabella `tprestitocarta`
+--
+
+INSERT INTO `tprestitocarta` (`idPrestitoCarta`, `data`, `idPersonaleErogatore`, `idPersonaleConsegna`, `idUtente`, `idCarta`) VALUES
+(3, '2024-05-18', 2, NULL, 1, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -402,6 +459,16 @@ CREATE TABLE `tprestitolibro` (
   `idLibro` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dump dei dati per la tabella `tprestitolibro`
+--
+
+INSERT INTO `tprestitolibro` (`idPrestitoLibro`, `data`, `idPersonaleErogatore`, `idPersonaleConsegna`, `idUtente`, `idLibro`) VALUES
+(5, '2024-05-18', 2, NULL, 1, 12),
+(6, '2024-05-18', 2, NULL, 2, 11),
+(7, '2024-05-18', 2, NULL, 3, 5),
+(8, '2024-05-18', 2, NULL, 28, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -416,6 +483,15 @@ CREATE TABLE `tprestitovolume` (
   `idUtente` int(11) NOT NULL,
   `idVolume` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dump dei dati per la tabella `tprestitovolume`
+--
+
+INSERT INTO `tprestitovolume` (`idPrestitoVolume`, `data`, `idPersonaleErogatore`, `idPersonaleConsegna`, `idUtente`, `idVolume`) VALUES
+(3, '2024-05-17', 2, NULL, 2, 17),
+(5, '2024-05-17', 2, NULL, 2, 18),
+(6, '2024-05-18', 2, NULL, 1, 19);
 
 -- --------------------------------------------------------
 
@@ -436,7 +512,9 @@ CREATE TABLE `trestituzionecarta` (
 --
 
 INSERT INTO `trestituzionecarta` (`idRestituzioneCarta`, `data`, `idPersonale`, `idUtente`, `idCarta`) VALUES
-(1, '2024-05-16', 2, 2, 12);
+(1, '2024-05-16', 2, 2, 12),
+(2, '2024-05-17', 1, 1, 12),
+(3, '2024-05-18', 2, 29, 11);
 
 -- --------------------------------------------------------
 
@@ -457,7 +535,10 @@ CREATE TABLE `trestituzionelibro` (
 --
 
 INSERT INTO `trestituzionelibro` (`idRestituzioneLibro`, `data`, `idPersonale`, `idUtente`, `idLibro`) VALUES
-(1, '2024-05-16', 2, 1, 10);
+(1, '2024-05-16', 2, 1, 10),
+(2, '2024-05-17', 2, 1, 2),
+(3, '2024-05-17', 2, 2, 10),
+(4, '2024-05-17', 2, 3, 10);
 
 -- --------------------------------------------------------
 
@@ -478,7 +559,9 @@ CREATE TABLE `trestituzionevolume` (
 --
 
 INSERT INTO `trestituzionevolume` (`idRestituzioneVolume`, `data`, `idPersonale`, `idUtente`, `idVolume`) VALUES
-(1, '2024-05-16', 2, 1, 17);
+(1, '2024-05-16', 2, 1, 17),
+(2, '2024-05-17', 1, 3, 17),
+(3, '2024-05-17', 2, 1, 16);
 
 -- --------------------------------------------------------
 
@@ -500,6 +583,7 @@ CREATE TABLE `tscritturaenciclopedia` (
 --
 
 CREATE TABLE `ttelefono` (
+  `idNumero` int(11) NOT NULL,
   `numero` bigint(20) NOT NULL,
   `idUtente` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -508,10 +592,15 @@ CREATE TABLE `ttelefono` (
 -- Dump dei dati per la tabella `ttelefono`
 --
 
-INSERT INTO `ttelefono` (`numero`, `idUtente`) VALUES
-(1234567891, 13),
-(2345678912, 13),
-(4324324235, 13);
+INSERT INTO `ttelefono` (`idNumero`, `numero`, `idUtente`) VALUES
+(1, 1234567891, 1),
+(2, 2343243243, 1),
+(3, 2345678912, 1),
+(5, 4324324235, 2),
+(6, 4356535678, 2),
+(7, 4568971234, 3),
+(25, 4034554025, 28),
+(26, 6499825678, 28);
 
 -- --------------------------------------------------------
 
@@ -535,8 +624,9 @@ CREATE TABLE `tutente` (
 INSERT INTO `tutente` (`idUtente`, `codiceFiscale`, `nome`, `cognome`, `email`, `password`) VALUES
 (1, 'BTDDXD72E63M298N', 'Mario', 'Rossi', 'mario.rossi@gmail.com', 'password'),
 (2, 'JRKTVF91A54A178H', 'Giovanni', 'Romano', 'giovanni.romano@gmail.com', '1234'),
-(3, 'FHGRBL90P65E803G', 'Mattia', 'Esposito', 'esposito.mattia@gmail.com', 'mattiaEsposito'),
-(13, 'FSEDF234343124FD', 'Giovanni', 'Sussa', 'suss.fsdf@fdsf.csdf', 'testtest');
+(3, 'DQDMPV87S53A601B', 'Giovanni', 'Verdi', 'giovanni.verdi@gmail.com', 'password'),
+(28, 'SGVZAE95E24I559V', 'Giovanna', 'Felice', 'giovanna.felice@gmail.com', 'password'),
+(29, 'YVTLDR33S61D959Q', 'Giovanni', 'Mauro', 'giovanni.mauro@gmail.com', 'password');
 
 -- --------------------------------------------------------
 
@@ -557,20 +647,30 @@ CREATE TABLE `tvolume` (
 --
 
 INSERT INTO `tvolume` (`idVolume`, `numero`, `ISBN`, `disponibile`, `idEnciclopedia`) VALUES
-(1, 1, '978-1-23-456789-7', 1, 1),
-(2, 2, '978-2-23-456789-7', 1, 1),
-(3, 3, '978-3-23-456789-7', 1, 1),
-(7, 1, '343-1-54-47653-9', 1, 2),
-(8, 2, '343-2-54-47653-9', 1, 2),
-(9, 3, '343-3-54-47653-9', 1, 2),
-(10, 1, '432-1-43-34563-2', 1, 3),
+(1, 1, '978-1-23-456789-1', 1, 1),
+(2, 2, '978-2-23-456789-2', 1, 1),
+(3, 3, '978-3-23-456789-3', 1, 1),
+(7, 1, '343-1-54-47653-1', 1, 2),
+(8, 2, '343-2-54-47653-2', 1, 2),
+(9, 3, '343-3-54-47653-3', 1, 2),
+(10, 1, '432-1-43-34563-1', 1, 3),
 (11, 2, '432-2-43-34563-2', 1, 3),
-(13, 1, '265-1-54-64363-0', 1, 4),
+(13, 1, '265-1-54-64363-3', 1, 4),
 (14, 2, '265-2-54-64363-0', 1, 4),
 (15, 3, '265-3-54-64363-0', 1, 4),
 (16, 1, '324-1-34-42353-4', 1, 5),
-(17, 2, '324-2-34-42353-4', 1, 5),
-(18, 3, '324-3-34-42353-4', 1, 5);
+(17, 2, '324-2-34-42353-4', 0, 5),
+(18, 3, '324-3-34-42353-4', 0, 5),
+(19, 1, '543-23-54543-01-1', 0, 6),
+(20, 2, '543-23-54543-02-1', 1, 6),
+(21, 3, '543-23-54543-03-1', 1, 6),
+(22, 4, '543-23-54543-04-1', 1, 6),
+(23, 5, '543-23-54543-05-1', 1, 6),
+(24, 6, '543-23-54543-06-1', 1, 6),
+(25, 7, '543-23-54543-07-1', 1, 6),
+(26, 8, '543-23-54543-08-1', 1, 6),
+(27, 9, '543-23-54543-09-1', 1, 6),
+(28, 10, '543-23-54543-10-1', 1, 6);
 
 -- --------------------------------------------------------
 
@@ -742,7 +842,7 @@ ALTER TABLE `tscritturaenciclopedia`
 -- Indici per le tabelle `ttelefono`
 --
 ALTER TABLE `ttelefono`
-  ADD PRIMARY KEY (`numero`);
+  ADD PRIMARY KEY (`idNumero`);
 
 --
 -- Indici per le tabelle `tutente`
@@ -764,25 +864,25 @@ ALTER TABLE `tvolume`
 -- AUTO_INCREMENT per la tabella `tautorecarta`
 --
 ALTER TABLE `tautorecarta`
-  MODIFY `idAutoreCarta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `idAutoreCarta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT per la tabella `tautoreenciclopedia`
 --
 ALTER TABLE `tautoreenciclopedia`
-  MODIFY `idAutoreEnciclopedia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idAutoreEnciclopedia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT per la tabella `tcarta`
 --
 ALTER TABLE `tcarta`
-  MODIFY `idCarta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `idCarta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT per la tabella `tenciclopedia`
 --
 ALTER TABLE `tenciclopedia`
-  MODIFY `idEnciclopedia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idEnciclopedia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT per la tabella `tfigurazionecarta`
@@ -794,7 +894,7 @@ ALTER TABLE `tfigurazionecarta`
 -- AUTO_INCREMENT per la tabella `tlibro`
 --
 ALTER TABLE `tlibro`
-  MODIFY `idLibro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idLibro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT per la tabella `tpersonale`
@@ -806,61 +906,61 @@ ALTER TABLE `tpersonale`
 -- AUTO_INCREMENT per la tabella `tposizione`
 --
 ALTER TABLE `tposizione`
-  MODIFY `codiceScaffale` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `codiceScaffale` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT per la tabella `tprenotazionecarta`
 --
 ALTER TABLE `tprenotazionecarta`
-  MODIFY `idPrenotazioneCarta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idPrenotazioneCarta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT per la tabella `tprenotazionelibro`
 --
 ALTER TABLE `tprenotazionelibro`
-  MODIFY `idPrenotazioneLibro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idPrenotazioneLibro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT per la tabella `tprenotazionevolume`
 --
 ALTER TABLE `tprenotazionevolume`
-  MODIFY `idPrenotazioneVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idPrenotazioneVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT per la tabella `tprestitocarta`
 --
 ALTER TABLE `tprestitocarta`
-  MODIFY `idPrestitoCarta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idPrestitoCarta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT per la tabella `tprestitolibro`
 --
 ALTER TABLE `tprestitolibro`
-  MODIFY `idPrestitoLibro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idPrestitoLibro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT per la tabella `tprestitovolume`
 --
 ALTER TABLE `tprestitovolume`
-  MODIFY `idPrestitoVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idPrestitoVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT per la tabella `trestituzionecarta`
 --
 ALTER TABLE `trestituzionecarta`
-  MODIFY `idRestituzioneCarta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idRestituzioneCarta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT per la tabella `trestituzionelibro`
 --
 ALTER TABLE `trestituzionelibro`
-  MODIFY `idRestituzioneLibro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idRestituzioneLibro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT per la tabella `trestituzionevolume`
 --
 ALTER TABLE `trestituzionevolume`
-  MODIFY `idRestituzioneVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idRestituzioneVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT per la tabella `tscritturaenciclopedia`
@@ -869,16 +969,22 @@ ALTER TABLE `tscritturaenciclopedia`
   MODIFY `idScritturaEnciclopedia` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT per la tabella `ttelefono`
+--
+ALTER TABLE `ttelefono`
+  MODIFY `idNumero` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
 -- AUTO_INCREMENT per la tabella `tutente`
 --
 ALTER TABLE `tutente`
-  MODIFY `idUtente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `idUtente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT per la tabella `tvolume`
 --
 ALTER TABLE `tvolume`
-  MODIFY `idVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `idVolume` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
