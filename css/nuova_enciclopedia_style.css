@@ -1,0 +1,173 @@
+body{
+    font-family: "Gentium Book Plus", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+#input
+{
+    margin: 2vw;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+}
+
+.riga
+{
+    display: flex;
+}
+
+.elemento
+{
+    margin-inline: 2vw;
+    margin-top: 1vw;
+    width: 100%;
+}
+
+input
+{
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: 1vw;
+    font-size: 1.5vw;
+    margin-bottom: 0.5vw;
+    font-family: "Gentium Book Plus", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+label
+{
+    font-family: "Gentium Book Plus", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.5vw;
+}
+
+#submit {
+    background-color: #b69a79;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 110%;
+    font-family: "Gentium Book Plus", serif;
+    font-weight: 400;
+    font-style: normal;
+    margin-inline: 45%;
+    margin-top: 3vw;
+    margin-bottom: 5%;
+    width: 12.5vw;
+}
+
+#submit:hover {
+    background-color: #998165;
+}
+
+#terzoNumero
+{
+    margin-right: 49.5vw;
+    margin-top: 2vw;
+}
+
+h1
+{
+    width: 100%;
+    text-align: center;
+    margin-top: 3vw;
+    margin-bottom: 3vw;
+}
+
+select
+{
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: 1vw;
+    font-size: 1.5vw;
+    margin-bottom: 0.5vw;
+    font-family: "Gentium Book Plus", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+#btnIndietro
+{
+    font-size: 110%;
+    padding: 0.7vw 1vw;
+    background-color: #b69a79;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: inherit;
+    margin: 2vw;
+}
+
+#btnIndietro:hover
+{
+    background-color: #998165;
+}
+
+#titoloPagina
+{
+    margin-top: 0;
+}
+
+.removeAuthor
+{
+    background-color: red;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 200%;
+    width: 10vw;
+    height: 3vw;
+}
+
+.removeAuthor:hover {
+    background-color: #c10101;
+}
+
+#aggiungiAutore {
+    background-color: #01b901;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 110%;
+    font-family: "Gentium Book Plus", serif;
+    font-weight: 400;
+    font-style: normal;
+    margin-top: 2vw;
+    width: 10vw;
+    height: 4vw;
+    margin-inline: 2vw;
+}
+
+#aggiungiAutore:hover {
+    background-color: green;
+}
+
+ #space
+{
+    width: 11vw;
+    height: 3vw;
+}
+
+.author-row
+{
+    display: flex;
+    align-items: center;
+}
+
+#authorsContainer
+{
+    margin-top: 2vw;
+}

@@ -1007,6 +1007,9 @@
                     var btnAggiungiLibro = document.createElement("button");
                     btnAggiungiLibro.id = "btnAggiungiLibro";
                     btnAggiungiLibro.textContent = "+";
+                    btnAggiungiLibro.onclick = function() {
+                        nuovaEnciclopedia();
+                    };
                     visualizzazione.appendChild(btnAggiungiLibro);
                     var titoloPagina = document.getElementById("titoloPagina");
                     titoloPagina.textContent = "Catalogo, Prenotazioni e Prestiti";

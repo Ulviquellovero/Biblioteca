@@ -42,7 +42,7 @@
             <div class="riga">
                 
                 <input type="text" minlength="4" class="elemento" id='titoloElemento' name="titolo" placeholder="Es. Carta Geo-Politica Germania" required>
-                <input type="number" class="elemento" min="1000" max="2024" id='annoPubblicazione' name="anno" placeholder="Es. 1989" required>
+                <input type="number" class="elemento" min="1901" max="2024" id='annoPubblicazione' name="anno" placeholder="Es. 1989" required>
             </div>
             <div class="riga">
                 <label class="elemento" for="isbn">Inserisci l'ISBN:</label>
@@ -53,14 +53,14 @@
                 <input type="text" minlength="4" class="elemento" id='casaEditrice' name="casaEditrice" placeholder="Es. National Geographic" required>
             </div>
             <div class="riga">
-                <label class="elemento" for="scaffale">Seleziona il codice dello scaffale dove verrà posizionato il libro:</label>
+                <label class="elemento" for="scaffale">Seleziona il codice dello scaffale dove verrà posizionata la carta:</label>
                 <label class="elemento" for="annoRiferimento">Seleziona l'anno a cui è riferita da la carta:</label>
             </div>
             <div class="riga">
                 <select class="elemento" id="scaffale" name="scaffale" required>
                     <option value="" disabled selected>Nessun scaffale selezionato</option>
                 </select>
-                <input type="number" class="elemento" min="1000" max="2024" id='annoRiferimento' name="annoRiferimento" placeholder="Es. 1988" required>
+                <input type="number" class="elemento" min="1901" max="2024" id='annoRiferimento' name="annoRiferimento" placeholder="Es. 1988" required>
             </div>
 
             <div id="authorsContainer">
