@@ -28,7 +28,6 @@
         $idUtente = $_SESSION['idUtente'];
         for($idx = 0; $idx < $dimensioneArray; $idx++)
         {
-            echo $arrayNumeriTelefono[$idx];
             if($arrayNumeriTelefono[$idx] != "")
             {
                 $numero = $arrayNumeriTelefono[$idx];
